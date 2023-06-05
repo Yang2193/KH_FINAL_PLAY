@@ -63,7 +63,7 @@ const ListBox = styled.div`
     position: relative;
     top: 5%;
     margin: 0 auto;
-    width: 50%;
+    width: 70%;
 
     .bar{
         width: 100%;
@@ -80,9 +80,16 @@ const ListBox = styled.div`
     thead, tbody{
         width : 100%
     }
+    
+    tbody td{
+        border-bottom: 1px dotted #999;
+    }
 
     td{
         height: 100px;
+        text-align: center;
+        font-size: 1rem;
+        
         
         .image {
 
