@@ -3,10 +3,12 @@ import styled from "styled-components";
 const Container = styled.div`
   width: 100%;
   background-color: #fff;
-  position: absolute;
-  bottom: 10px;
+  height : 80px;
+  position: relative;
+  top: 10%;
   display: flex;
   justify-content: center;
+  margin-top: 30px;
 
   .notion-link{
     font-size: x-small;
