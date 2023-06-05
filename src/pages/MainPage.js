@@ -81,6 +81,11 @@ const ListBox = styled.div`
         width : 100%
     }
     
+    thead th{
+        background-color: #990A2C;
+        color: #fff;
+    }
+    
     tbody td{
         border-bottom: 1px dotted #999;
     }
@@ -89,6 +94,7 @@ const ListBox = styled.div`
         height: 100px;
         text-align: center;
         font-size: 1rem;
+        padding: 10px 0;
         
         
         .image {
@@ -97,9 +103,11 @@ const ListBox = styled.div`
         
 
         .img-thumb{
-            width: 100px;
-            height: 100px;
-            object-fit: cover;
+            width: 90px;
+            height: 120px;
+            margin: 0 auto;
+            border: 1px solid #b9b9b9;
+            vertical-align: middle;
         }
 
         .title{
