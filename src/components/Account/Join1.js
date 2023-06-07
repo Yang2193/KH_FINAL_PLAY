@@ -7,7 +7,7 @@ const Join1 = () => {
     return (
         <>
         <JoinTitle>회원가입</JoinTitle>
-        <JoinStepBar/>
+        <JoinStepBar currentStep={1} totalSteps={4}/>
         <Agreement/>
         </>
     )

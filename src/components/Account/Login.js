@@ -78,7 +78,7 @@ const Login = () => {
         const idNow = e.target.value; 
         setUserId(idNow);
         if(!idRegex.test(idNow)) {
-            setIsId(false)
+            setIsId(false);
         } else {
             setIsId(true);
         }
@@ -373,7 +373,7 @@ const Login = () => {
               </div>
               {/* <button onClick={onClickLogin}>Sign in</button> */}
               <p>
-                <b>Forgot Your <br /> <Link to='/'>ID</Link> / <Link to='/'>Password</Link></b>
+                <b>Forgot Your <br /> <Link to='/find'>ID</Link> / <Link to='/find'>Password</Link></b>
               </p>
               <p>
                 <span>Don't have an account?</span>

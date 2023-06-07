@@ -308,7 +308,7 @@
     }
 }
 
-.input-group input.focused-id, input.focused-pw,
+input.focused-id, input.focused-pw,
 input.focused-name, input.focused-tel {
     border-color: blue;
 }
