@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Footer from "../components/Footer";
 import styled from "styled-components";
 import logoex from "../images/logoex.png";
 import Header from "../components/Header";
+import SearchBox from "../components/SearchBox";
 
 const dramaData = [
     ["23002001", "나의 PS파트너", "https://ticketimage.interpark.com/Play/image/large/23/23002001_p.gif","대학로 아트포레스트 2관","2023.05.05","2023.08.31"],
@@ -46,24 +47,21 @@ const LogoBox = styled.div`
 
 `
 
-const SearchBox = styled.div`
-    position: relative;
-    top: 0%;
-    border: 0.2rem solid #990A2C;
-    margin: 0 auto;
-    justify-content: space-between;
-    align-items: center;
-    width: 50%;
-    height: 40px;
-    text-align: center;
-    display: flex;
-`
-
 const ListBox = styled.div`
     position: relative;
-    top: 5%;
+    top: 10%;
     margin: 0 auto;
     width: 70%;
+
+    @media (max-width: 768px) {
+        width: 80%;
+        font-size: 80%;
+
+        td .img-thumb{
+            width: 60px;
+            height: 80px;
+        }
+    }
 
     .bar{
         width: 100%;
@@ -95,63 +93,77 @@ const ListBox = styled.div`
         text-align: center;
         font-size: 1rem;
         padding: 10px 0;
-        
-        
-        .image {
 
+        @media (max-width: 768px) {
+        font-size: 0.8rem;
         }
-        
+    }
 
-        .img-thumb{
+    .img-thumb{
             width: 90px;
             height: 120px;
             margin: 0 auto;
             border: 1px solid #b9b9b9;
             vertical-align: middle;
         }
+                    
+    .image {
 
-        .title{
-
-        }
-
-        .location{
-
-        }
-
-        .period{
-
-        }
     }
 
-    td .image img{
-        width: 100px;
-        height: 100px;
+    .title{
+
     }
 
+    .location{
 
+    }
+
+    .period{
+
+    }
+    
     .menu p{
         margin: 0 20px;
     }
 `
 
 const MainPage = () => {
+    const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+
+    useEffect(() => {
+      const handleResize = () => {
+        setIsMobile(window.innerWidth <= 768);
+      };
+  
+      window.addEventListener("resize", handleResize);
+  
+      return () => {
+        window.removeEventListener("resize", handleResize);
+      };
+    }, []);
+
     return(
         <Container> 
-            <Header/>
-
-            <LogoBox>
-                <p className="text">카피캣</p>
-                <img className="logo" src={logoex} alt="로고 사진"/>
-            </LogoBox>
-            <SearchBox>
-
-            </SearchBox>
+            {isMobile ? (
+            <Header>
+                <SearchBox/>
+            </Header>) : (
+                <>
+                    <Header/>
+                    <SearchBox/>
+                </>
+            )}
+            
+            
             <ListBox>
                 <table>
                     <thead>
-                        <th colSpan={2}>상품명</th>
-                        <th>장소</th>
-                        <th>기간</th>
+                        <tr>
+                            <th colSpan={2}>상품명</th>
+                            <th>장소</th>
+                            <th>기간</th>
+                        </tr>
                     </thead>
                     <tbody>
                             {dramaData && dramaData.map(e =>(
