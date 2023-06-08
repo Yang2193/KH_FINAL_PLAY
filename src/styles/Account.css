@@ -4,8 +4,13 @@
 *{
     box-sizing: border-box;
 }
-
 .container-login {
+    position: relative;
+    min-height: 100vh;
+    overflow: hidden;
+}
+
+.container-find {
     position: relative;
     min-height: 100vh;
     overflow: hidden;
@@ -150,7 +155,13 @@
 .container-login.sign-in .social-list.sign-in>div,
 .container-login.sign-up .form.sign-up,
 .container-login.sign-up .social-list.sign-up,
-.container-login.sign-up .social-list.sign-up>div {
+.container-login.sign-up .social-list.sign-up>div,
+.container-find.find-id .form.find-id,
+.container-find.find-id .social-list.find-id,
+.container-find.find-id .social-list.find-id>div,
+.container-find.find-pw .form.find-pw,
+.container-find.find-pw .social-list.find-pw,
+.container-find.find-pw .social-list.find-pw>div {
     transform: scale(1);
 }
 
@@ -189,13 +200,19 @@
 
 .text.sign-in h2,
 .text.sign-in p,
-.img.sign-in img {
+.img.sign-in img, 
+.text.find-id h2,
+.text.find-id p,
+.img.find-id img{
     transform: translateX(-250%);
 }
 
 .text.sign-up h2,
 .text.sign-up p,
-.img.sign-up img {
+.img.sign-up img,
+.text.find-pw h2,
+.text.find-pw p,
+.img.find-pw img {
     transform: translateX(250%);
 }
 
@@ -204,7 +221,13 @@
 .container-login.sign-in .img.sign-in img,
 .container-login.sign-up .text.sign-up h2,
 .container-login.sign-up .text.sign-up p,
-.container-login.sign-up .img.sign-up img {
+.container-login.sign-up .img.sign-up img,
+.container-find.find-id .text.find-id h2,
+.container-find.find-id .text.find-id p,
+.container-find.find-id .img.find-id img,
+.container-find.find-pw .text.find-pw h2,
+.container-find.find-pw .text.find-pw p,
+.container-find.find-pw .img.find-pw img {
     transform: translateX(0);
 }
 
@@ -228,12 +251,14 @@
     border-bottom-left-radius: max(50vw, 50vh);
 }
 
-.container-login.sign-in::before {
+.container-login.sign-in::before,
+.containver-find.find-pw::before {
     transform: translate(0, 0);
     right: 50%;
 }
 
-.container-login.sign-up::before {
+.container-login.sign-up::before,
+.containver-find.find-id::before {
     transform: translate(100%, 0);
     right: 50%;
 }
@@ -244,7 +269,10 @@
 
     .container-login::before,
     .container-login.sign-in::before,
-    .container-login.sign-up::before {
+    .container-login.sign-up::before,
+    .container-find::before,
+    .container-find.find-id::before,
+    .container-find.find-pw::before  {
         height: 100vh;
         border-bottom-right-radius: 0;
         border-top-left-radius: 0;
@@ -258,7 +286,9 @@
     } */
 
     .container-login.sign-in .col.sign-in,
-    .container-login.sign-up .col.sign-up {
+    .container-login.sign-up .col.sign-up,
+    .container-find.find-id .col.find-id,
+    .container-find.find-pw .col.find-pw {
         transform: translateY(0);
     }
 

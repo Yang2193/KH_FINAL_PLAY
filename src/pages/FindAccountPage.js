@@ -1,10 +1,11 @@
 import React from "react";
-import { FindUserId, FindUserPw } from "../components/Account/FindAccount";
+import FindUserIdPw from "../components/Account/FindAccount";
+
+
 const FindAccountPage = () => {
     return (
         <>
-        <FindUserId />
-        <FindUserPw />
+        <FindUserIdPw/>
         </>
     )
 }

@@ -1,7 +1,7 @@
 import React, { useState, useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { AccountInfoContext } from "../../context/AccountInfo";
-import "../../styles/Login.css"
+import "../../styles/Account.css"
 
 const MemberInfo = () => {
     const navigate = useNavigate();

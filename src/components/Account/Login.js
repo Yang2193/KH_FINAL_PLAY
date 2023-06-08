@@ -4,7 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 // import AxiosApi from "../../api/axiosapi";
 // import Modal from "../../utill/Modal";
 // import PostCode from "./popUpAddr";
-import '../../styles/Login.css';
+import '../../styles/Account.css';
 
 const Login = () => {
     const navigate = useNavigate();
