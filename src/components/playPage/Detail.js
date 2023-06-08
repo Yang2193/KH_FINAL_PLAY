@@ -11,12 +11,11 @@ const DetailBox = styled.div`
     div{
         width: 100%;
         display: flex;
-        justify-content: center;
-        align-items: center;
+        /* justify-content: center; */
+        /* align-items: center; */
         flex-direction: column;
         h3{
-            position: relative;
-            right: 25%;
+
         }
     }
     .casting{
@@ -39,8 +38,8 @@ const DetailBox = styled.div`
                 }
                 img{
                     border-radius: 50%;
-                    width: 70%;
-                    height: 70%;
+                    width: 85%;
+                    height: 50%;
                 }
         }
         }

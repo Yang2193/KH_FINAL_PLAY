@@ -1,43 +1,74 @@
 import React from "react";
 import styled from "styled-components";
+import { useState } from "react";
 const NavBar = styled.div`
     display: flex;
-    justify-content: center;
     align-items: center;
     height: 5vh;
     border-bottom: 1px solid;
     margin-top: 5%;
-    button{
-        width: 10%;
-        height: 100%;
-        border: none;
-        background-color: white;
-        font-size: 1.5em;
-        font-weight: bold;
+    ul{
+      width: 100%;
+      list-style: none;
+      display: flex;
+      padding: 0;
     }
-    button:focus{
-        border-bottom:5px solid ;
+    li{
+      display: flex;
+      justify-content: center;
+      width: 10%;
+      /* border: 1px solid; */
+      height: 100%;
+      background-color: white;
+      font-size: 1.5em;
+      font-weight: bold;
+      cursor: pointer;
+      margin-right: 1%;
     }
+    .nav-item {
+    position: relative;
+    cursor: pointer;
+  }
 
+.nav-item::before {
+  content: "";
+  position: absolute;
+  bottom: -10px;
+  left: 0;
+  width: 100%;
+  height: 5px;
+  background-color: black;
+  display: none;
+}
+
+.nav-item.active::before {
+  display: block;
+}
 `
 
-const PlayNav = ({handleType}) =>{
+const PlayNav = ({ handleType }) => {
+  const [activeIndex, setActiveIndex] = useState(0);
 
-
-      const onClickInfo = () => {
-        handleType("default");
-      }
-      
-    const onClickMap = () => {
-        handleType("map");
-      }
-
-    return(
-    <NavBar>
-      <button onClick={onClickInfo}>공연 정보</button>
-      <button onClick={onClickMap}>지도</button>
-    </NavBar>
-    )
-}
+  const onClickInfo = () => {
+    handleType("default");
+    setActiveIndex(0);
+  }
+  const onClickMap = () => {
+    handleType("map");
+    setActiveIndex(1);
+  };
+    return (
+      <NavBar>
+        <ul>
+          <li onClick={onClickInfo} className={activeIndex === 0 ? "nav-item active" : "nav-item"}>
+            공연 정보
+          </li>
+          <li onClick={onClickMap} className={activeIndex === 1 ? "nav-item active" : "nav-item"}>
+            지도
+          </li>
+        </ul>
+      </NavBar>
+    );
+  };
 
 export default PlayNav;
