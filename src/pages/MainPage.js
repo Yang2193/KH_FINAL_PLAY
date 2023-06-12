@@ -145,12 +145,12 @@ const MainPage = () => {
 
     return(
         <Container> 
-            {isMobile ? (
+             {isMobile ? (
             <Header>
                 <SearchBox/>
             </Header>) : (
                 <>
-                    <Header/>
+                    <Header>로고 자리</Header>
                     <SearchBox/>
                 </>
             )}
