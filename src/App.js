@@ -7,6 +7,7 @@ import PlayPage from "./pages/PlayPage";
 import JoinPage from "./pages/JoinPage";
 import LoginPage from "./pages/LoginPage";
 import FindAccountPage from "./pages/FindAccountPage";
+import Mypage from "./pages/MyPage";
 
 
 function App() {
@@ -19,6 +20,7 @@ function App() {
         <Route path="join/*" element={<JoinPage/>} />
         <Route path="login" element={<LoginPage/>} />
         <Route path="find" element={<FindAccountPage/>} />
+        <Route path="mypage" element={<Mypage/>} />
       </Routes>
     <Footer/>
    </Router>
