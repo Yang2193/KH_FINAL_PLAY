@@ -1,7 +1,5 @@
 import {BrowserRouter as Router, Routes, Route} from "react-router-dom";
 import './App.css';
-import Header from "./components/Header";
-import Footer from "./components/Footer";
 import MainPage from "./pages/MainPage";
 import PlayPage from "./pages/PlayPage";
 import JoinPage from "./pages/JoinPage";
@@ -13,7 +11,6 @@ import Mypage from "./pages/MyPage";
 function App() {
   return (
    <Router>
-    <Header/>
       <Routes>
         <Route path="/" element={<MainPage/>} />
         <Route path="Info" element={<PlayPage/>}/>
@@ -22,7 +19,6 @@ function App() {
         <Route path="find" element={<FindAccountPage/>} />
         <Route path="mypage" element={<Mypage/>} />
       </Routes>
-    <Footer/>
    </Router>
   );
 }

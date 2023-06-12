@@ -2,7 +2,7 @@ import React from "react";
 
 const MyPageMain = () => {
     
-    // 나의 프로필 정보
+    // 나의 프로필 정보 (회원탈퇴 포함)
 
     // 내가 올렸던 리뷰 보기
 

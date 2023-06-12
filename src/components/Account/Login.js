@@ -84,19 +84,6 @@ const Login = () => {
         }
     }
 
-    const onChangeSignUpUserId = (e) => {
-        const idRegex = /^(?=.*[a-zA-Z])(?=.*[0-9]).{3,15}$/ // 아이디 정규표현식(3자리이상 15자리이내)
-        const idNow = e.target.value; 
-        setSignUpUserId(idNow);
-        if(!idRegex.test(idNow)) {
-            setIdError('8자리 이상 15자리 이내로 입력해주세요');
-            setIsSignId(false)
-        } else {
-            setIdError('');
-            setIsSignId(true);
-        }
-    }
-
     const onChangeUserPw = (e) => {
         const pwdRegex =  /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,20}$/; // 비밀번호 정규표현식(숫자+영문자 및 특수문자 조합으로 8자리 이상)
         const pwdNow = e.target.value ;
@@ -110,76 +97,6 @@ const Login = () => {
         }        
     }
 
-    const onChangeSignUpUserPw = (e) => {
-        const pwdRegex =  /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,20}$/; // 비밀번호 정규표현식(숫자+영문자 및 특수문자 조합으로 8자리 이상)
-        const pwdNow = e.target.value ;
-        console.log(pwdNow);
-        setSignUpUserPw(pwdNow);
-        if (!pwdRegex.test(pwdNow)) {
-            setPwdError('숫자+영문자 및 특수문자 조합으로 8자리 이상 입력해주세요.')
-            setIsSignPw(false)
-            console.log(isSignPw);
-        } else {
-            setPwdError('');
-            setIsSignPw(true);
-            console.log(isSignPw);
-        }        
-    }
-
-    const onChangeSignUpUserPwCheck = (e) => {
-        const pwdRegex =  /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,20}$/; // 비밀번호 정규표현식(숫자+영문자 및 특수문자 조합으로 8자리 이상)
-        const pwdNow = e.target.value ;
-        setSignUpUserPwCheck(pwdNow);
-        if (!pwdRegex.test(pwdNow)) {
-            setPwdError('숫자+영문자 및 특수문자 조합으로 8자리 이상 입력해주세요.')
-            setIsSignPwCk(false)
-        } else {
-            setPwdError('');
-            setIsSignPwCk(true);
-        }        
-    }
-
-    const onChangeSignUserName = (e) => {
-        const nameNow = e.target.value;
-        setSignUpUserName(nameNow); 
-
-        if(nameNow.length < 2 || nameNow.length > 10) {
-            setIsSignName(false);
-        } else {
-          setNameError('');
-            setIsSignName(true);
-        }
-    }
-
-    const onChangeSignUserTel = (e) => {
-        const telRegEx = /^\d{2,3}-\d{3,4}-\d{4}$/; // 전화번호 정규표현식
-        const telNow = e.target.value;
-        setSignUpPhone(telNow);
-
-        if(!telRegEx.test(telNow)) {
-            setTelError('전화번호 형식이 맞지 않아요 다시 입력해주세요.')
-            setIsSignPhone(false)
-        } else {
-            setTelError('');
-            setIsSignPhone(true);
-
-        }
-    }
-
-    const onChangeUserEmail = (e) => {
-        const emailRegex = /([\w-.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/ // 이메일 정규표현식
-        const emailNow = e.target.value ;
-        setSignUpUserEmail(emailNow);
-
-        if (!emailRegex.test(emailNow)) {
-            setEmailError('이메일 형식이 맞지 않아요 다시 입력해주세요.')
-            setIsSignEmail(false)
-        } else {
-            setEmailError('');
-            setIsSignEmail(true);
-        }        
-    }
-
     useEffect(() => {
         const container = document.getElementById("container-login");
 
@@ -188,10 +105,6 @@ const Login = () => {
         }, 100);
     }, []);
 
-    // const handleToggle = () => {
-    //     toggle(); // toggle 함수 호출
-
-    // };
 
     // 로그인 실패 시 팝업처리(모달)
     const [modalOpen, setModalOpen] = useState(false);
@@ -204,36 +117,11 @@ const Login = () => {
         console.log("확인 버튼이 눌러졌습니다.")
     }
 
-    // const handleOnKeyPress = e => {
-    //     if(e.key === 'Enter') {
-    //         onClickLogin();
-    //     }
-    // }
-
-    // const onClickSignIdCheck = async() => {
-    //   // 중복 아이디 체크
-    //   console.log(signUpUserId);
-    //   try {
-    //     const response = await AxiosApi.customRegCheck(signUpUserId); // 아이디 조회
-    //     console.log(response.data);
-    //     setSearchId(response.data);
-    //     if(response.data === false) {
-    //       setIdError('중복된 아이디가 있습니다.');
-    //       setIsSignIdCk(false);
-    //     }
-    //     else {
-    //       setSearchId(response);
-    //       setIsSignIdCk(true);
-    //     }
-    //   } catch(e){
-    //     console.log(e);
-    //   }
-    // };
-    // const onClickSignUp = async() => {
-    //   // 회원가입 axios 호출
-    //   const response = await AxiosApi.
-    // }
-
+    const handleOnKeyPress = e => {
+        if(e.key === 'Enter') {
+            onClickLogin();
+        }
+    }
 
     const handleInput = (e) => {
       setSignUpAddr({
@@ -249,34 +137,9 @@ const Login = () => {
       setPopup(!popup);
     }
   
-    // const onClickLogin = async() => {
-    //   // 로그인 위해 axios 호출
-    //   try {
-    //     const response = await AxiosApi.customLogin(userId, userPwd);
-    //     console.log(response.data);
-    //     if(response.data === true) {
-    //         window.localStorage.setItem("Id", userId); // setItem(키, 값)
-    //         window.localStorage.setItem("password", userPwd);
-    //         window.localStorage.setItem("isLogin", "TRUE");
-    //         setId(userId);
-    //         setPassword(userPwd);
-    //         navigate("/");
-    //     }
-    //   } catch(e){
-    //     console.log(e);
-    //   }
-    // };
-
-    // const onClickSignUp = async() => {
-    //   // 회원가입을 위해 axios호출
-    //   try {
-    //     const response = await AxiosApi.customReg(signUpUserName, signUpUserId, signUpUserPw,  signUpPhone, signUpUserEmail, signUpAddr.address);
-    //     console.log(response.data);
-    //     if(response.data === true) navigate('/');
-    //   } catch(e) {
-    //     console.log(e);
-    //   }
-    // };
+    const onClickLogin = async() => {
+      
+    };
   
   return (
     <>
@@ -290,7 +153,7 @@ const Login = () => {
             <div className="form sign-up">
               <div className="input-group">
                 <i className="bx bxs-user"></i>
-                <input type="text" placeholder="User ID" value={signUpUserId} onChange={onChangeSignUpUserId} className={isSignId && isSignIdCk ? 'focused-id' : ''}/>
+                <input type="text" placeholder="User ID" value={signUpUserId} className={isSignId && isSignIdCk ? 'focused-id' : ''}/>
               </div>
               <div className="comment">
                  {signUpUserId.length > 0 && <span className={`message ${isSignId ? '' : 'error'}`}>{idError}</span>}
@@ -300,35 +163,35 @@ const Login = () => {
               </div>
               <div className="input-group">
                 <i className="bx bxs-lock-alt"></i>
-                <input type="password" placeholder="Password" value={signUpUserPw} onChange={onChangeSignUpUserPw} className={isSignPw && (signUpUserPw === signUpUserPwCheck) ? 'focused-pw' : ''}/>
+                <input type="password" placeholder="Password" value={signUpUserPw} className={isSignPw && (signUpUserPw === signUpUserPwCheck) ? 'focused-pw' : ''}/>
               </div>
               <div className="comment">
                  {signUpUserPw.length > 0 && <span className={`message ${isSignPw ? '' : 'error'}`}>{pwdError}</span>}
               </div>
               <div className="input-group">
                 <i className="bx bxs-lock-alt"></i>
-                <input type="password" placeholder="Confirm password" value={signUpUserPwCheck} onChange={onChangeSignUpUserPwCheck} className={isSignPw && (signUpUserPw === signUpUserPwCheck) ? 'focused-pw' : ''}/>
+                <input type="password" placeholder="Confirm password" value={signUpUserPwCheck} className={isSignPw && (signUpUserPw === signUpUserPwCheck) ? 'focused-pw' : ''}/>
               </div>
               <div className="comment">
                  {signUpUserPwCheck.length > 0 && <span className={`message ${isSignPwCk ? '' : 'error'}`}>{repwdError}</span>}
               </div>
               <div className="input-group">
                 <i className="bx bxs-lock-alt"></i>
-                <input type="text" placeholder="User name" value={signUpUserName} onChange={onChangeSignUserName} className={isSignName ? 'focused-name' : ''}/>
+                <input type="text" placeholder="User name" value={signUpUserName} className={isSignName ? 'focused-name' : ''}/>
               </div>
               <div className="comment">
                  {signUpUserName.length > 0 && <span className={`message ${isSignName ? '' : 'error'}`}>{nameError}</span>}
               </div>
               <div className="input-group">
                 <i className="bx bxs-lock-alt"></i>
-                <input type="text" placeholder="User phone" value={signUpPhone} onChange={onChangeSignUserTel} className={isSignPhone ? 'focused-tel' : ''}/>
+                <input type="text" placeholder="User phone" value={signUpPhone} className={isSignPhone ? 'focused-tel' : ''}/>
               </div>
               <div className="comment">
                  {signUpPhone.length > 0 && <span className={`message ${isSignPhone ? '' : 'error'}`}>{telError}</span>}
               </div>
               <div className="input-group">
                 <i className="bx bxs-mail-send"></i>
-                <input type="email" placeholder="Email" value={signUpUserEmail} onChange={onChangeUserEmail} className={isSignId ? 'focused-email' : ''}/>
+                <input type="email" placeholder="Email" value={signUpUserEmail} className={isSignId ? 'focused-email' : ''}/>
                 <div><button>인증</button></div>
               </div>
               <div className="comment">
@@ -336,7 +199,7 @@ const Login = () => {
               </div>
               <div className="input-group">
                 <i className="bx bxs-lock-alt"></i>
-                <input type="password" placeholder="Certification Number" value={signUpUserPw} onChange={onChangeSignUpUserPw} className={isSignId ? 'focused' : ''}/>
+                <input type="password" placeholder="Certification Number" value={signUpUserPw} className={isSignId ? 'focused' : ''}/>
               </div>
               <div className="comment">
                  {signUpUserId.length > 0 && <span className={`message ${isSignId ? '' : 'error'}`}>{idError}</span>}
@@ -369,7 +232,7 @@ const Login = () => {
               </div>
               <div className="input-group">
                 <i className="bx bxs-lock-alt"></i>
-                {/* <input type="password" placeholder="Password" value={userPwd} onChange={onChangeUserPw} onKeyPress={handleOnKeyPress} /> */}
+                <input type="password" placeholder="Password" value={userPwd} onChange={onChangeUserPw} onKeyPress={handleOnKeyPress} />
               </div>
               {/* <button onClick={onClickLogin}>Sign in</button> */}
               <p>
