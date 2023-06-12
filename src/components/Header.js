@@ -60,7 +60,7 @@ const Header = ({children}) => {
 
     return(
         <Container>
-          {isMobile ? <>{children}</> : <LogoBox>로고 자리</LogoBox>}         
+          {isMobile ? <>{children}</> : <LogoBox>{children}</LogoBox>}         
           <MenuBurger/>   
         </Container>
     );
