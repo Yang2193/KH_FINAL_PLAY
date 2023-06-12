@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { Button } from "../../utils/GlobalStyle";
+import PlayInfoApi from "../../api/PlayInfoApi";
 const FixData = styled.div`
     width: 100%;
     height: 80vh;
@@ -50,48 +51,62 @@ const FixData = styled.div`
 
 const Info = () =>{
 
+    const [playInfo,setPlayInfo] = useState(null);
+    useEffect(()=>{
+        const playInfo = async()=>{
+            const rsp = await PlayInfoApi.selectPlayInfo("23004670");
+            setPlayInfo(rsp.data);
+        };
+        playInfo();
+    },[])
     return(
-        <FixData>
-            <h1>라스트 세션</h1>
-            <div className="content">
-                <img src="https://ticketimage.interpark.com/Play/image/large/23/23007040_p.gif" alt="" />
-                <div className="box">
-                    <ul>
-                        <li>
-                            <strong>장소</strong>
-                            <div>
-                                <p>불러올데이터</p>
-                            </div>
-                        </li>
-                        <li>
-                            <strong>공연기간</strong>
-                            <div>
-                                <p>불러올데이터</p>
-                            </div>
-                        </li>
-                        <li>
-                            <strong>공연시간</strong>
-                            <div>
-                                <p>불러올데이터</p>
-                            </div>
-                        </li>
-                        <li>
-                            <strong>관람연령</strong>
-                            <div>
-                                <p>불러올데이터</p>
-                            </div>
-                        </li>
-                        <li>
-                            <strong>가격</strong>
-                            <div>
-                                <p>불러올데이터</p>
-                            </div>
-                        </li>
-                    </ul>
-                    <Button>예매 하기</Button>
-                </div>
-            </div>
-        </FixData>
+        <>
+          {playInfo && playInfo.map(play =>(
+            <FixData key = {play.playId}>
+                    <h1>{play.title}</h1>
+                    <div className="content">
+                        <img src={play.posterImageUrl} alt="" />
+                        <div className="box">
+                            <ul>
+                                <li>
+                                    <strong>장소</strong>
+                                    <div>
+                                        <p>{play.theaterName}</p>
+                                    </div>
+                                </li>
+                                <li>
+                                    <strong>공연기간</strong>
+                                    <div>
+                                        <p>{play.periodStart} ~ {play.periodEnd}</p>
+                                    </div>
+                                </li>
+                                <li>
+                                    <strong>공연시간</strong>
+                                    <div>
+                                        <p>{play.playTime}</p>
+                                    </div>
+                                </li>
+                                <li>
+                                    <strong>관람연령</strong>
+                                    <div>
+                                        <p>{play.playAge}</p>
+                                    </div>
+                                </li>
+                                <li>
+                                    <strong>가격</strong>
+                                    <div>
+                                        <p>{}</p>
+                                    </div>
+                                </li>
+                            </ul>
+                            <Button>예매 하기</Button>
+                        </div>
+                    </div>
+                </FixData>
+            ))}
+        
+        </>
+          
     )
 }
 export default Info;
