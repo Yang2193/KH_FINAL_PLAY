@@ -27,7 +27,7 @@ const Post = () => {
   };
 
   const sortSortNo = () => {
-    setSortedPosts([...posts].sort((a, b) => b.postId - a.postId)); // postId를 기준으로 내림차순으로 정렬하여 정렬된 포스트 목록 상태 업데이트
+    setSortedPosts([...posts].sort((a, b) => b.id - a.id)); // id를 기준으로 내림차순으로 정렬하여 정렬된 포스트 목록 상태 업데이트
   };
 
   const increaseViews = async (postId) => {
@@ -37,7 +37,7 @@ const Post = () => {
       if (isDataFetched) {
         setPosts((prevPosts) =>
           prevPosts.map((post) =>
-            post.postId === postId ? { ...post, postViews: post.postViews + 1 } : post
+            post.id === postId ? { ...post, postViews: post.postViews + 1 } : post
           )
         ); // 조회수 증가한 포스트의 조회수 업데이트
       } else {
@@ -77,24 +77,24 @@ const Post = () => {
           </tr>
         </thead>
         <tbody>
-          {sortedPosts.map((post) => (
-            <tr className="ReviewItem" key={post.postId}>
-              <td className="ReviewTitle">
-                <Link
-                  to={`/posts/${post.postId}`}
-                  className="ReviewLink"
-                  onClick={() => increaseViews(post.postId)}
-                >
-                  {post.postTitle}
-                </Link>
-              </td>
-              <td className="Explaination2">{post.postContent}</td>
-              <td className="WriteDate">{formatWriteDate(post.postDate)}</td>
-              <td className="Id">{post.memberId}</td>
-              <td className="Views">{post.postViews}</td>
-            </tr>
-          ))}
-        </tbody>
+        {sortedPosts.map((post) => (
+          <tr className="ReviewItem" key={post.id}>
+            <td className="ReviewTitle">
+              <Link
+                to={`/posts/${post.id}`}
+                className="ReviewLink"
+                onClick={() => increaseViews(post.id)}
+              >
+                {post.postTitle}
+              </Link>
+            </td>
+            <td className="Explaination2">{post.postContent}</td>
+            <td className="WriteDate">{formatWriteDate(post.postDate)}</td>
+            <td className="Id">{post.memberInfo.userId}</td>
+            <td className="Views">{post.postViews}</td>
+          </tr>
+        ))}
+      </tbody>
       </table>
     </div>
     <Footer/>
