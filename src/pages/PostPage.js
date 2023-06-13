@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import './ReviewBoard.css';
 import PostAPI from '../api/PostApi';
 import { Link } from 'react-router-dom';
+import Footer from '../components/Footer';
+import Header from './../components/Header';
 
 const Post = () => {
   const [posts, setPosts] = useState([]); // 포스트 목록을 저장하는 상태
@@ -52,6 +54,8 @@ const Post = () => {
   };
 
   return (
+    <>
+    <Header/>
     <div className="ReviewBoardWrapper">
       <h2>리뷰 게시판</h2>
       <div className="ButtonWrapper">
@@ -93,6 +97,8 @@ const Post = () => {
         </tbody>
       </table>
     </div>
+    <Footer/>
+    </>
   );
 };
 
