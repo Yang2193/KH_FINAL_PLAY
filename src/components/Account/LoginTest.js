@@ -5,7 +5,6 @@ import AxiosApi from "../../api/axiosapi";
 import Modal from "../../utill/Modal";
 import PostCode from "./popUpAddr";
 import './login.css';
-import { GiConsoleController } from "react-icons/gi";
 
 const Login = () => {
     const navigate = useNavigate();
