@@ -11,7 +11,7 @@ const MainApi = {
 
     searchPlayList : async(keywordArr) => {
         const keyword = {
-            keyword : keywordArr
+            keywords : keywordArr
         };
         return await axios.post(KH_DOMAIN + `/playList/search`, keyword);
     }

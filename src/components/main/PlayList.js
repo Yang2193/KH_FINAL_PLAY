@@ -1,5 +1,6 @@
 import styled from "styled-components"
-import React from "react"
+import React, { useEffect, useState } from "react"
+import PageNation from "../../utils/PageNation";
 
 const ListBox = styled.div`
     position: relative;
@@ -61,32 +62,34 @@ const ListBox = styled.div`
             vertical-align: middle;
         }
                     
-    .image {
-
-    }
-
-    .title{
-
-    }
-
-    .location{
-
-    }
-
-    .period{
-
-    }
-    
     .menu p{
         margin: 0 20px;
     }
 `
 
 const PlayList = ({playList}) => {
+    
+
+
+    const [currentPage, setCurrentPage] = useState(0); // 현재 페이지 번호
+
+    useEffect(() => {  
+        setCurrentPage(0);
+    }, [playList])
+
+    const ITEMS_PAGE = 10; // 보여질 아이템 개수
+
+    const handlePageClick = (selectedPage) => {
+        setCurrentPage(selectedPage.selected);
+      };
+    
+    const pageCount = Math.ceil(playList.length / ITEMS_PAGE); // 페이지 수 계산
+    const offset = currentPage * ITEMS_PAGE; // 현재 페이지에서 보여줄 아이템의 시작 인덱스
+    const currentPageData = playList.slice(offset, offset + ITEMS_PAGE);
 
     const playListMap = 
-        playList && 
-        playList.map(pl => (
+        currentPageData && 
+        currentPageData.map(pl => (
             <tr key={pl.playId}>
                     <td className="image">
                         <img src={pl.imageUrl} alt="image1" className="img-thumb"/>
@@ -104,24 +107,28 @@ const PlayList = ({playList}) => {
         ));
 
     return(
-        <ListBox>
-                <table>
-                    <thead>
-                        <tr>
-                            <th colSpan={2}>상품명</th>
-                            <th>장소</th>
-                            <th>기간</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                         {playList.length > 0 ? playListMap : 
+        <>
+            <ListBox>
+                    <table>
+                        <thead>
                             <tr>
-                             <td colSpan={4}>검색 결과가 존재하지 않습니다.</td>
+                                <th colSpan={2}>상품명</th>
+                                <th>장소</th>
+                                <th>기간</th>
                             </tr>
-                         }     
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                            {playList.length > 0 ? playListMap : 
+                                <tr>
+                                <td colSpan={4}>검색 결과가 존재하지 않습니다.</td>
+                                </tr>
+                            }     
+                        </tbody>
+                    </table>
             </ListBox>
+            {pageCount > 1 && <PageNation pageCount={pageCount} onPageChange={handlePageClick}/>}
+        </>
+
     )
 }
 
