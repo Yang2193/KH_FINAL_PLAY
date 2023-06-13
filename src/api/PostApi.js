@@ -1,59 +1,60 @@
 import axios from "axios";
 
-const ReviewBoard = "http://localhost:8111"; // 백엔드에 대한 주소
+const BorrowDreamAPI = "http://localhost:8111"; // 백엔드 API 서버 주소
 
-//reviewNo 값으로 조회수 증가
-const increaseViews = async (reviewNo) => {
-  try {
-    const response = await axios.put(ReviewBoard + `/review-board/${reviewNo}/increase-views`);
-    if (response.status === 200) {
-      console.log(`조회수 1 증가 ${reviewNo}`);
-    } else {
-      console.log(`조회수 실패 ${reviewNo}`);
-    }
-  } catch (error) {
-    console.error(`리뷰의 조회수를 증가하는 동안 오류가 발생했습니다: ${error}`);
-  }
-};
-
-const ExApi = {
-  // 리뷰 리스트 조회
-  boardList: async () => {
-    return await axios.get(ReviewBoard + "/review-board");
-  },
-  // 리뷰 상세 페이지 조회
-  getReview: async (reNo) => {
-    return await axios.get(ReviewBoard + `/review-board/${reNo}`);
-  },  
-  // 리뷰 등록 업데이트
-  uploadReview: async (reTitle, reTitle2, reImg, reExplanation) => {
-    const reviewData = {
-      reTitle: reTitle,
-      reTitle2: reTitle2,
-      reImg: reImg,
-      reExplanation: reExplanation,
-    };
-
+const PostAPI = {
+  // 게시물 목록 조회
+  getAllPosts: async () => {
     try {
-      const response = await axios.post(ReviewBoard + "/review-board-upLoad", reviewData);
-      if (response.status === 200) {
-        alert("리뷰 등록 성공");
-      } else {
-        alert("리뷰 등록 실패");
-      }
-      return response;
+      const response = await axios.get(`${BorrowDreamAPI}/posts`);
+      return response.data;
     } catch (error) {
-      console.error("리뷰 등록 에러:", error);
+      console.error("게시물 목록 조회 오류:", error);
       throw error;
     }
   },
-  // 조회수 증가
-  increaseViews,
 
-  // -------------------------------한줄 평
-    OneList: async () => {
-      return await axios.get(ReviewBoard + "/one-comment");
-    },
+  // 게시물 상세 정보 조회
+  getPostById: async (postId) => {
+    try {
+      const response = await axios.get(`${BorrowDreamAPI}/posts/${postId}`);
+      console.log(response.data);
+      return response.data;
+    } catch (error) {
+      console.error("게시물 상세 정보 조회 오류:", error);
+      throw error;
+    }
+  },
+
+  // 게시물 등록
+  addPost: async (postTitle,postContent,postImageUrl,postCategory) => {
+    const postData ={
+      postTitle: postTitle,
+      postContent: postContent,
+      postImageUrl: postImageUrl,
+      postCategory: postCategory,
+    }
+  
+  
+    try {
+      const response = await axios.post(`${BorrowDreamAPI}/postUpload`, postData);
+      return response.data;
+    } catch (error) {
+      console.error("게시물 등록 오류:", error);
+      throw error;
+    }
+  },
+
+  // 조회수 증가
+  increasePostViews: async (postId) => {
+    try {
+      const response = await axios.put(`${BorrowDreamAPI}/posts/${postId}/increase-views`);
+      return response.data;
+    } catch (error) {
+      console.error("조회수 증가 오류:", error);
+      throw error;
+    }
+  }
 };
 
-export default ExApi;
+export default PostAPI;

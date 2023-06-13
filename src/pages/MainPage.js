@@ -4,15 +4,8 @@ import styled from "styled-components";
 import logoex from "../images/logoex.png";
 import Header from "../components/Header";
 import SearchBox from "../components/SearchBox";
-
-const dramaData = [
-    ["23002001", "나의 PS파트너", "https://ticketimage.interpark.com/Play/image/large/23/23002001_p.gif","대학로 아트포레스트 2관","2023.05.05","2023.08.31"],
-    ["23004421", "공포 연극[괴담:위험한 해시태그]", "https://ticketimage.interpark.com/Play/image/large/23/23004421_p.gif","청주 소명아트홀","2023.05.05","2023.08.31"],
-    ["23006291", "검정고무신 - 부산", "https://ticketimage.interpark.com/Play/image/large/23/23006291_p.gif","부산시민회관 소극장","2023.05.05","2023.08.31"],
-    ["23006613", "곰 & 청혼 - 부산", "https://ticketimage.interpark.com/Play/image/large/23/23006613_p.gif","여기는 극장입니다","2023.05.05","2023.08.31"],
-    ["23007147", "공연배달서비스 간다 [템플] - 고양", "https://ticketimage.interpark.com/Play/image/large/23/23007147_p.gif","고양아람누리 새라새극장","2023.05.05","2023.08.31"]
-]
-
+import MainApi from "../api/MainApi";
+import PlayList from "../components/main/PlayList";
 
 const Container = styled.div`
     height: 100vh;
@@ -130,6 +123,7 @@ const ListBox = styled.div`
 
 const MainPage = () => {
     const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+    const [playList, setPlayList] = useState([]);
 
     useEffect(() => {
       const handleResize = () => {
@@ -143,49 +137,43 @@ const MainPage = () => {
       };
     }, []);
 
+    useEffect(() => {
+        const fetchData = async() =>{
+            try{
+                const rsp = await MainApi.getPlayList();
+                if(rsp.status === 200){
+                    setPlayList(rsp.data);
+                    console.log(rsp.data);
+                }
+            } catch(error){
+                console.error(error);
+            }
+        };
+        fetchData();
+    }, [])
+
+    useEffect(() => {
+        console.log(playList);
+    }, [playList])
+
+ 
+    const handlePlayList = (playlist) => {
+        setPlayList(playlist);
+    }
+
+
     return(
         <Container> 
              {isMobile ? (
             <Header>
-                <SearchBox/>
+                <SearchBox handlePlayList={handlePlayList}/>
             </Header>) : (
                 <>
                     <Header>로고 자리</Header>
-                    <SearchBox/>
+                    <SearchBox handlePlayList={handlePlayList}/>
                 </>
             )}
-            
-            
-            <ListBox>
-                <table>
-                    <thead>
-                        <tr>
-                            <th colSpan={2}>상품명</th>
-                            <th>장소</th>
-                            <th>기간</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                            {dramaData && dramaData.map(e =>(
-                                <tr id={e[0]}>
-                                    <td className="image">
-                                        <img src={e[2]} alt="image1" className="img-thumb"/>
-                                    </td>
-                                    <td className="title">
-                                        {e[1]}
-                                    </td>
-                                    <td className="location">
-                                        {e[3]}
-                                    </td>
-                                    <td className="period">
-                                        {e[4]} ~ {e[5]}
-                                    </td>
-                                </tr>
-
-                            ))}         
-                    </tbody>
-                </table>
-            </ListBox>
+            <PlayList playList={playList}/>
             <Footer/>
         </Container>
     )

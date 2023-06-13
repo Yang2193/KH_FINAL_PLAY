@@ -1,6 +1,7 @@
 import styled from "styled-components"
-import React from "react";
+import React, { useState } from "react";
 import {MdSearch} from "react-icons/md"
+import MainApi from "../api/MainApi";
 
 const SearchContainer = styled.div`
     position: relative;
@@ -41,11 +42,41 @@ const SearchButton = styled(MdSearch)`
     right: 10px;
 `
 
-const SearchBox = () => {
+const SearchBox = ({handlePlayList}) => {
+
+    const [keyword, setKeyword] = useState("");
+    const [keywordArr, setKeywordArr] = useState([]);
+
+    const onChangeKeyword = (e) => {
+        const value = e.target.value;
+        setKeyword(value);
+        setKeywordArr(value.split(" "));
+    }
+
+    const onClickSearch = async() => {
+        console.log(keywordArr)
+        try{
+            const rsp = await MainApi.searchPlayList(keywordArr);
+            if(rsp.status === 200){
+                console.log(rsp.data);
+                handlePlayList(rsp.data);
+            }
+        } catch(error){
+            console.log(error);
+        }
+        
+    }
+       // 엔터버튼
+    const handleKeyPress = (e) => {
+        if(e.key === 'Enter') {
+            onClickSearch();
+        }
+    }
+
     return(
         <SearchContainer>
-            <Input/>
-            <SearchButton/>
+            <Input placeholder="공연 제목을 검색하세요!" value={keyword} onChange={onChangeKeyword} onKeyDown={handleKeyPress}/>
+            <SearchButton onClick={onClickSearch} />
         </SearchContainer>
     
     )
