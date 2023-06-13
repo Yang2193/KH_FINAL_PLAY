@@ -15,8 +15,8 @@ const PageNationBlock = styled(ReactPaginate)`
   top: 10%;
 
     .page-item{
-    margin: 5px;
-    color :black;
+    margin: 4px;
+    color :#990A2C;
     border-radius: 5px;
     border : 2px solid #990A2C;
     display: flex;
@@ -32,6 +32,12 @@ const PageNationBlock = styled(ReactPaginate)`
     color: white;
     font-weight: bold;
     }
+
+    .previous,
+  .next {
+    margin: 4px 10px;
+    cursor: pointer;
+  }
  
 
 `;
