@@ -14,7 +14,7 @@ def createUrlOfInterpark():
     urlList = []
     baseUrl = 'https://tickets.interpark.com/goods'
     urlList.append(baseUrl + '/' + str(23004670))
-    urlList.append(baseUrl + '/' + str(19018229))
+    # urlList.append(baseUrl + '/' + str(19018229))
     # urlList.append(baseUrl + '/' + str(23005656))
     # urlList.append(baseUrl + '/' + 'L0000039')
     # urlList.append(baseUrl + '/' + str(22001159))
@@ -31,7 +31,7 @@ def createUrlOfInterpark():
     # urlList.append(baseUrl + '/' + str(23005252))
     # urlList.append(baseUrl + '/' + str(23006386))
     # urlList.append(baseUrl + '/' + str(23005230))
-    # # urlList.append(baseUrl + '/' + str(L0000038))
+    # urlList.append(baseUrl + '/' + 'L0000038')
     # urlList.append(baseUrl + '/' + str(21004992))
     # urlList.append(baseUrl + '/' + str(23003616))
     # urlList.append(baseUrl + '/' + str(23007444))

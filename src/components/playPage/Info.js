@@ -52,12 +52,13 @@ const FixData = styled.div`
 const Info = () =>{
 
     const [playInfo,setPlayInfo] = useState(null);
+
     useEffect(()=>{
-        const playInfo = async()=>{
+        const play = async()=>{
             const rsp = await PlayInfoApi.selectPlayInfo("23004670");
             setPlayInfo(rsp.data);
         };
-        playInfo();
+        play();
     },[])
     return(
         <>

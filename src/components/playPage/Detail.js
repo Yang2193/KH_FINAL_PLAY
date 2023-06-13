@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
+import PlayInfoApi from "../../api/PlayInfoApi";
 
 const DetailBox = styled.div`
     width: 100%;
@@ -20,17 +21,22 @@ const DetailBox = styled.div`
     }
     .casting{
         margin-top: 3%;
-        height: 30vh;
-        .actorBox{
+        height: 40vh;
+        .castingBox{
+            display: flex;
             flex-direction: row;
-            height: 100%;
+            justify-content: center;
+        }
+        .actorBox{
+            width: 16.6%;
+            height: 80%;
             .actor{
                 margin-left: 5%;
                 display: flex;
                 justify-content: center;
                 align-items: center;
                 flex-direction: column;
-                width: 10%;
+                width: 100%;
                 height: 100%;
                 p{
                     margin: 0;
@@ -38,12 +44,17 @@ const DetailBox = styled.div`
                 }
                 img{
                     border-radius: 50%;
-                    width: 85%;
-                    height: 50%;
+                    width: 75%;
+                    height: 65%;
                 }
         }
         }
 
+    }
+    .more{
+        border: none;
+        cursor: pointer;
+        height: 20%;
     }
     .imageBox{
         display: flex;
@@ -55,35 +66,71 @@ const DetailBox = styled.div`
 `
 const Detail = () =>{
 
+    const [actorInfo,setActorInfo] = useState("");
+    const [visibleActor,setVisibleActor] = useState([]);
+    const [count,setCount] = useState(6)
+
+    useEffect(() => {
+        const actor = async()=>{
+            const rsp = await PlayInfoApi.selectActor("23004670")
+            setActorInfo(rsp.data);
+        };
+        actor();
+    },[]);
+
+    useEffect(() => {
+        setVisibleActor(actorInfo.slice(0,count));
+      }, [actorInfo,count]);
+    
+    const handleLoadMore = () => {
+        setCount(actorInfo.length);
+        if (count === actorInfo.length) {
+            setCount(6)
+        }
+    }
+
+    const [playInfo,setPlayInfo] = useState(null);
+
+    useEffect(()=>{
+        const play = async()=>{
+            const rsp = await PlayInfoApi.selectPlayInfo("23004670");
+            setPlayInfo(rsp.data);
+        };
+        play();
+    },[])
     return(
         <DetailBox>
-            <div className="casting">
-                <h3>캐스팅</h3>
-                <div className="actorBox">
+        <div className="casting">
+         <h3>캐스팅</h3>
+        <div className="castingBox">
+            {visibleActor && visibleActor.map(actor =>(
+                <div className="actorBox"  key = {actor.actorId}>
                     <div className="actor">
-                        <img src="https://ticketimage.interpark.com/PlayDictionary/DATA/PlayDic/PlayDicUpload/040004/08/01/0400040801_4813_021721.330.gif" alt="" />
-                        <p>배역 이름</p>
-                        <p>배우 이름</p>
-                    </div>
-                    <div className="actor">
-                        <img src="https://ticketimage.interpark.com/PlayDictionary/DATA/PlayDic/PlayDicUpload/040004/07/01/0400040701_1738_01.041.gif" alt="" />
-                        <p>배역 이름</p>
-                        <p>배우 이름</p>
+                        <img src={actor.actorImage} alt="" />
+                        <p>{actor.roleName}</p>
+                        <p>{actor.actorName}</p>
                     </div>
                 </div>
-            </div>
-            <div className="notice">
-                <h3>공지사항</h3>
-                <div className="imageBox">
-                    <img src="https://ticketimage.interpark.com/Play/ITM/Data/Modify/2023/5/2023052216571037.jpg" alt="" />
+            ))}
+        </div>
+            <button  className="more" onClick={handleLoadMore}>더보기</button>
+        </div>
+        {playInfo && playInfo.map(play =>(
+            <div key={play.playId}>
+                <div className="notice">
+                    <h3>공지사항</h3>
+                    <div className="imageBox">
+                        <img src={play.noticeImageUrl} alt="" />
+                    </div>
+                </div>
+                <div className="detail">
+                    <h3>상세 정보</h3>
+                    <div className="imageBox">
+                        <img src={play.infoImageUrl} alt="" />
+                    </div>
                 </div>
             </div>
-            <div className="detail">
-                <h3>상세 정보</h3>
-                <div className="imageBox">
-                    <img src="https://ticketimage.interpark.com/Play/image/etc/23/23007040-04.jpg" alt="" />
-                </div>
-            </div>
+        ))}
         </DetailBox>
     )
 }
