@@ -2,6 +2,7 @@ import React, { useState, useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { AccountInfoContext } from "../../context/AccountInfo";
 import "../../styles/Account.css"
+import AccountApi from "../../api/AccountApi";
 
 const MemberInfo = () => {
     const navigate = useNavigate();
@@ -56,7 +57,6 @@ const MemberInfo = () => {
             setIsId(false);
         } else {
             setIsId(true);
-            console.log(isId);
         }
     };
 
@@ -125,13 +125,17 @@ const MemberInfo = () => {
         }        
     };
 
-    const handleNextButtonClick = (e) => {
-        if(isAllChecked === true) {
-            navigate("/join/step3");
-        } else {
-            alert("모든 항목을 작성하세요.");
+    const conClickSignUp = async() => {
+        try {
+            const response = await AccountApi.memberReg(inputId, inputPw, inputName, inputEmail, inputPhone);
+            console.log(response.data);
+            if(response.data === true) {
+                navigate("/login");
+            }
+        } catch(e) {
+            console.log(e);
         }
-    }
+    };
 
     return (
         <div>
@@ -189,7 +193,7 @@ const MemberInfo = () => {
                             </div>
                             <div>
                                 <button>이전</button>
-                                <button onClick={handleNextButtonClick}>다음</button>
+                                <button onClick={conClickSignUp}>다음</button>
                             </div>
                         </div>
                     </div>

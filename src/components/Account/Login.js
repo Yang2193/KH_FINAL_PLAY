@@ -1,14 +1,12 @@
-import React, { useState, useEffect, useContext } from "react";
-// import { UserContext } from "../../context/userInfo";
+import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-// import AxiosApi from "../../api/axiosapi";
-// import Modal from "../../utill/Modal";
-// import PostCode from "./popUpAddr";
+import AccountApi from "../../api/AccountApi";
 import '../../styles/Account.css';
 
 const Login = () => {
     const navigate = useNavigate();
     const [containerClass, setContainerClass] = useState("container-login");
+    
 
     // Context API에 값을 저장
     // const context = useContext(UserContext);
@@ -138,7 +136,16 @@ const Login = () => {
     }
   
     const onClickLogin = async() => {
-      
+      try {
+        const response = await AccountApi.memberLogin(userId, userPwd);
+        console.log(userId + "으로 로그인");
+        if(response.data === true) {
+          window.localStorage.setItem("isLogin", "TRUE");
+          navigate("/");
+        }
+      } catch(e) {
+        console.log(e);
+      }
     };
   
   return (
@@ -234,7 +241,7 @@ const Login = () => {
                 <i className="bx bxs-lock-alt"></i>
                 <input type="password" placeholder="Password" value={userPwd} onChange={onChangeUserPw} onKeyPress={handleOnKeyPress} />
               </div>
-              {/* <button onClick={onClickLogin}>Sign in</button> */}
+              <button onClick={onClickLogin}>Sign in</button>
               <p>
                 <b>Forgot Your <br /> <Link to='/find'>ID</Link> / <Link to='/find'>Password</Link></b>
               </p>
