@@ -7,8 +7,9 @@ import LoginPage from "./pages/LoginPage";
 import FindAccountPage from "./pages/FindAccountPage";
 import Mypage from "./pages/MyPage";
 import OneReview from "./pages/OneReviewPage";
-import ReviewDetail from "./pages/ReviewDetailPage";
-import CommentPage from "./pages/CommentPage";
+import PostDetail from "./pages/PostDetailPage";
+import PostPage from "./pages/PostPage";
+import PostUpload from "./pages/PostUpload";
 
 
 function App() {
@@ -22,8 +23,9 @@ function App() {
         <Route path="find" element={<FindAccountPage/>} />
         <Route path="mypage" element={<Mypage/>} />
         <Route path="/OneReview" element={<OneReview/>} />
-        <Route path="/ReviewDetail" element={<ReviewDetail/>} />
-        <Route path="/CommentPage" element={<CommentPage/>} />
+        <Route path="/posts/:postId" element={<PostDetail/>} />
+        <Route path="/posts" element={<PostPage/>} />
+        <Route path="/PostUpload" element={<PostUpload/>} />
       </Routes>
    </Router>
   );
