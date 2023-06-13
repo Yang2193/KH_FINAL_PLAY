@@ -5,6 +5,7 @@ import logoex from "../images/logoex.png";
 import Header from "../components/Header";
 import SearchBox from "../components/SearchBox";
 import MainApi from "../api/MainApi";
+import PlayList from "../components/main/PlayList";
 
 const Container = styled.div`
     height: 100vh;
@@ -151,33 +152,13 @@ const MainPage = () => {
         fetchData();
     }, [])
 
-    const playListMap = 
-        playList && playList.length > 0 ? (
-        playList.map(pl => (
-            <tr key={pl.playId}>
-                    <td className="image">
-                        <img src={pl.imageUrl} alt="image1" className="img-thumb"/>
-                    </td>
-                    <td className="title">
-                        {pl.title}
-                    </td>
-                    <td className="location">
-                        {pl.theaterName}
-                    </td>
-                    <td className="period">
-                        {pl.periodStart} ~ {pl.periodEnd}
-                    </td>
-                </tr>
-        ))
-        ) :
-        (
-            <tr>
-                <td colSpan={4}>검색 결과가 존재하지 않습니다.</td>
-            </tr>
-        )
+    useEffect(() => {
+        console.log(playList);
+    }, [playList])
 
+ 
     const handlePlayList = (playlist) => {
-        setPlayList(playList);
+        setPlayList(playlist);
     }
 
 
@@ -192,22 +173,7 @@ const MainPage = () => {
                     <SearchBox handlePlayList={handlePlayList}/>
                 </>
             )}
-            
-            
-            <ListBox>
-                <table>
-                    <thead>
-                        <tr>
-                            <th colSpan={2}>상품명</th>
-                            <th>장소</th>
-                            <th>기간</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                         {playListMap}     
-                    </tbody>
-                </table>
-            </ListBox>
+            <PlayList playList={playList}/>
             <Footer/>
         </Container>
     )
