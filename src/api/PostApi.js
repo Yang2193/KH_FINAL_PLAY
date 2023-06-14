@@ -35,7 +35,6 @@ const PostAPI = {
       postCategory: postCategory,
     }
   
-  
     try {
       const response = await axios.post(`${BorrowDreamAPI}/postUpload`, postData);
       return response.data;

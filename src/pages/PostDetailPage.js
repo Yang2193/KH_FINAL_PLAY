@@ -2,6 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import PostAPI from '../api/PostApi';
+import Header from '../components/Header';
+import Footer from '../components/Footer';
+
 
 const PostDetailWrapper = styled.div`
   max-width: 600px;
@@ -38,7 +41,7 @@ const LoadingMessage = styled.div`
   margin-top: 40px;
 `;
 
-const PostDetail = () => {
+const PostDetailPage = () => {
   const { postId } = useParams();
   const [post, setPost] = useState(null);
 
@@ -66,11 +69,13 @@ const PostDetail = () => {
   }
 
   return (
+    <>
+    <Header></Header>
     <PostDetailWrapper>
       <PostHeader>
         <PostTitle>{post.postTitle}</PostTitle>
         <PostInfo>
-          작성자: {post.memberId} | 작성 날짜: {formatWriteDate(post.postDate)} | 조회수: {post.postViews}
+        작성자: {post.memberInfo.userId} | 작성 날짜: {formatWriteDate(post.postDate)} | 조회수: {post.postViews}
         </PostInfo>
       </PostHeader>
       <PostImage>
@@ -78,7 +83,9 @@ const PostDetail = () => {
       </PostImage>
       <PostContent>{post.postContent}</PostContent>
     </PostDetailWrapper>
+    <Footer></Footer>
+    </>
   );
 };
 
-export default PostDetail;
+export default PostDetailPage;

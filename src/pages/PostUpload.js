@@ -25,9 +25,6 @@ const Input = styled.input`
   font-size: 16px;
   border: 1px solid #ccc;
 
-  &.myInput {
-    /* 필요한 경우 추가적인 스타일을 적용할 수 있습니다. */
-  }
 `;
 
 const Textarea = styled.textarea`
@@ -41,7 +38,7 @@ const Textarea = styled.textarea`
 const Button = styled.button`
   padding: 10px 20px;
   font-size: 16px;
-  background-color: #888;
+  background-color:#800634;
   color: #fff;
   border: none;
   cursor: pointer;
@@ -92,7 +89,7 @@ const PostUpload = () => {
       <Heading>게시물 등록</Heading>
       <div>
         <Label>
-          제목:
+          제목
           <Input
             type="text"
             name="postTitle"
@@ -103,13 +100,13 @@ const PostUpload = () => {
       </div>
       <div>
         <Label>
-          이미지:
+          이미지
           <ImageUploader onChange={handleImageChange} />
         </Label>
       </div>
       <div>
         <Label>
-          내용:
+          내용
           <Textarea
             name="postContent"
             value={postData.postContent}
