@@ -5,7 +5,7 @@
   const UploadButton = styled.button`
     padding: 10px 20px;
     font-size: 16px;
-    background-color: gray;
+    background-color: #800634;
     color: #fff;
     border: none;
     cursor: pointer;
@@ -34,7 +34,7 @@
 
     return (
       <div>
-        <input type="file" onChange={handleFileInputChange} />
+        <input type="file" onChange={handleFileInputChange}  />
         <UploadButton onClick={handleUploadClick}>Upload</UploadButton>
         {url && <img src={url} alt="uploaded" />}
       </div>
