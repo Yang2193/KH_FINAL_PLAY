@@ -32,6 +32,12 @@ const FixData = styled.div`
                 padding: 0;
                 margin: 0;
             }
+            strong{
+                color: #888;
+            }
+            p{
+                margin-left: 5%;
+            }
             button{
                 width: 60%;
                 height: 10%;
@@ -52,25 +58,26 @@ const FixData = styled.div`
 const Info = () =>{
 
     const [playInfo,setPlayInfo] = useState(null);
-
+    const playId = localStorage.getItem("playId");
     useEffect(()=>{
         const play = async()=>{
-            const rsp = await PlayInfoApi.selectPlayInfo("23004670");
+            const rsp = await PlayInfoApi.selectPlayInfo(playId);
             setPlayInfo(rsp.data);
         };
         play();
     },[])
+    console.log(playInfo);
     return(
         <>
           {playInfo && playInfo.map(play =>(
             <FixData key = {play.playId}>
                     <h1>{play.title}</h1>
                     <div className="content">
-                        <img src={play.posterImageUrl} alt="" />
+                        <img src={play.playPoster} alt="" />
                         <div className="box">
                             <ul>
                                 <li>
-                                    <strong>장소</strong>
+                                    <strong>장소 </strong>
                                     <div>
                                         <p>{play.theaterName}</p>
                                     </div>

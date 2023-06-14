@@ -61,10 +61,10 @@ const PlayNav = ({ handleType }) => {
       <NavBar>
         <ul>
           <li onClick={onClickInfo} className={activeIndex === 0 ? "nav-item active" : "nav-item"}>
-            공연 정보
+            상세 정보
           </li>
           <li onClick={onClickMap} className={activeIndex === 1 ? "nav-item active" : "nav-item"}>
-            지도
+            장소 정보
           </li>
         </ul>
       </NavBar>

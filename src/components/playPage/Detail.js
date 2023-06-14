@@ -28,7 +28,7 @@ const DetailBox = styled.div`
             justify-content: center;
         }
         .actorBox{
-            width: 16.6%;
+            width: 13%;
             height: 80%;
             .actor{
                 margin-left: 5%;
@@ -45,7 +45,7 @@ const DetailBox = styled.div`
                 img{
                     border-radius: 50%;
                     width: 75%;
-                    height: 65%;
+                    height: 75%;
                 }
         }
         }
@@ -66,41 +66,42 @@ const DetailBox = styled.div`
 `
 const Detail = () =>{
 
-    const [actorInfo,setActorInfo] = useState("");
-    const [visibleActor,setVisibleActor] = useState([]);
-    const [count,setCount] = useState(6)
+    // const [actorInfo,setActorInfo] = useState("");
+    // const [visibleActor,setVisibleActor] = useState([]);
+    // const [count,setCount] = useState(6)
+    // const playId = localStorage.getItem("playId");
 
-    useEffect(() => {
-        const actor = async()=>{
-            const rsp = await PlayInfoApi.selectActor("23004670")
-            setActorInfo(rsp.data);
-        };
-        actor();
-    },[]);
+    // useEffect(() => {
+    //     const actor = async()=>{
+    //         const rsp = await PlayInfoApi.selectActor(playId)
+    //         setActorInfo(rsp.data);
+    //     };
+    //     actor();
+    // },[]);
 
-    useEffect(() => {
-        setVisibleActor(actorInfo.slice(0,count));
-      }, [actorInfo,count]);
+    // useEffect(() => {
+    //     setVisibleActor(actorInfo.slice(0,count));
+    //   }, [actorInfo,count]);
     
-    const handleLoadMore = () => {
-        setCount(actorInfo.length);
-        if (count === actorInfo.length) {
-            setCount(6)
-        }
-    }
+    // const handleLoadMore = () => {
+    //     setCount(actorInfo.length);
+    //     if (count === actorInfo.length) {
+    //         setCount(6)
+    //     }
+    // }
 
-    const [playInfo,setPlayInfo] = useState(null);
+    // const [playInfo,setPlayInfo] = useState(null);
 
-    useEffect(()=>{
-        const play = async()=>{
-            const rsp = await PlayInfoApi.selectPlayInfo("23004670");
-            setPlayInfo(rsp.data);
-        };
-        play();
-    },[])
+    // useEffect(()=>{
+    //     const play = async()=>{
+    //         const rsp = await PlayInfoApi.selectPlayInfo(playId);
+    //         setPlayInfo(rsp.data);
+    //     };
+    //     play();
+    // },[])
     return(
         <DetailBox>
-        <div className="casting">
+        {/* <div className="casting">
          <h3>캐스팅</h3>
         <div className="castingBox">
             {visibleActor && visibleActor.map(actor =>(
@@ -113,7 +114,7 @@ const Detail = () =>{
                 </div>
             ))}
         </div>
-            <button  className="more" onClick={handleLoadMore}>더보기</button>
+        {actorInfo.length < 6 ? null : <button  className="more" onClick={handleLoadMore}>더보기</button>}
         </div>
         {playInfo && playInfo.map(play =>(
             <div key={play.playId}>
@@ -130,7 +131,7 @@ const Detail = () =>{
                     </div>
                 </div>
             </div>
-        ))}
+        ))} */}
         </DetailBox>
     )
 }

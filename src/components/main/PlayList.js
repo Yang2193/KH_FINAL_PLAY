@@ -1,13 +1,13 @@
 import styled from "styled-components"
 import React, { useEffect, useState } from "react"
 import PageNation from "../../utils/PageNation";
+import { useNavigate } from "react-router-dom";
 
 const ListBox = styled.div`
     position: relative;
     top: 10%;
     margin: 0 auto;
     width: 70%;
-
     @media (max-width: 768px) {
         width: 80%;
         font-size: 80%;
@@ -69,7 +69,11 @@ const ListBox = styled.div`
 
 const PlayList = ({playList}) => {
     
-
+    const nav = useNavigate();
+    const movePage =(playId)=>{
+        localStorage.setItem("playId",playId);
+        nav("Info");
+    }
 
     const [currentPage, setCurrentPage] = useState(0); // 현재 페이지 번호
 
@@ -90,7 +94,7 @@ const PlayList = ({playList}) => {
     const playListMap = 
         currentPageData && 
         currentPageData.map(pl => (
-            <tr key={pl.playId}>
+            <tr key={pl.playId} onClick={() => movePage(pl.playId)}>
                     <td className="image">
                         <img src={pl.imageUrl} alt="image1" className="img-thumb"/>
                     </td>

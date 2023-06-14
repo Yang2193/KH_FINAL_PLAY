@@ -1,19 +1,20 @@
 import React, { useState,useEffect } from "react";
 import PlayInfoApi from "../../api/PlayInfoApi";
+const{kakao} = window;
 
 const Map = () =>{
 
-    const{kakao} = window;
-    const[mapInfo,setMapInfo]=useState("");
+    const playId = localStorage.getItem("playId");
+
+    const[mapInfo,setMapInfo]=useState([]);
 // 장소 데이터 가져오기
     useEffect(()=>{
         const theater = async()=>{
-            const rsp = await PlayInfoApi.selectTheater("23004670");
+            const rsp = await PlayInfoApi.selectTheater(playId);
             setMapInfo(rsp.data);
         };
         theater();
     },[])
-console.log(mapInfo[0].addr);
 
 // 지도 api 사용
     useEffect(()=>{
@@ -48,13 +49,14 @@ console.log(mapInfo[0].addr);
 
     return(
         <>
-        {mapInfo.map(e=>(
+        {mapInfo && mapInfo.map(e=>(
             <div>
                 <p>장소 : {e.theaterName} </p>
                 <p>주소 : {e.addr}</p>
-                <div id ="map" style={{width:'500px',height:'500px',margin : '50px'}}></div>
             </div>
         ))}
+        <div id ="map" style={{width:'500px',height:'500px',margin : '50px'}}></div>
+
         </>
     )
 }

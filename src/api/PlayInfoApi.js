@@ -3,15 +3,15 @@ import axios from "axios";
 const KH_DOMAIN = "http://localhost:8111";
 
 const PlayInfoApi = {
-    selectPlayInfo : async(id) => {
-        return await axios.get(KH_DOMAIN + `/api/selectPlayInfo?id=${id}`);
+    selectPlayInfo : async(mt20id) => {
+        return await axios.get(KH_DOMAIN + `/play/${mt20id}}`);
     },
-    selectActor : async(id)=> {
-        return await axios.get(KH_DOMAIN + `/api/selectActor?id=${id}`);
-    },
-    selectTheater : async(id)=> {
-        return await axios.get(KH_DOMAIN + `/api/selectTheater?id=${id}`);
-    },
+    // selectActor : async(mt20id)=> {
+    //     return await axios.get(KH_DOMAIN + `/play/selectActor?id=${mt20id}`);
+    // },
+    // selectTheater : async(mt20id)=> {
+    //     return await axios.get(KH_DOMAIN + `/play/selectTheater?id=${mt20id}`);
+    // },
 }
 
 
