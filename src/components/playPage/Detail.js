@@ -66,10 +66,10 @@ const DetailBox = styled.div`
 `
 const Detail = () =>{
 
-    // const [actorInfo,setActorInfo] = useState("");
-    // const [visibleActor,setVisibleActor] = useState([]);
-    // const [count,setCount] = useState(6)
-    // const playId = localStorage.getItem("playId");
+    const [actorInfo,setActorInfo] = useState("");
+    const [visibleActor,setVisibleActor] = useState([]);
+    const [count,setCount] = useState(6)
+    const playId = localStorage.getItem("playId");
 
     // useEffect(() => {
     //     const actor = async()=>{
@@ -90,15 +90,15 @@ const Detail = () =>{
     //     }
     // }
 
-    // const [playInfo,setPlayInfo] = useState(null);
+    const [playInfo,setPlayInfo] = useState(null);
 
-    // useEffect(()=>{
-    //     const play = async()=>{
-    //         const rsp = await PlayInfoApi.selectPlayInfo(playId);
-    //         setPlayInfo(rsp.data);
-    //     };
-    //     play();
-    // },[])
+    useEffect(()=>{
+        const play = async()=>{
+            const rsp = await PlayInfoApi.selectPlayInfo(playId);
+            setPlayInfo(rsp.data);
+        };
+        play();
+    },[])
     return(
         <DetailBox>
         {/* <div className="casting">
@@ -115,23 +115,24 @@ const Detail = () =>{
             ))}
         </div>
         {actorInfo.length < 6 ? null : <button  className="more" onClick={handleLoadMore}>더보기</button>}
-        </div>
+        </div> */}
+
         {playInfo && playInfo.map(play =>(
             <div key={play.playId}>
                 <div className="notice">
                     <h3>공지사항</h3>
                     <div className="imageBox">
-                        <img src={play.noticeImageUrl} alt="" />
+                        <img src={play.playDescImg1.replace(/\[|\]/g, '').split(', ')[0]} alt="" />
                     </div>
                 </div>
                 <div className="detail">
                     <h3>상세 정보</h3>
                     <div className="imageBox">
-                        <img src={play.infoImageUrl} alt="" />
+                        <img src={play.playDescImg1.replace(/\[|\]/g, '').split(', ')[1]} alt="" />
                     </div>
                 </div>
             </div>
-        ))} */}
+        ))}
         </DetailBox>
     )
 }
