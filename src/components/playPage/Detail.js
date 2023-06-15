@@ -66,10 +66,9 @@ const DetailBox = styled.div`
 `
 const Detail = () =>{
 
-    const [actorInfo,setActorInfo] = useState("");
-    const [visibleActor,setVisibleActor] = useState([]);
-    const [count,setCount] = useState(6)
-    const playId = localStorage.getItem("playId");
+    // const [actorInfo,setActorInfo] = useState("");
+    // const [visibleActor,setVisibleActor] = useState([]);
+    // const [count,setCount] = useState(6)
 
     // useEffect(() => {
     //     const actor = async()=>{
@@ -89,7 +88,7 @@ const Detail = () =>{
     //         setCount(6)
     //     }
     // }
-
+    const playId = localStorage.getItem("playId");
     const [playInfo,setPlayInfo] = useState(null);
 
     useEffect(()=>{
@@ -99,6 +98,7 @@ const Detail = () =>{
         };
         play();
     },[])
+
     return(
         <DetailBox>
         {/* <div className="casting">
@@ -119,16 +119,20 @@ const Detail = () =>{
 
         {playInfo && playInfo.map(play =>(
             <div key={play.playId}>
-                <div className="notice">
+                {/* <div className="notice">
                     <h3>공지사항</h3>
-                    <div className="imageBox">
-                        <img src={play.playDescImg1.replace(/\[|\]/g, '').split(', ')[0]} alt="" />
+                    <div className="imageBox">  
+                        {play.playDescImg1 && play.playDescImg1.replace(/\[|\]/g, '').split(',').map((img, index) => (
+                        <img key={index} src={img.trim()} alt="" />
+                        ))}   
                     </div>
-                </div>
+                </div> */}
                 <div className="detail">
                     <h3>상세 정보</h3>
                     <div className="imageBox">
-                        <img src={play.playDescImg1.replace(/\[|\]/g, '').split(', ')[1]} alt="" />
+                        {play.playDescImg1 && play.playDescImg1.replace(/\[|\]/g, '').split(',').map((img, index) => (
+                            <img key={index} src={img.trim()} alt="" />
+                        ))}                       
                     </div>
                 </div>
             </div>

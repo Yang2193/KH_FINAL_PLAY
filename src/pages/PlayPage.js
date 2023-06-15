@@ -1,13 +1,12 @@
-import React from "react";
+import React,{ useState,useEffect } from "react";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import PlayNav from "../components/playPage/PlayNav";
 import Map from "../components/playPage/Map";
-import { useState } from "react";
 import Detail from "../components/playPage/Detail";
 import Info from "../components/playPage/Info";
 import styled from "styled-components";
-
+import PlayInfoApi from "../api/PlayInfoApi";
 const Contents = styled.div`
     width: 60%;
     position: relative;
@@ -23,19 +22,30 @@ const PlayPage = () => {
 		setType(e);
 
 	}
+    const [playInfo,setPlayInfo] = useState(null);
+    const playId = localStorage.getItem("playId");
+    useEffect(()=>{
+        const play = async()=>{
+            const rsp = await PlayInfoApi.selectPlayInfo(playId);
+            setPlayInfo(rsp.data);
+        };
+        play();
+    },[])
     return(
         <>
             <Header/>
-            <Contents>
+            {playInfo && playInfo.map(play =>(
+            <Contents key = {play.playId}>
                 <Info/>
                 <PlayNav  handleType={handleType}/>
                 {type === "default" &&(
                     <Detail/>
                 )}
                 {type === "map" &&(
-                    <Map/>
+                    <Map theaterId={play.theaterId} />
                 )}
             </Contents>
+            ))}
             <Footer/>
         </>
     )

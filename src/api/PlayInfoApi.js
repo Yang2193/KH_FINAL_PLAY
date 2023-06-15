@@ -9,12 +9,13 @@ const PlayInfoApi = {
         }
         return await axios.get(KH_DOMAIN + `/play/${mt20id}`,playId);
     },
-    // selectActor : async(mt20id)=> {
-    //     return await axios.get(KH_DOMAIN + `/play/selectActor?id=${mt20id}`);
-    // },
-    // selectTheater : async(mt20id)=> {
-    //     return await axios.get(KH_DOMAIN + `/play/selectTheater?id=${mt20id}`);
-    // },
+    // 선택된 극장 상세정보 불러오기
+    theaterDetail: async (mt10id) => {
+        const theaterId = {
+            theaterId : mt10id
+        }
+        return await axios.get(KH_DOMAIN + `/play/theater/${mt10id}`, theaterId);
+    },
 }
 
 

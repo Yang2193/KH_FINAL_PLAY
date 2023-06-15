@@ -6,7 +6,7 @@ const NavBar = styled.div`
     align-items: center;
     height: 5vh;
     border-bottom: 1px solid;
-    margin-top: 5%;
+    margin-bottom: 2%;
     ul{
       width: 100%;
       list-style: none;
@@ -47,7 +47,7 @@ const NavBar = styled.div`
 `
 
 const PlayNav = ({ handleType }) => {
-  const [activeIndex, setActiveIndex] = useState(0);
+  const [activeIndex, setActiveIndex] = useState(0);// css nav 클릭시 밑줄 표시를 위함
 
   const onClickInfo = () => {
     handleType("default");
@@ -61,7 +61,7 @@ const PlayNav = ({ handleType }) => {
       <NavBar>
         <ul>
           <li onClick={onClickInfo} className={activeIndex === 0 ? "nav-item active" : "nav-item"}>
-            상세 정보
+            공연 정보
           </li>
           <li onClick={onClickMap} className={activeIndex === 1 ? "nav-item active" : "nav-item"}>
             장소 정보

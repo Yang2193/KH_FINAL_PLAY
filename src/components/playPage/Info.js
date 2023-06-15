@@ -5,10 +5,13 @@ import PlayInfoApi from "../../api/PlayInfoApi";
 const FixData = styled.div`
     width: 100%;
     height: 80vh;
-    margin-top: 5%;
-    /* border: 1px solid; */
     h1{
+        font-size: 1.5em;
         margin: 0;
+        padding-bottom: 2%;
+        margin-bottom: 4%;
+        border-bottom: 3px solid;
+
     }
     .content{
         display: flex;
@@ -16,38 +19,58 @@ const FixData = styled.div`
         justify-content: center;
         width: 100%;
         height: 100%;
-        /* border: 1px solid; */
         img {
-            width: 40%;
-            height: 80%;
-            margin-right:10%;
+            border-radius: 15px;
+            width: 35%;
+            height: 65%;
+            margin-right:5%;
         }
         .box{
-            font-size: 1.3em;
-            width: 30%;
-            height: 80%;
+            width: 60%;
+            height: 65%;
+            font-size: 1rem;
             /* border: 1px solid; */
             ul{
                 list-style: none;
                 padding: 0;
                 margin: 0;
             }
+            li{
+                display: flex;
+                margin-bottom: 3%;
+                span{
+                    width: 30%;
+                }
+                div{
+                    width: 100%;
+                }
+            }
             strong{
                 color: #888;
             }
             p{
                 margin-left: 5%;
+                font-size: 0.9em;
             }
-            button{
-                width: 60%;
-                height: 10%;
-                font-size: 1em;
+            .btnBox{
+                width: 100%;
+                height: 50%;
+                display: flex;
+                justify-content:end ;
+                align-items:end;
+                button{
+                width: 35%;
+                height: 30%;
+                font-size: 1.3em;
                 border: none;
-                position: relative;
-                top:10%;
                 border-radius: 15px;
-                cursor: pointer;
+                cursor: pointer;         
+               }
+               button:hover{
+                background-color:#790A2C ;
+               }
             }
+ 
         }
     }
    
@@ -66,48 +89,61 @@ const Info = () =>{
         };
         play();
     },[])
-    console.log(playInfo);
     return(
         <>
           {playInfo && playInfo.map(play =>(
             <FixData key = {play.playId}>
-                    <h1>{play.title}</h1>
                     <div className="content">
                         <img src={play.playPoster} alt="" />
                         <div className="box">
+                            <h1>{play.title}</h1>
                             <ul>
                                 <li>
-                                    <strong>장소 </strong>
+                                    <span>장소</span>
                                     <div>
-                                        <p>{play.theaterName}</p>
+                                        {play.theaterName}
                                     </div>
                                 </li>
                                 <li>
-                                    <strong>공연기간</strong>
+                                    <span>공연기간</span>
                                     <div>
-                                        <p>{play.periodStart} ~ {play.periodEnd}</p>
+                                        {play.periodStart} ~ {play.periodEnd}
                                     </div>
                                 </li>
                                 <li>
-                                    <strong>공연시간</strong>
+                                    <span>공연시간</span>
                                     <div>
-                                        <p>{play.playTime}</p>
+                                        {play.playTime}
                                     </div>
                                 </li>
                                 <li>
-                                    <strong>관람연령</strong>
+                                    <span>관람연령</span>
                                     <div>
-                                        <p>{play.playAge}</p>
+                                        {play.playAge}
                                     </div>
                                 </li>
                                 <li>
-                                    <strong>가격</strong>
+                                    <span>가격</span>
                                     <div>
-                                        <p>{}</p>
+                                        {play.playPrice}
+                                    </div>
+                                </li>
+                                <li>
+                                    <span>공연 스케줄</span>
+                                    <div>
+                                        {play.playPlan}
+                                    </div>
+                                </li>
+                                <li>
+                                    <span> 배우진 </span>
+                                    <div>
+                                        {play.playCast}
                                     </div>
                                 </li>
                             </ul>
-                            <Button>예매 하기</Button>
+                            <div className="btnBox">
+                                <Button>예매 하기</Button>
+                            </div>
                         </div>
                     </div>
                 </FixData>
