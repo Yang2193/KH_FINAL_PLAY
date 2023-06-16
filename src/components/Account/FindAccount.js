@@ -46,7 +46,6 @@ const FindUserIdPw = () => {
             const response = await AccountApi.findMemberId(idUserName, idUserEmail);
             setFindId(response.data);
             console.log(response.data);
-            console.log("아이디 : " + findId);
         } catch(e) {
             console.log("일치하는 회원정보가 없습니다.");
             console.log(e);
@@ -59,7 +58,6 @@ const FindUserIdPw = () => {
             const response = await AccountApi.findMemberPw(pwUserId, pwUserName, pwUserEmail);
             setFindPw(response.data);
             console.log(response.data);
-            console.log("패스워드 : " + findPw);
         } catch(e) {
             console.log("일치하는 회원정보가 없습니다.");
             console.log(e);

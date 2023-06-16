@@ -31,7 +31,7 @@ const AccountApi = {
             userName: userName,
             userEmail: userEmail
         };
-        return await axios.post(Domain + "/find", findId);
+        return await axios.post(Domain + "/find/memberid", findId);
     },
 
     // 비밀번호 찾기
@@ -41,7 +41,7 @@ const AccountApi = {
             userName: userName,
             userEmail: userEmail
         };
-        return await axios.post(Domain + "/find", findPw);
+        return await axios.post(Domain + "/find/memberpw", findPw);
     }
 }
 
