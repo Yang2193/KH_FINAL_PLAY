@@ -23,6 +23,25 @@ const AccountApi = {
             userEmail: userEmail
         };
         return await axios.post(Domain + "/join/step2", memberInfo);
+    },
+
+    // 아이디 찾기
+    findMemberId : async(userName, userEmail) => {
+        const findId = {
+            userName: userName,
+            userEmail: userEmail
+        };
+        return await axios.post(Domain + "/find", findId);
+    },
+
+    // 비밀번호 찾기
+    findMemberPw : async(userId, userName, userEmail) => {
+        const findPw = {
+            userId: userId,
+            userName: userName,
+            userEmail: userEmail
+        };
+        return await axios.post(Domain + "/find", findPw);
     }
 }
 

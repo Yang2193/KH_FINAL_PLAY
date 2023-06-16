@@ -79,7 +79,7 @@
     padding: .6rem 0;
     border-radius: .5rem;
     border: none;
-    background-color: black;
+    background-color: #990A2C;
     color: white;
     font-size: 1.2rem;
     outline: none;
@@ -220,7 +220,7 @@
     background-image: linear-gradient(-45deg, white 0%, white 100%);
     transition: 1s ease-in-out;
     z-index: 6;
-    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    box-shadow: #990A2C 0px 5px 15px;
     border-bottom-right-radius: max(50vw, 50vh);
     border-top-right-radius: max(50vw, 50vh);
     border-top-left-radius: max(50vw, 50vh);

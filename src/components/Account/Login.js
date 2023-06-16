@@ -140,6 +140,7 @@ const Login = () => {
         const response = await AccountApi.memberLogin(userId, userPwd);
         console.log(userId + "으로 로그인");
         if(response.data === true) {
+          window.localStorage.setItem("isUserId", userId);
           window.localStorage.setItem("isLogin", "TRUE");
           navigate("/");
         }

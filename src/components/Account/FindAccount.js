@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import '../../styles/FindAccount.css';
+import AccountApi from "../../api/AccountApi";
 
 const FindUserIdPw = () => {
 
@@ -10,10 +11,9 @@ const FindUserIdPw = () => {
     const [pwUserName, setPwUserName] = useState("");
     const [pwUserEmail, setPwUserEmail] = useState("");
 
-    // 유효성 검사
-    const [isId, setIsId] = useState(false);
-    const [isEmail, setIsEmail] = useState(false);
-    const [isName, setIsName] = useState(false);
+    // 아이디 패스워드 찾은 값 입력
+    const [findId, setFindId] = useState("");
+    const [findPw, setFindPw] = useState("");
 
     const onChangeIdUserName = (e) => {
         const idUserNameNow = e.target.value;
@@ -41,6 +41,30 @@ const FindUserIdPw = () => {
     }
 
     // 이름과 메일 입력 값을 axios로 회원조회 접근 코드
+    const onClickFindId = async() => {
+        try {
+            const response = await AccountApi.findMemberId(idUserName, idUserEmail);
+            setFindId(response.data);
+            console.log(response.data);
+            console.log("아이디 : " + findId);
+        } catch(e) {
+            console.log("일치하는 회원정보가 없습니다.");
+            console.log(e);
+        }
+    }
+
+    // 아이디, 이름, 메일 입력 값을 axios로 회원조회 접근
+    const onClickFindPw = async() => {
+        try {
+            const response = await AccountApi.findMemberPw(pwUserId, pwUserName, pwUserEmail);
+            setFindPw(response.data);
+            console.log(response.data);
+            console.log("패스워드 : " + findPw);
+        } catch(e) {
+            console.log("일치하는 회원정보가 없습니다.");
+            console.log(e);
+        }
+    }
 
     return (
         <>
@@ -63,7 +87,7 @@ const FindUserIdPw = () => {
                             <i></i>
                             <input type="text" placeholder="User Email" value={idUserEmail} onChange={onChangeIdUserEmail} />
                         </div>
-                        <button>아이디 찾기</button>
+                        <button onClick={onClickFindId}>아이디 찾기</button>
                     </div>
                 </div>
             {/* FIND ID */}
@@ -83,8 +107,7 @@ const FindUserIdPw = () => {
                                 <i className="bx bxs-mail-send"></i>
                                 <input type="email" placeholder="Email" value={pwUserEmail} onChange={onChangePwUserEmail}/>
                                 <div>
-                                <button>인증</button>
-                                <button>패스워드 찾기</button>
+                                <button onClick={onClickFindPw}>패스워드 찾기</button>
                                 </div>
                             </div>
                         </div>
