@@ -13,22 +13,28 @@ const Post = () => {
   const [currentPage, setCurrentPage] = useState(0); // 현재 페이지 번호
   const ITEMS_PAGE = 10; // 보여질 아이템 개수
 
+  console.log(window.localStorage.getItem("isUserId"));
   useEffect(() => {
+    //데이터 가져오기 fetchData
+    const fetchData = async () => {
+      try {
+        const rsp = await PostAPI.getAllPosts(); // 포스트 데이터를 가져옴
+        console.log(rsp.data);
+        if(rsp.status === 200){
+          setPosts(rsp.data);
+          setSortedPosts(rsp.data);
+        } else{
+          console.log("데이터가 없거나 불러오기를 실패함")
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
     fetchData(); // 컴포넌트가 마운트될 때 데이터를 가져오는 함수 호출
   }, []);
 
   
-//데이터 가져오기 fetchData
-  const fetchData = async () => {
-    try {
-      const data = await PostAPI.getAllPosts(); // 포스트 데이터를 가져옴
-      setPosts(data); // 포스트 목록 상태 업데이트
-      setSortedPosts(data); // 정렬된 포스트 목록 상태 업데이트
-      setIsDataFetched(true); // 데이터를 가져왔음을 표시
-    } catch (error) {
-      console.log(error);
-    }
-  };
+
 // 최신 순서 sortSortNo
   const sortSortNo = () => {
     setSortedPosts([...posts].sort((a, b) => b.id - a.id)); // id를 기준으로 내림차순으로 정렬하여 정렬된 포스트 목록 상태 업데이트
@@ -46,7 +52,7 @@ const Post = () => {
           )
         ); // 조회수 증가한 포스트의 조회수 업데이트
       } else {
-        fetchData();
+        // fetchData();
       }
     } catch (error) {
       console.log(error);
@@ -93,9 +99,9 @@ const Post = () => {
             {currentPageData.map((post) => (
               <tr className="ReviewItem" key={post.id}>
                 <td className="ReviewTitle">
-                      <Link to={`/posts/${post.id}`} className="ReviewLink" onClick={() => increaseViews(post.id)}>
-        {post.postTitle}
-      </Link>
+                      <Link to={`/post/select/${post.id}`} className="ReviewLink" onClick={() => increaseViews(post.id)}>
+                        {post.postTitle}
+                       </Link>
 
                 </td>
                 <td className="Explaination2">{post.postContent}</td>

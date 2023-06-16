@@ -17,15 +17,15 @@ function App() {
    <Router>
       <Routes>
         <Route path="/" element={<MainPage/>} />
-        <Route path="Info" element={<PlayPage/>}/>
-        <Route path="join/*" element={<JoinPage/>} />
-        <Route path="login" element={<LoginPage/>} />
-        <Route path="find" element={<FindAccountPage/>} />
-        <Route path="mypage" element={<Mypage/>} />
-        <Route path="/OneReview" element={<OneReview/>} />
-        <Route path="/posts/:postId" element={<PostDetail/>} />
-        <Route path="/posts" element={<PostPage/>} />
-        <Route path="/PostUpload" element={<PostUpload/>} />
+        <Route path="/info" element={<PlayPage/>}/>
+        <Route path="/join/*" element={<JoinPage/>} />
+        <Route path="/login" element={<LoginPage/>} />
+        <Route path="/find" element={<FindAccountPage/>} />
+        <Route path="/myPage" element={<Mypage/>} />
+        <Route path="/oneReview" element={<OneReview/>} />
+        <Route path="/post/select/:postId" element={<PostDetail/>} />
+        <Route path="/post" element={<PostPage/>} />
+        <Route path="/postUpload" element={<PostUpload/>} />
       </Routes>
    </Router>
   );

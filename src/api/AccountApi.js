@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const Domain = "http://localhost:8111";
+const Domain = "http://localhost:8111/member";
 
 const AccountApi = {
     
