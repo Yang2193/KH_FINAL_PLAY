@@ -86,10 +86,32 @@ const CommentButton = styled.button`
   cursor: pointer;
 `;
 
+const CommentList = styled.ul`
+  list-style: none;
+  padding: 0;
+  margin-top: 20px;
+`;
+
+const CommentItem = styled.li`
+  margin-bottom: 10px;
+`;
+
+const CommentContent = styled.div`
+  font-size: 14px;
+  margin-bottom: 5px;
+`;
+
+const CommentDate = styled.span`
+  font-size: 12px;
+  color: #888;
+`;
+
 const PostDetailPage = () => {
   const { postId } = useParams();
   const [post, setPost] = useState(null);
   const [comment, setComment] = useState('');
+  const [comments, setComments] = useState([]);
+  const userId = window.localStorage.getItem("isUserId");
 
   useEffect(() => {
     fetchPost();
@@ -99,12 +121,16 @@ const PostDetailPage = () => {
     try {
       const data = await PostAPI.getPostById(postId);
       setPost(data);
+      if (data.comments) {
+        setComments(data.comments);
+      } else {
+        setComments([]);
+      }
       console.log(data);
     } catch (error) {
       console.log(error);
     }
   };
-
   const formatWriteDate = (date) => {
     const formattedDate = new Date(date).toLocaleDateString('en-US');
     return formattedDate;
@@ -114,9 +140,18 @@ const PostDetailPage = () => {
     setComment(e.target.value);
   };
 
-  const handleSubmitComment = () => {
-    console.log('Comment submitted:', comment);
-    setComment('');
+  const handleSubmitComment = async () => {
+    try {
+      const newComment = {
+        commentContent: comment,
+        commentDate: new Date(),
+      };
+      const response = await PostAPI.createComment(postId, newComment);
+      setComments([...comments, response]);
+      setComment('');
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   if (!post) {
@@ -150,6 +185,14 @@ const PostDetailPage = () => {
               onChange={handleCommentChange}
             />
             <CommentButton onClick={handleSubmitComment}>댓글 작성</CommentButton>
+            <CommentList>
+              {comments.map((comment) => (
+                <CommentItem key={comment.id}>
+                  <CommentContent>{comment.commentContent}</CommentContent>
+                  <CommentDate>{formatWriteDate(comment.commentDate)}</CommentDate>
+                </CommentItem>
+              ))}
+            </CommentList>
           </CommentSection>
         </PostDetailWrapper>
       </Background>
