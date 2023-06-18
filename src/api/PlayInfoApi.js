@@ -16,6 +16,23 @@ const PlayInfoApi = {
         }
         return await axios.get(KH_DOMAIN + `/play/theater/${mt10id}`, theaterId);
     },
+    selectPlayLike : async(userId)=>{
+        return await axios.get(KH_DOMAIN + `/play/playLikeList2?id=${userId}`)
+    },
+    addPlayLike : async(playId,userId)=>{
+        const id = {
+            playId : playId,
+            userId : userId
+        }
+        return await axios.post(KH_DOMAIN + `/play/addPlayLike`,id)
+    },
+    delPlayLike : async(playId,userId)=>{
+        const id = {
+            playId : playId,
+            userId : userId
+        }
+        return await axios.post(KH_DOMAIN + `/play/deletePlayLike`,id)
+    }
 }
 
 

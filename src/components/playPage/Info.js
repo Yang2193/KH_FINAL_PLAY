@@ -26,6 +26,22 @@ const FixData = styled.div`
             height: 65%;
             margin-right:5%;
         }
+        .like{
+            
+            position: relative;
+            right:38%;
+            top:40%;
+            background-color: white;
+            border: none;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 8%;
+            cursor: pointer;
+            p{
+                margin-left: 10%;
+            }
+        }
         .box{
             width: 60%;
             height: 65%;
@@ -83,6 +99,7 @@ const Info = () =>{
 
     const [playInfo,setPlayInfo] = useState(null);
     const playId = localStorage.getItem("playId");
+    const userId = localStorage.getItem("isUserId");
     useEffect(()=>{
         const play = async()=>{
             const rsp = await PlayInfoApi.selectPlayInfo(playId);
@@ -91,68 +108,69 @@ const Info = () =>{
         play();
     },[])
 
-// // 찜기능 
+// 찜기능 
 
-//     const [isLiked, setIsLiked] = useState(false); // 최종 찜 상태 
-//     const [likedList,setLikedList] = useState([]); // 찜 리스트 배열
+    const [isLiked, setIsLiked] = useState(false); // 최종 찜 상태 
+    const [likedList,setLikedList] = useState([]); // 찜 리스트 배열
 
-//     useEffect(()=>{ // 로그인한 회원id를 기준으로 찜 매장 리스트를 db에서 불러와 확인하고 배열에 삽입
-//         const liked = async() => {
-//             const rsp = await PlayInfoApi.selectPlayLike(memId);
-//             setLikedList(rsp.data);
-//         }
-//         liked();
-//     },[memId]);
+    useEffect(()=>{ // 로그인한 회원id를 기준으로 찜 매장 리스트를 db에서 불러와 확인하고 배열에 삽입
+        const liked = async() => {
+            const rsp = await PlayInfoApi.selectPlayLike(userId);
+            setLikedList(rsp.data);
+        }
+        liked();
+    },[userId]);
 
-//     useEffect(() => {
-//         if (likedList.some(item => item.playId === playId)) { // 배열을 확인하며 해당 매장사이트에서 찜이 등록되어 있으면 true 아니면 false
-//           setIsLiked(true);
-//         } else {
-//           setIsLiked(false);
-//         }
-//       }, [likedList, playId]);
+    useEffect(() => {
+        if (likedList.some(item => item.playId === playId)) { // 배열을 확인하며 해당 매장사이트에서 찜이 등록되어 있으면 true 아니면 false
+          setIsLiked(true);
+        } else {
+          setIsLiked(false);
+        }
+      }, [likedList, playId]);
 
 
-//     const addLike = async () => { 
-//         const rsp = await PlayInfoApi.addPlayLike(restId, memId);
-//         if (rsp.data === true) {
-//             console.log("찜 등록 성공");
-//             setLikedList([...likedList, {playId, memId}]); // 찜등록 성공시 배열에도 추가
-//             setIsLiked(true); // 최종 찜 상태를 true 로 전달
-//             console.log(likedList);
-//             console.log(playId);
-//             } else {
-//                 console.log(" 등록 전송 실패");
-//             }
-//         };
+    const addLike = async () => { 
+        const rsp = await PlayInfoApi.addPlayLike(playId, userId);
+        if (rsp.data === true) {
+            console.log("찜 등록 성공");
+            setLikedList([...likedList, {playId, userId}]); // 찜등록 성공시 배열에도 추가
+            setIsLiked(true); // 최종 찜 상태를 true 로 전달
+            console.log(likedList);
+            console.log(playId);
+            } else {
+                console.log(" 등록 전송 실패");
+            }
+        };
 
-//     const deleteLike = async () => {
-//         const rsp = await PlayInfoApi.delPlayLike(playId, memId);
-//         if (rsp.data === true) {
-//             console.log("찜 삭제 성공");
-//             setLikedList(likedList.filter(item => !(item.playId === playId && item.memId === memId))); // 찜 삭제 성공시 배열에도 삭제
-//             setIsLiked(false); // 최종 찜 상태를 false 로 전달
-//             console.log(likedList);
-//             } else {
-//             console.log("삭제 전송 실패");
-//             }
-//         };
+    const deleteLike = async () => {
+        const rsp = await PlayInfoApi.delPlayLike(playId, userId);
+        if (rsp.data === true) {
+            console.log("찜 삭제 성공");
+            setLikedList(likedList.filter(item => !(item.playId === playId && item.memId === userId))); // 찜 삭제 성공시 배열에도 삭제
+            setIsLiked(false); // 최종 찜 상태를 false 로 전달
+            console.log(likedList);
+            } else {
+            console.log("삭제 전송 실패");
+            }
+        };
 
-//     const onClickLiked = () =>{
-//         if (!isLiked) {
-//             addLike();
-//         }else
-//             deleteLike();
-//         }    
+    const onClickLiked = () => {
+        if (!isLiked) {
+            addLike();
+        } else {
+            deleteLike();
+        }
+    }; 
     return(
         <>
           {playInfo && playInfo.map(play =>(
             <FixData key = {play.playId}>
                     <div className="content">
                         <img src={play.playPoster} alt="" />
-                        {/* <button className="like" onClick={()=>onClickLiked()}>
-                                <FaHeart  style={{fontSize: '130%', color: isLiked ? "red" : "#999999" }}/>
-                        </button> */}
+                        <button className="like" onClick={()=>onClickLiked()}>
+                                <FaHeart  style={{fontSize: '200%', color: isLiked ? "red" : "#999999" }}/> <p>찜하기</p>
+                        </button>
                         <div className="box">
                             <h1>{play.title}</h1>
                             <ul>
