@@ -14,7 +14,7 @@ const MyPageMain = () => {
     console.log(window.localStorage.getItem("isLogin"));
 
     const onClickLogOut = () => {
-        window.localStorage.setItem("isUserId", "");
+        window.localStorage.setItem("userId", "");
         window.localStorage.setItem("isLogin", "False");
         navigate("/");
     };
