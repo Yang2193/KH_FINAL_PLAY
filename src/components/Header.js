@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import styled from "styled-components";
 import { MdMenu, MdLogin, MdMyLocation } from "react-icons/md";
+import SideMenu from "./SideMenu";
 
 const Container = styled.div`
   width: 100%;
@@ -71,6 +72,7 @@ const MyPageBox = styled(MdMyLocation)`
 
 const Header = ({children}) => {
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+  const [isOpen, setIsOpen] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -87,7 +89,8 @@ const Header = ({children}) => {
 
 // children 자리에 나중에 Logo대신 SearchBox를 넣을 생각
   const onClickMenu = () => {
-
+      setIsOpen(!isOpen);
+      console.log(isOpen);
   }
 
   const onClickLoginIcon = () => {
@@ -102,7 +105,8 @@ const Header = ({children}) => {
         <Container>
           {isMobile ? <>{children}</> : <LogoBox>{children}</LogoBox>}         
           {window.localStorage.getItem("isLogin") === "TRUE" ? <MyPageBox onClick={onClickMyPageIcon}/> : <LoginBox onClick={onClickLoginIcon}/>}
-          <MenuBurger/>   
+          <MenuBurger/>
+          <SideMenu/>
         </Container>
     );
 
