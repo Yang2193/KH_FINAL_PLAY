@@ -10,6 +10,7 @@ import OneReview from "./pages/OneReviewPage";
 import PostDetail from "./pages/PostDetailPage";
 import PostPage from "./pages/PostPage";
 import PostUpload from "./pages/PostUpload";
+import ReservePage from "./pages/ReservePage";
 
 
 function App() {
@@ -26,6 +27,7 @@ function App() {
         <Route path="/post/select/:postId" element={<PostDetail/>} />
         <Route path="/post" element={<PostPage/>} />
         <Route path="/postUpload" element={<PostUpload/>} />
+        <Route path="/reserve" element={<ReservePage/>}/>
       </Routes>
    </Router>
   );

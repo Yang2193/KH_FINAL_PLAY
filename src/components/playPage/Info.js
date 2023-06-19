@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { Button } from "../../utils/GlobalStyle";
 import PlayInfoApi from "../../api/PlayInfoApi";
 import { FaHeart } from 'react-icons/fa';
+import { useNavigate } from "react-router-dom";
 const FixData = styled.div`
     width: 100%;
     height: 80vh;
@@ -94,12 +95,13 @@ const FixData = styled.div`
    
 `
 
-
 const Info = () =>{
 
     const [playInfo,setPlayInfo] = useState(null);
-    const playId = localStorage.getItem("playId");
-    const userId = localStorage.getItem("isUserId");
+    const playId = localStorage.getItem("playId"); // 연극 아이디
+    const userId = localStorage.getItem("userId"); // 유저 아이디
+    const navigate = useNavigate();
+    // 연극정보 불러오기
     useEffect(()=>{
         const play = async()=>{
             const rsp = await PlayInfoApi.selectPlayInfo(playId);
@@ -109,35 +111,31 @@ const Info = () =>{
     },[])
 
 // 찜기능 
-
     const [isLiked, setIsLiked] = useState(false); // 최종 찜 상태 
     const [likedList,setLikedList] = useState([]); // 찜 리스트 배열
 
-    useEffect(()=>{ // 로그인한 회원id를 기준으로 찜 매장 리스트를 db에서 불러와 확인하고 배열에 삽입
+    useEffect(()=>{ // 로그인한 회원id를 기준으로 찜 연극 리스트를 db에서 불러와 확인하고 배열에 삽입/
         const liked = async() => {
             const rsp = await PlayInfoApi.selectPlayLike(userId);
-            setLikedList(rsp.data);
+            setLikedList(rsp.data);   
         }
         liked();
     },[userId]);
 
     useEffect(() => {
-        if (likedList.some(item => item.playId === playId)) { // 배열을 확인하며 해당 매장사이트에서 찜이 등록되어 있으면 true 아니면 false
-          setIsLiked(true);
+        if (likedList.some(item => item.playId === playId)) { // 배열을 확인하며 해당 연극 페이지에서 찜이 등록되어 있으면 true 아니면 false
+            setIsLiked(true);
         } else {
-          setIsLiked(false);
+            setIsLiked(false);
         }
-      }, [likedList, playId]);
-
+    }, [likedList,playId]);
 
     const addLike = async () => { 
         const rsp = await PlayInfoApi.addPlayLike(playId, userId);
-        if (rsp.data === true) {
+        if (rsp.data !== null) {
             console.log("찜 등록 성공");
-            setLikedList([...likedList, {playId, userId}]); // 찜등록 성공시 배열에도 추가
-            setIsLiked(true); // 최종 찜 상태를 true 로 전달
-            console.log(likedList);
-            console.log(playId);
+            setLikedList([...likedList, { playId, userId }]);
+            console.log(isLiked);
             } else {
                 console.log(" 등록 전송 실패");
             }
@@ -145,23 +143,31 @@ const Info = () =>{
 
     const deleteLike = async () => {
         const rsp = await PlayInfoApi.delPlayLike(playId, userId);
-        if (rsp.data === true) {
+        if (rsp.data !== null) {
             console.log("찜 삭제 성공");
-            setLikedList(likedList.filter(item => !(item.playId === playId && item.memId === userId))); // 찜 삭제 성공시 배열에도 삭제
-            setIsLiked(false); // 최종 찜 상태를 false 로 전달
-            console.log(likedList);
+            setLikedList(likedList.filter(item => !(item.playId === playId && item.userId === userId))); // 찜 삭제 성공시 배열에도 삭제
+            console.log(isLiked);
             } else {
             console.log("삭제 전송 실패");
             }
         };
-
     const onClickLiked = () => {
-        if (!isLiked) {
-            addLike();
-        } else {
-            deleteLike();
+        if (userId==="") {
+            alert("로그인이 필요합니다.");
+            navigate("/login")
+        }else{
+            if (!isLiked) {
+                addLike();
+            } else {
+                deleteLike();
+            }
         }
     }; 
+
+    // 예매하기
+    const reserve = ()=> {
+        navigate("/reserve")
+    }
     return(
         <>
           {playInfo && playInfo.map(play =>(
@@ -169,7 +175,7 @@ const Info = () =>{
                     <div className="content">
                         <img src={play.playPoster} alt="" />
                         <button className="like" onClick={()=>onClickLiked()}>
-                                <FaHeart  style={{fontSize: '200%', color: isLiked ? "red" : "#999999" }}/> <p>찜하기</p>
+                                <FaHeart style={{fontSize: '200%', color: isLiked ? "red" : "#999999" }}/> <p>찜하기</p>
                         </button>
                         <div className="box">
                             <h1>{play.title}</h1>
@@ -210,15 +216,17 @@ const Info = () =>{
                                         {play.playPlan}
                                     </div>
                                 </li>
+                                {play.playCast==="" ? null : 
                                 <li>
                                     <span> 배우진 </span>
                                     <div>
                                         {play.playCast}
                                     </div>
                                 </li>
+                                }
                             </ul>
                             <div className="btnBox">
-                                <Button>예매 하기</Button>
+                                <Button onClick={()=>reserve()}>예매 하기</Button>
                             </div>
                         </div>
                     </div>

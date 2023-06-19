@@ -61,6 +61,9 @@ const DetailBox = styled.div`
         justify-content: center;
         align-items: center;
         flex-direction: column;
+        img{
+            width: 50%;
+        }
     }
 
 `
