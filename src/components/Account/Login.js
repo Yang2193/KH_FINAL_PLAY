@@ -2,6 +2,9 @@ import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import AccountApi from "../../api/AccountApi";
 import '../../styles/Account.css';
+import TokenApi from "../../api/TokenApi";
+
+export let tokenValue = "";
 
 const Login = () => {
     const navigate = useNavigate();
@@ -137,11 +140,12 @@ const Login = () => {
   
     const onClickLogin = async() => {
       try {
-        const response = await AccountApi.memberLogin(userId, userPwd);
-        console.log(userId + "으로 로그인");
-        if(response.data === true) {
-          window.localStorage.setItem("isUserId", userId);
-          window.localStorage.setItem("isLogin", "TRUE");
+        const response = await AccountApi.getToken(userId, userPwd);
+        if(response.status === 200) {
+          console.log(response.data);
+          tokenValue = response.data.accessToken;
+          localStorage.setItem("isLogin", "TRUE");
+          localStorage.setItem("userId", userId);
           navigate("/");
         }
       } catch(e) {
@@ -149,6 +153,7 @@ const Login = () => {
       }
     };
   
+
   return (
     <>
     <div id="container-login" className={containerClass}>

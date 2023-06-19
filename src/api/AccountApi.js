@@ -1,18 +1,22 @@
 import axios from "axios";
+import { tokenValue } from "../components/Account/Login";
 
 const Domain = "http://localhost:8111/member";
 
 const AccountApi = {
-    
-    // 로그인
-    memberLogin : async(userId, userPw) => {
-        const login = {
+    // 토큰 GET 로그인
+    getToken : async(userId, userPw) => {
+        const auth = {
             userId: userId,
             userPw: userPw
         };
-        return await axios.post(Domain + "/login", login);
+        return await axios.post(Domain + "/auth", auth, {
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
     },
-
+    
     // 회원가입
     memberReg : async(userId, userPw, userName, userPhone, userEmail) => {
         const memberInfo = {
