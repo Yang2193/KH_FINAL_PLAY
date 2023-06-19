@@ -1,3 +1,5 @@
+
+
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
@@ -188,6 +190,7 @@ const PostDetailPage = () => {
             <CommentList>
               {comments.map((comment) => (
                 <CommentItem key={comment.id}>
+                  <CommentContent>{comment.commentContent}</CommentContent>
                   <CommentContent>{comment.commentContent}</CommentContent>
                   <CommentDate>{formatWriteDate(comment.commentDate)}</CommentDate>
                 </CommentItem>

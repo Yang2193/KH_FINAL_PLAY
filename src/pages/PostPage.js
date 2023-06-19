@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import Footer from '../components/Footer';
@@ -7,69 +8,59 @@ import PageNation from '../utils/PageNation';
 import '../pages/ReviewBoard.css';
 
 const Post = () => {
-  const [posts, setPosts] = useState([]); // 포스트 목록을 저장하는 상태
-  const [sortedPosts, setSortedPosts] = useState([]); // 정렬된 포스트 목록을 저장하는 상태
-  const [isDataFetched, setIsDataFetched] = useState(false); // 데이터를 가져왔는지 여부를 저장하는 상태
-  const [currentPage, setCurrentPage] = useState(0); // 현재 페이지 번호
-  const ITEMS_PAGE = 10; // 보여질 아이템 개수
+  const [posts, setPosts] = useState([]);
+  const [sortedPosts, setSortedPosts] = useState([]);
+  const [isDataFetched, setIsDataFetched] = useState(false);
+  const [currentPage, setCurrentPage] = useState(0);
+  const ITEMS_PAGE = 10;
 
-  console.log(window.localStorage.getItem("isUserId"));
   useEffect(() => {
-    //데이터 가져오기 fetchData
     const fetchData = async () => {
       try {
-        const rsp = await PostAPI.getAllPosts(); // 포스트 데이터를 가져옴
-        console.log(rsp.data);
-        if(rsp.status === 200){
+        const rsp = await PostAPI.getAllPosts();
+        if (rsp.status === 200) {
           setPosts(rsp.data);
           setSortedPosts(rsp.data);
-        } else{
-          console.log("데이터가 없거나 불러오기를 실패함")
+        } else {
+          console.log("데이터가 없거나 불러오기를 실패함");
         }
       } catch (error) {
         console.log(error);
       }
     };
-    fetchData(); // 컴포넌트가 마운트될 때 데이터를 가져오는 함수 호출
+    fetchData();
   }, []);
 
-  
-
-// 최신 순서 sortSortNo
   const sortSortNo = () => {
-    setSortedPosts([...posts].sort((a, b) => b.id - a.id)); // id를 기준으로 내림차순으로 정렬하여 정렬된 포스트 목록 상태 업데이트
+    setSortedPosts([...posts].sort((a, b) => b.id - a.id));
   };
 
-
-  //조회수 증가 increaseViews
   const increaseViews = async (postId) => {
     try {
-      await PostAPI.increasePostViews(postId); // 포스트 조회수 증가 API 호출
+      await PostAPI.increasePostViews(postId);
       if (isDataFetched) {
         setPosts((prevPosts) =>
           prevPosts.map((post) =>
             post.id === postId ? { ...post, postViews: post.postViews + 1 } : post
           )
-        ); // 조회수 증가한 포스트의 조회수 업데이트
-      } else {
-        // fetchData();
+        );
       }
     } catch (error) {
       console.log(error);
     }
   };
-// 시간 까지 나오는거 자르기 formatWriteDate
+
   const formatWriteDate = (date) => {
-    const formattedDate = new Date(date).toLocaleDateString('en-US'); // 날짜를 원하는 형식으로 변환
+    const formattedDate = new Date(date).toLocaleDateString('en-US');
     return formattedDate;
   };
 
   const handlePageClick = (selectedPage) => {
     setCurrentPage(selectedPage.selected);
   };
-// 아직 잘 모름...
-  const pageCount = Math.ceil(sortedPosts.length / ITEMS_PAGE); // 페이지 수 계산
-  const offset = currentPage * ITEMS_PAGE; // 현재 페이지에서 보여줄 아이템의 시작 인덱스
+
+  const pageCount = Math.ceil(sortedPosts.length / ITEMS_PAGE);
+  const offset = currentPage * ITEMS_PAGE;
   const currentPageData = sortedPosts.slice(offset, offset + ITEMS_PAGE);
 
   return (
@@ -99,14 +90,17 @@ const Post = () => {
             {currentPageData.map((post) => (
               <tr className="ReviewItem" key={post.id}>
                 <td className="ReviewTitle">
-                      <Link to={`/post/select/${post.id}`} className="ReviewLink" onClick={() => increaseViews(post.id)}>
-                        {post.postTitle}
-                       </Link>
-
+                  <Link
+                    to={`/post/select/${post.id}`}
+                    className="ReviewLink"
+                    onClick={() => increaseViews(post.id)}
+                  >
+                    {post.postTitle}
+                  </Link>
                 </td>
                 <td className="Explaination2">{post.postContent}</td>
                 <td className="WriteDate">{formatWriteDate(post.postDate)}</td>
-                <td className="Id">{post.memberInfo.userId}</td>
+                <td className="Id">{post.memberInfo && post.memberInfo.userId}</td>
                 <td className="Views">{post.postViews}</td>
               </tr>
             ))}
