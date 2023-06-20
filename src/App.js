@@ -14,9 +14,11 @@ import PostDetail from './pages/PostDetailPage';
 import PostPage from './pages/PostPage';
 import PostUpload from './pages/PostUpload';
 import ReservePage from './pages/ReservePage';
+import AccountProvider from './context/AccountInfo';
 
 function App() {
   return (
+    <AccountProvider>
     <Router>
       <Routes>
         <Route path="/" element={<MainPage />} />
@@ -33,6 +35,7 @@ function App() {
       </Routes>
       <ToastContainer />
     </Router>
+    </AccountProvider>
   );
 }
 

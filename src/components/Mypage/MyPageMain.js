@@ -1,6 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router";
 import MyProfileEdit from "./MyProfileEdit";
+import MyReview from "./MyReview";
 
 const MyPageMain = () => {
     // 나의 프로필 정보 (회원탈퇴 포함)
@@ -15,6 +16,7 @@ const MyPageMain = () => {
     return (
         <>
         <MyProfileEdit/>
+        <MyReview/>
         </>
     )
 }

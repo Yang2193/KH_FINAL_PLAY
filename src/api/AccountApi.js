@@ -1,4 +1,5 @@
 import axios from "axios";
+import Functions from "../utils/Functions";
 
 const Domain = "http://localhost:8111";
 
@@ -13,6 +14,7 @@ const AccountApi = {
     },
 
     getUserInfo : async(userId) => {
+        Functions.setAuthorizationHeader();
         const infoData = {
             userId: userId
         };
@@ -28,7 +30,7 @@ const AccountApi = {
             userPhone: userPhone,
             userEmail: userEmail
         };
-        return await axios.post(Domain + "/auth/join/step2", memberInfo);
+        return await axios.post(Domain + "/auth/signup", memberInfo);
     },
 
     // 아이디 찾기
@@ -48,6 +50,15 @@ const AccountApi = {
             userEmail: userEmail
         };
         return await axios.post(Domain + "/member/find/pw", findPw);
+    },
+
+    // 마이페이지 회원 별 리뷰 가져오기
+    getMemberReview : async(userId) => {
+        Functions.setAuthorizationHeader();
+        const getReview = {
+            userId: userId
+        };
+        return await axios.post(Domain + "/mypage/find/post")
     }
 }
 
