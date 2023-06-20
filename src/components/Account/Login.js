@@ -2,9 +2,6 @@ import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import AccountApi from "../../api/AccountApi";
 import '../../styles/Account.css';
-import TokenApi from "../../api/TokenApi";
-
-export let tokenValue = "";
 
 const Login = () => {
     const navigate = useNavigate();
@@ -143,9 +140,11 @@ const Login = () => {
         const response = await AccountApi.getToken(userId, userPwd);
         if(response.status === 200) {
           console.log(response.data);
-          tokenValue = response.data.accessToken;
+          window.localStorage.setItem("accessToken", response.data.accessToken);
+          window.localStorage.setItem("refreshToken", response.data.refreshToken);
           localStorage.setItem("isLogin", "TRUE");
           localStorage.setItem("userId", userId);
+          console.log(localStorage.getItem("accessToken"));
           navigate("/");
         }
       } catch(e) {

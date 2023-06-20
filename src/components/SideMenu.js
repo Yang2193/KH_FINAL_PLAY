@@ -145,6 +145,8 @@ const SideMenu = () => {
     const logout = () =>{
         window.localStorage.setItem("userId", '');
         window.localStorage.setItem("memberType", '');
+        window.localStorage.setItem("accessToken", '');
+        window.localStorage.setItem("refreshToken", '');
         console.log(isBizMem);
         navigate("/");
         setIsOpen(!isOpen);

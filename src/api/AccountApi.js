@@ -1,7 +1,7 @@
 import axios from "axios";
 import { tokenValue } from "../components/Account/Login";
 
-const Domain = "http://localhost:8111/member";
+const Domain = "http://localhost:8111/auth";
 
 const AccountApi = {
     // 토큰 GET 로그인
@@ -10,11 +10,7 @@ const AccountApi = {
             userId: userId,
             userPw: userPw
         };
-        return await axios.post(Domain + "/auth", auth, {
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        });
+        return await axios.post(Domain + "/auth", auth);
     },
     
     // 회원가입
