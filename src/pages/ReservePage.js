@@ -1,42 +1,77 @@
 import React from "react";
 import Calendar from "react-calendar";
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import styled from "styled-components";
 import 'react-calendar/dist/Calendar.css';
-
+import Header from "../components/Header";
+import Footer from "../components/Footer";
+import { Button } from "../utils/GlobalStyle";
+import moment from "moment/moment";
 const ReserveStyle = styled.div`
-    width: 100%;
+    margin-top: 2%;
+    width: 50%;
     height: 100vh;
     display: flex;
     align-items: center;
     flex-direction: column;
-    .cal{
-        width: 20%;
-        height:35%;
-        /* border: 1px solid; */
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        margin: 3% 0;
+    position: relative;
+    left: 25%;
+    .seat{
+        width: 100%;
+        select{
+            width: 10%;
+            font-size: 1em;
+            margin-left: 10%;
+
+        }
     }
     .time{
-        width: 50%;
-        height: 40%;
+        width: 100%;
+        height: 20%;
+        display: flex;
         p{
+            width: 20%;
+            height: 40%;
             border: 1px solid;
-            width: 15%;
-            height: 15%;
+            border-radius: 10px;
+            margin-top:10%;
+            margin-left: 2%;
+            background-color: white;
+            font-size: 1em;
             display: flex;
             justify-content: center;
             align-items: center;
-            font-size: 1em;
-            padding: 1%;
-            border-radius : 10px;
+            cursor: pointer;
+        /* 선택된 버튼에 대한 스타일 변경 */
+    
+        }
+        .selected{
+            background-color: #990a2c;
+            color: #fff;
+        }
+    }
+    .cal{
+        width: 100%;
+        height:50%;
+
+    }
+    .btn{
+        width: 100%;
+        height: 30%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        button{
+            width: 30%;
+            height: 20%;
+            border: none;
+            border-radius: 15px;
+            cursor: pointer;
         }
     }
     .react-calendar {
             width: 100%;
-            height: 95%;
+            height: 100%;
             max-height: 100%;
             max-width: 100%;
             background-color: #fff;
@@ -67,6 +102,7 @@ const ReserveStyle = styled.div`
             .react-calendar__tile{
                 background-color: #fff;
                 font-size: 1em;
+                height: 55px;
             }
             .react-calendar__tile:enabled:hover,
             .react-calendar__tile:enabled:focus {
@@ -94,12 +130,52 @@ const ReserveStyle = styled.div`
 `
 
 const ReservePage = () =>{
-    const [seat, setSeat] = useState(1);
-    const [value, setValue] = useState(new Date());// 날짜 저장
+    const timeInfo = localStorage.getItem("time") // 요일별 시간 정보 가져오기
+    // 요일을 숫자로 반환
+    function changeDay(day) {
+        const dayOfWeek = {
+          월요일: 1,
+          화요일: 2,
+          수요일: 3,
+          목요일: 4,
+          금요일: 5,
+          토요일: 6,
+          일요일: 0
+        };
+        
+        return dayOfWeek[day];
+    }
+    // 날짜 선택시 해당 날짜에 맞는 요일에 연극 시간을 불러옴
+    function getTimeOptions(timeInfo, selectedDate) {
+        const dayOptions = timeInfo.split(', '); // 문자열 정보를 시간과 요일별로 나누고
+        const date = new Date(selectedDate);
+        const selectedDay = date.getDay();// 선택한 날짜의 요일을 숫자로 출력
+        let timeOptions = null;
+
+        dayOptions.forEach(dayOption => { // for문 돌리며 요일별 날짜 정보들 나누고 
+            const [dayRange, timeRange] = dayOption.split('(');
+            const days = dayRange.split(' ~ ');
+            const startDay = changeDay(days[0]); // 요일 문자열을 숫자로 변경 후 대입
+            const endDay = changeDay(days.length > 1 ? days[1] : days[0]);
+            const times = timeRange.replace(')', '').split(',');
+            if (selectedDay >= startDay && selectedDay <= endDay) { // 월~금일경우 1~6으로 계산해서 해당에 맞는 시간 대입
+                timeOptions = times;
+              }
+            });      
+        return timeOptions;
+      }
+      
+      
+
+    const [seat, setSeat] = useState(1); // 좌석 선택
+    const [value, setValue] = useState();// 예매 날짜 저장
+    const[selTime,setSelTime] = useState("");
+    const [timeOptions, setTimeOptions] = useState([]);
+
     function selectSeat(e) { 
         setSeat(e.target.value);
-      }
-    function setOption(start, end) { // 포문 돌려서 옵션 생성
+    }
+    function setOption(start, end) { // 포문 돌려서 좌석 옵션 생성
         const options = [];
         for (let i = start; i <= end; i++) {
           options.push(
@@ -110,12 +186,30 @@ const ReservePage = () =>{
         }
         return options;
     }
+    function dateData(date) {
+        setValue(date);
+        setTimeOptions(getTimeOptions(timeInfo, date));
+      }
+    function timeData(time) {
+        setSelTime(time);
+      }
     
+    useEffect(() => {
+        // 요일이 변경되면 선택된 시간 초기화
+        setSelTime("");
+    }, [value]);
+
+    const allData =() =>{
+        const date = moment(value).format("YYYY-MM-DD")
+        console.log(seat,date,selTime);
+    }
     return(
+        <>
+        <Header children={"예매하기"}/>
         <ReserveStyle>
             <div className="cal">
                 <Calendar
-                onChange={setValue} 
+                onChange={dateData} 
                 value={value}
                 calendarType="US"
                 minDate={new(Date)}
@@ -123,7 +217,15 @@ const ReservePage = () =>{
             </div>
             <div className="time">
                 <h3>회차 선택</h3>
-                <p>20시 00분</p>
+                {timeOptions && timeOptions.map((time, index) => (
+                    <p 
+                    className={selTime === time ? "selected" : ""}
+                    onClick={()=>timeData(time)} 
+                    key={index}
+                    >
+                        {time.trim()}
+                    </p>
+                    ))}
             </div>
             <div className="seat">
                 <h3>좌석 선택</h3>
@@ -131,8 +233,12 @@ const ReservePage = () =>{
                     {setOption(1,10)}
                 </select>            
             </div>
-            <button> 다음 </button>
+            <div className="btn">
+                <Button onClick={()=>allData()}> 선택 완료</Button>
+            </div>
         </ReserveStyle>
+        <Footer/>
+    </>
     )
 }
 
