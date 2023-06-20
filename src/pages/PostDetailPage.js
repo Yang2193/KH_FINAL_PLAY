@@ -1,5 +1,3 @@
-
-
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
@@ -128,11 +126,22 @@ const PostDetailPage = () => {
       } else {
         setComments([]);
       }
+      increaseViews(postId); // 조회수 증가 함수 호출
       console.log(data);
     } catch (error) {
       console.log(error);
     }
   };
+
+  const increaseViews = async (postId) => {
+    try {
+      await PostAPI.increasePostViews(postId);
+      setPost(prevPost => ({ ...prevPost, postViews: prevPost.postViews + 1 }));
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const formatWriteDate = (date) => {
     const formattedDate = new Date(date).toLocaleDateString('en-US');
     return formattedDate;
@@ -147,15 +156,16 @@ const PostDetailPage = () => {
       const newComment = {
         commentContent: comment,
         commentDate: new Date(),
+        postId: postId, 
       };
-      const response = await PostAPI.createComment(postId, newComment);
+      const response = await PostAPI.createComment(newComment.postId, newComment); // postId로 수정
       setComments([...comments, response]);
       setComment('');
+      console.log(response); // 새로 작성된 댓글 데이터 출력
     } catch (error) {
       console.log(error);
     }
   };
-
   if (!post) {
     return <LoadingMessage>Loading...</LoadingMessage>;
   }
@@ -190,7 +200,6 @@ const PostDetailPage = () => {
             <CommentList>
               {comments.map((comment) => (
                 <CommentItem key={comment.id}>
-                  <CommentContent>{comment.commentContent}</CommentContent>
                   <CommentContent>{comment.commentContent}</CommentContent>
                   <CommentDate>{formatWriteDate(comment.commentDate)}</CommentDate>
                 </CommentItem>
