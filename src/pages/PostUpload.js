@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { useNavigate } from 'react-router-dom';
 import ImageUploader from '../components/Comment/ImageUploader';
 import PostAPI from '../api/PostApi';
 
@@ -24,7 +27,6 @@ const Input = styled.input`
   padding: 8px;
   font-size: 16px;
   border: 1px solid #ccc;
-
 `;
 
 const Textarea = styled.textarea`
@@ -32,13 +34,13 @@ const Textarea = styled.textarea`
   padding: 8px;
   font-size: 16px;
   border: 1px solid #ccc;
-  height: 300px; /* 리뷰 설명 칸의 높이를 300px로 설정합니다. */
+  height: 300px;
 `;
 
 const Button = styled.button`
   padding: 10px 20px;
   font-size: 16px;
-  background-color:#800634;
+  background-color: #800634;
   color: #fff;
   border: none;
   cursor: pointer;
@@ -50,6 +52,8 @@ const PostUpload = () => {
     postImage: '',
     postContent: '',
   });
+
+  const navigate = useNavigate();
 
   const handleImageChange = (image) => {
     setPostData((prevData) => ({
@@ -70,14 +74,17 @@ const PostUpload = () => {
     try {
       const response = await PostAPI.addPost(
         postData.postTitle,
+        postData.postContent,
         postData.postImage,
-        postData.postContent
+        '1',
+        '승7'
       );
 
-      if (response.status === 200) {
-        console.log('게시물 등록 성공');
+      if (response.id) {
+        toast.success('게시물 등록 성공');
+        navigate(-1); // 이전 페이지로 이동
       } else {
-        console.log('게시물 등록 실패');
+        toast.error('게시물 등록 실패');
       }
     } catch (error) {
       console.error('게시물 등록 에러:', error);
@@ -85,39 +92,42 @@ const PostUpload = () => {
   };
 
   return (
-    <Container>
-      <Heading>게시물 등록</Heading>
-      <div>
-        <Label>
-          제목
-          <Input
-            type="text"
-            name="postTitle"
-            value={postData.postTitle}
-            onChange={handleInputChange}
-          />
-        </Label>
-      </div>
-      <div>
-        <Label>
-          이미지
-          <ImageUploader onChange={handleImageChange} />
-        </Label>
-      </div>
-      <div>
-        <Label>
-          내용
-          <Textarea
-            name="postContent"
-            value={postData.postContent}
-            onChange={handleInputChange}
-            className="myTextarea" // 추가적인 스타일을 적용하기 위한 className을 추가합니다.
-          ></Textarea>
-        </Label>
-      </div>
-      <Button onClick={handleUpload}>등록하기</Button>
-    </Container>
+    <>
+      <ToastContainer /> 
+      <Container>
+        <Heading>게시물 등록</Heading>
+        <div>
+          <Label>
+            제목
+            <Input
+              type="text"
+              name="postTitle"
+              value={postData.postTitle}
+              onChange={handleInputChange}
+            />
+          </Label>
+        </div>
+        <div>
+          <Label>
+            이미지
+            <ImageUploader onChange={handleImageChange} />
+          </Label>
+        </div>
+        <div>
+          <Label>
+            내용
+            <Textarea
+              name="postContent"
+              value={postData.postContent}
+              onChange={handleInputChange}
+              className="myTextarea"
+            ></Textarea>
+          </Label>
+        </div>
+        <Button onClick={handleUpload}>등록하기</Button>
+      </Container>
+    </>
   );
-};
+}
 
 export default PostUpload;

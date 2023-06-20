@@ -34,21 +34,15 @@ const Post = () => {
   const sortSortNo = () => {
     setSortedPosts([...posts].sort((a, b) => b.id - a.id));
   };
-
-  const increaseViews = async (postId) => {
-    try {
-      await PostAPI.increasePostViews(postId);
-      if (isDataFetched) {
-        setPosts((prevPosts) =>
-          prevPosts.map((post) =>
-            post.id === postId ? { ...post, postViews: post.postViews + 1 } : post
-          )
-        );
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
+//프론트에서 증가 시키는 이유
+//posts 배열을 순회하면서 변경된 게시물의 조회수만 1 실시간으로 증가 시키기 위해
+const increaseViews = async (postId) => {
+  try {
+    await PostAPI.increasePostViews(postId);
+  } catch (error) {
+    console.log(error);
+  }
+};
 
   const formatWriteDate = (date) => {
     const formattedDate = new Date(date).toLocaleDateString('en-US');
