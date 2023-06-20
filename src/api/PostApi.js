@@ -14,19 +14,19 @@ const PostAPI = {
     return response.data;
   },
 
-// 게시물 등록
-addPost: async (postTitle, postContent, postImageUrl, postCategory, userId) => {
-  const postData = {
-    postTitle: postTitle,
-    postContent: postContent,
-    postImageUrl: postImageUrl,
-    postCategory: postCategory,
-    userId: userId,
-  };
+  // 게시물 등록
+  addPost: async (postTitle, postContent, postImageUrl, postCategory, userId) => {
+    const postData = {
+      postTitle: postTitle,
+      postContent: postContent,
+      postImageUrl: postImageUrl,
+      postCategory: postCategory,
+      userId: userId,
+    };
 
-  const response = await axios.post(`${Posts}/post/postUpload`, postData);
-  return response.data;
-},
+    const response = await axios.post(`${Posts}/post/postUpload`, postData);
+    return response.data;
+  },
 
   // 조회수 증가
   increasePostViews: async (postId) => {

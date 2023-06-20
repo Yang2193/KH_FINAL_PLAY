@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import Footer from '../components/Footer';
@@ -34,23 +33,41 @@ const Post = () => {
   const sortSortNo = () => {
     setSortedPosts([...posts].sort((a, b) => b.id - a.id));
   };
-//프론트에서 증가 시키는 이유
-//posts 배열을 순회하면서 변경된 게시물의 조회수만 1 실시간으로 증가 시키기 위해
-const increaseViews = async (postId) => {
-  try {
-    await PostAPI.increasePostViews(postId);
-  } catch (error) {
-    console.log(error);
-  }
-};
+
+  // 프론트에서 증가 시키는 이유
+  // posts 배열을 순회하면서 변경된 게시물의 조회수만 1 실시간으로 증가시키기 위해
+  const increaseViews = async (postId) => {
+    try {
+      await PostAPI.increasePostViews(postId);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const formatWriteDate = (date) => {
-    const formattedDate = new Date(date).toLocaleDateString('en-US');
-    return formattedDate;
+    const currentDate = new Date();
+    const writeDate = new Date(date);
+    const options = { year: 'numeric', month: 'long', day: 'numeric' };
+
+    if (isSameDay(currentDate, writeDate)) {
+      const formattedTime = writeDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+      return `오늘 ${formattedTime}`;
+    } else {
+      const formattedDate = writeDate.toLocaleDateString('ko', options);
+      return formattedDate;
+    }
   };
 
   const handlePageClick = (selectedPage) => {
     setCurrentPage(selectedPage.selected);
+  };
+
+  const isSameDay = (date1, date2) => {
+    return (
+      date1.getFullYear() === date2.getFullYear() &&
+      date1.getMonth() === date2.getMonth() &&
+      date1.getDate() === date2.getDate()
+    );
   };
 
   const pageCount = Math.ceil(sortedPosts.length / ITEMS_PAGE);
