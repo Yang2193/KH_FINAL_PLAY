@@ -97,8 +97,7 @@ const Login = () => {
                 {isLoginPw && <span className="loginPwOk">{loginPwOkMsg}</span>}
               </div>
               <div className="IdPwSearchButtonBox">
-                <Link to="/find/id" className="IdPwSearchButton">아이디 찾기</Link>
-                <Link to="/find/pw" className="IdPwSearchButton">패스워드 찾기</Link>
+                <Link to="/find" className="IdPwSearchButton">아이디 / 패스워드 찾기</Link>
               </div>
               <button className="loginButton" onClick={onClickLogin}>로그인</button>
               <div>

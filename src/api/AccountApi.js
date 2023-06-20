@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const Domain = "http://localhost:8111/auth";
+const Domain = "http://localhost:8111";
 
 const AccountApi = {
     // 토큰 GET 로그인
@@ -9,7 +9,14 @@ const AccountApi = {
             userId: userId,
             userPw: userPw
         };
-        return await axios.post(Domain + "/login", auth);
+        return await axios.post(Domain + "/auth/login", auth);
+    },
+
+    getUserInfo : async(userId) => {
+        const infoData = {
+            userId: userId
+        };
+        return await axios.post(Domain + "/member/userinfo", infoData);
     },
     
     // 회원가입
@@ -21,7 +28,7 @@ const AccountApi = {
             userPhone: userPhone,
             userEmail: userEmail
         };
-        return await axios.post(Domain + "/join/step2", memberInfo);
+        return await axios.post(Domain + "/auth/join/step2", memberInfo);
     },
 
     // 아이디 찾기
@@ -30,7 +37,7 @@ const AccountApi = {
             userName: userName,
             userEmail: userEmail
         };
-        return await axios.post(Domain + "/find/memberid", findId);
+        return await axios.post(Domain + "/member/find/id", findId);
     },
 
     // 비밀번호 찾기
@@ -40,7 +47,7 @@ const AccountApi = {
             userName: userName,
             userEmail: userEmail
         };
-        return await axios.post(Domain + "/find/memberpw", findPw);
+        return await axios.post(Domain + "/member/find/pw", findPw);
     }
 }
 
