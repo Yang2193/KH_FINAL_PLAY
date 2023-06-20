@@ -92,19 +92,9 @@ const Header = ({children}) => {
       setIsOpen(!isOpen);
       console.log(isOpen);
   }
-
-  const onClickLoginIcon = () => {
-    navigate("/login");
-  }
-
-  const onClickMyPageIcon = () => {
-    navigate("/mypage");
-  }
-
     return(
         <Container>
           {isMobile ? <>{children}</> : <LogoBox>{children}</LogoBox>}         
-          {window.localStorage.getItem("isLogin") === "TRUE" ? <MyPageBox onClick={onClickMyPageIcon}/> : <LoginBox onClick={onClickLoginIcon}/>}
           <MenuBurger/>
           <SideMenu/>
         </Container>

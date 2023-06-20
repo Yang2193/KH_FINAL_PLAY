@@ -1,5 +1,4 @@
 import axios from "axios";
-import { tokenValue } from "../components/Account/Login";
 
 const Domain = "http://localhost:8111/auth";
 
@@ -10,7 +9,7 @@ const AccountApi = {
             userId: userId,
             userPw: userPw
         };
-        return await axios.post(Domain + "/auth", auth);
+        return await axios.post(Domain + "/login", auth);
     },
     
     // 회원가입
