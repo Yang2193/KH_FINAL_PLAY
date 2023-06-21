@@ -95,7 +95,7 @@ const Post = () => {
               <th>리뷰 제목</th>
               <th>설명</th>
               <th>작성 날짜</th>
-              <th className="text_id">아이디</th>
+              <th className="text_id">닉네임</th>
               <th>조회수</th>
             </tr>
           </thead>
@@ -113,7 +113,7 @@ const Post = () => {
                 </td>
                 <td className="Explaination2">{post.postContent}</td>
                 <td className="WriteDate">{formatWriteDate(post.postDate)}</td>
-                <td className="Id">{post.memberInfo ? post.memberInfo.userId : ''}</td>
+                <td className="Id">{post.memberInfo ? post.memberInfo.userNickname : ''}</td>
                 <td className="Views">{post.postViews}</td>
               </tr>
             ))}

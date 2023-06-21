@@ -35,17 +35,17 @@ const PostAPI = {
     return response.data;
   },
 
-  // 댓글 생성
-  createComment: async (postId, newComment) => {
-    const commentData = {
-      postId: postId,
-      ...newComment,
-    };
+// 댓글 생성
 
-    const response = await axios.post(`${Posts}/comments`, commentData);
-    return response.data;
-  },
+createComment: async (postId, newComment) => {
+  const commentData = {
+    postId: postId,
+    ...newComment,
+  };
 
+  const response = await axios.post(`${Posts}/${postId}/comments`, commentData);
+  return response.data;
+},
 };
 
 export default PostAPI;
