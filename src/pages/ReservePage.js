@@ -151,25 +151,29 @@ const ReservePage = () =>{
         const date = new Date(selectedDate);
         const selectedDay = date.getDay();// 선택한 날짜의 요일을 숫자로 출력
         let timeOptions = null;
-
         dayOptions.forEach(dayOption => { // for문 돌리며 요일별 날짜 정보들 나누고 
             const [dayRange, timeRange] = dayOption.split('(');
             const days = dayRange.split(' ~ ');
             const startDay = changeDay(days[0]); // 요일 문자열을 숫자로 변경 후 대입
             const endDay = changeDay(days.length > 1 ? days[1] : days[0]);
             const times = timeRange.replace(')', '').split(',');
-            if (selectedDay >= startDay && selectedDay <= endDay) { // 월~금일경우 1~6으로 계산해서 해당에 맞는 시간 대입
+            if (
+                (selectedDay >= startDay && selectedDay <= endDay) || // 토요일부터 일요일까지 
+                (startDay > endDay && (selectedDay >= startDay || selectedDay <= endDay)) // 평일~평일
+              ) {
                 timeOptions = times;
               }
-            });      
-        return timeOptions;
+            });
+        return timeOptions ;
+
       }
       
       
-
-    const [seat, setSeat] = useState(1); // 좌석 선택
-    const [value, setValue] = useState();// 예매 날짜 저장
-    const[selTime,setSelTime] = useState("");
+    const playId = localStorage.getItem("playId"); // 연극 아이디
+    const userId = localStorage.getItem("userId"); // 유저 아이디
+    const [seat, setSeat] = useState(1); // 선택한 좌석 정보
+    const [value, setValue] = useState();// 선택한 공연 날짜 정보
+    const[selTime,setSelTime] = useState(""); // 선택한 공연 시간 정보
     const [timeOptions, setTimeOptions] = useState([]);
 
     function selectSeat(e) { 
@@ -201,7 +205,7 @@ const ReservePage = () =>{
 
     const allData =() =>{
         const date = moment(value).format("YYYY-MM-DD")
-        console.log(seat,date,selTime);
+        console.log(seat,date,selTime,userId,playId);
     }
     return(
         <>
