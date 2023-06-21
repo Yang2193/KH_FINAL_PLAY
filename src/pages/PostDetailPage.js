@@ -126,7 +126,7 @@ const PostDetailPage = () => {
       } else {
         setComments([]);
       }
-      increaseViews(postId); // 조회수 증가 함수 호출
+      increaseViews(postId);
       console.log(data);
     } catch (error) {
       console.log(error);
@@ -156,16 +156,17 @@ const PostDetailPage = () => {
       const newComment = {
         commentContent: comment,
         commentDate: new Date(),
-        postId: postId, 
+        postId: post.id,
       };
-      const response = await PostAPI.createComment(newComment.postId, newComment); // postId로 수정
+      const response = await PostAPI.createComment(newComment.postId, newComment);
       setComments([...comments, response]);
       setComment('');
-      console.log(response); // 새로 작성된 댓글 데이터 출력
+      console.log(response);
     } catch (error) {
       console.log(error);
     }
   };
+
   if (!post) {
     return <LoadingMessage>Loading...</LoadingMessage>;
   }
