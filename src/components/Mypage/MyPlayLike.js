@@ -1,0 +1,135 @@
+import React from "react";
+import { useContext } from "react";
+import { AccountInfoContext } from "../../context/AccountInfo";
+import { useEffect } from "react";
+import PlayInfoApi from "../../api/PlayInfoApi";
+import { useState } from "react";
+import styled from "styled-components";
+
+const ListBox = styled.div`
+    position: relative;
+    top: 10%;
+    margin: 0 auto;
+    width: 70%;
+    @media (max-width: 768px) {
+        width: 80%;
+        font-size: 80%;
+
+        td .img-thumb{
+            width: 60px;
+            height: 80px;
+        }
+    }
+
+    .bar{
+        width: 100%;
+        height: 20px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    table{
+        width : 100%;
+    }
+
+    thead, tbody{
+        width : 100%
+    }
+    
+    thead th{
+        background-color: #990A2C;
+        color: #fff;
+    }
+    
+    tbody td{
+        border-bottom: 1px dotted #999;
+    }
+
+    td{
+        height: 100px;
+        text-align: center;
+        font-size: 1rem;
+        padding: 10px 0;
+
+        @media (max-width: 768px) {
+        font-size: 0.8rem;
+        }
+    }
+
+    .img-thumb{
+            width: 90px;
+            height: 120px;
+            margin: 0 auto;
+            border: 1px solid #b9b9b9;
+            vertical-align: middle;
+        }
+                    
+    .menu p{
+        margin: 0 20px;
+    }
+`
+
+const MyPlayLike = () => {
+    // 로그인 한 회원정보 가져오기
+    const context = useContext(AccountInfoContext);
+    const { userId } = context;
+
+    // 찜목록 데이터 저장하기
+    const [likeList, setLikeList] = useState([]);
+
+    // 오류 메세지
+    const [likeListMsg, setLikeListMsg] = useState("");
+    const [likeListOkMsg, setLikeListOkMsg] = useState("");
+    
+    // 찜목록 리스트 출력
+    // 찜목록 선택 시 찜한 컨텐츠의 정보 출력
+    // 찜 해제 시 db에서 삭제되고, 리스트에서 제거
+    // if 결제가 된다면 바로 예매까지.
+    useEffect(() => {
+        const playLikeData = async() => {
+            try {
+                const likeData = await PlayInfoApi.selectPlayLike(userId);
+                console.log(likeData.data);
+                if(likeData.status === 200) {
+                    setLikeList(likeData.data);
+                } else {
+                    setLikeListMsg("찜한 목록이 없거나 불러오기 실패");
+                }
+            } catch(e) {
+                console.log(e);
+            }
+        };
+        playLikeData();
+    }, []);
+     
+
+    return (
+        <>
+        <h3>{userId}님의 찜목록</h3>
+        <ListBox>
+        <table className="ReviewTable">
+          <thead>
+            <tr>
+              <th colSpan={2}>상품명</th>
+              <th>장소</th>
+              <th>기간</th>
+            </tr>
+          </thead>
+          <tbody>
+            {likeList.map((ll) => (
+              <tr className="likeItem" key={ll.id}>
+                <td className="image"><img src={ll.playInfo.imageUrl} alt="image1" className="img-thumb"/></td>
+                <td className="title">{ll.playInfo.title}</td>
+                <td className="location">{ll.playInfo.theaterName}</td>
+                <td className="period">{ll.playInfo.periodStart} ~ {ll.playInfo.periodEnd}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+        </ListBox>
+        </>
+    );
+}
+
+export default MyPlayLike;
