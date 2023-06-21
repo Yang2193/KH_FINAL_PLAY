@@ -17,6 +17,7 @@ const Post = () => {
     const fetchData = async () => {
       try {
         const rsp = await PostAPI.getAllPosts();
+        console.log(rsp);
         if (rsp.status === 200) {
           setPosts(rsp.data);
           setSortedPosts(rsp.data);
@@ -51,7 +52,7 @@ const Post = () => {
 
     if (isSameDay(currentDate, writeDate)) {
       const formattedTime = writeDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-      return `오늘 ${formattedTime}`;
+      return ` ${formattedTime}`;
     } else {
       const formattedDate = writeDate.toLocaleDateString('ko', options);
       return formattedDate;
@@ -73,6 +74,7 @@ const Post = () => {
   const pageCount = Math.ceil(sortedPosts.length / ITEMS_PAGE);
   const offset = currentPage * ITEMS_PAGE;
   const currentPageData = sortedPosts.slice(offset, offset + ITEMS_PAGE);
+  
 
   return (
     <>
@@ -111,11 +113,12 @@ const Post = () => {
                 </td>
                 <td className="Explaination2">{post.postContent}</td>
                 <td className="WriteDate">{formatWriteDate(post.postDate)}</td>
-                <td className="Id">{post.memberInfo && post.memberInfo.userId}</td>
+                <td className="Id">{post.userId}</td>
                 <td className="Views">{post.postViews}</td>
               </tr>
             ))}
           </tbody>
+
         </table>
         {pageCount > 1 && <PageNation pageCount={pageCount} onPageChange={handlePageClick} />}
       </div>

@@ -1,13 +1,12 @@
 import axios from "axios";
 import Functions from "../utils/Functions";
-
 const Posts = "http://localhost:8111"; // 백엔드 API 서버 주소
 
 const PostAPI = {
   // 게시물 목록 조회
   getAllPosts: async () => {
-      Functions.setAuthorizationHeader(); // 예시로 넣어놨습니다. 나중에 지우세요.
-      return await axios.get(`${Posts}/post/select`);
+    Functions.setAuthorizationHeader();
+    return await axios.get(Posts+`/post/select`);
   },
 
   // 게시물 상세 정보 조회

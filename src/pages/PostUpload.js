@@ -77,9 +77,10 @@ const PostUpload = () => {
         postData.postContent,
         postData.postImage,
         '1',
-        '승7'
+        localStorage.getItem("userId")// userId 값을 전송
+        
       );
-
+  
       if (response.id) {
         toast.success('게시물 등록 성공');
         navigate(-1); // 이전 페이지로 이동
@@ -90,7 +91,7 @@ const PostUpload = () => {
       console.error('게시물 등록 에러:', error);
     }
   };
-
+  
   return (
     <>
       <ToastContainer /> 
