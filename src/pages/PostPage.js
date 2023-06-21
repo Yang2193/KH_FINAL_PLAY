@@ -113,7 +113,7 @@ const Post = () => {
                 </td>
                 <td className="Explaination2">{post.postContent}</td>
                 <td className="WriteDate">{formatWriteDate(post.postDate)}</td>
-                <td className="Id">{post.userId}</td>
+                <td className="Id">{post.memberInfo ? post.memberInfo.userId : ''}</td>
                 <td className="Views">{post.postViews}</td>
               </tr>
             ))}
