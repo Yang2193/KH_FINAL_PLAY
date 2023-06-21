@@ -89,11 +89,10 @@ const Box = styled.div`
 
 const SideMenu = () => {
     const [isOpen, setIsOpen] = useState(false);
-    const [isBizMem, setIsBizMem] = useState(false);
     const ref = useRef(null);
     const navigate = useNavigate();
     const userId = window.localStorage.getItem("userId");
-    const memberType = window.localStorage.getItem("memberType");
+    const authority = window.localStorage.getItem("authority");
 
     //팝업창
     const [modalOpen, setModalOpen] = useState(false);
@@ -147,7 +146,7 @@ const SideMenu = () => {
         window.localStorage.setItem("memberType", '');
         window.localStorage.setItem("accessToken", '');
         window.localStorage.setItem("refreshToken", '');
-        console.log(isBizMem);
+        window.localStorage.setItem("authority", '');
         navigate("/");
         setIsOpen(!isOpen);
         setModalOpen("logout");
@@ -158,16 +157,14 @@ const SideMenu = () => {
         <MenuButton  onClick={onClickMenu} ref={ref}>
                 <Box isOpen={isOpen} >
                    <div className="header">메뉴</div>
-                    {memberType==="biz" ? 
+                    {authority==="ROLE_ADMIN" ? 
                             <div className="box" onClick={onClickBox}>
-                            {userId ?
-                                <div className="item" onClick={logout}>로그아웃</div>
-                            :   <div className="item" onClick={()=> handleLinkClick("/Login")}>로그인/회원가입</div>
-                            }
-                            <div className="item" onClick={()=> handleLinkClick("/BusinessPage","menu1")}>매장 등록</div>
-                            <div className="item" onClick={()=> handleLinkClick("/BusinessPage","menu2")}>고객 1:1 문의</div>
-                            <div className="item" onClick={()=> handleLinkClick("/BusinessPage","menu3")}>예약 현황</div>
-                            <div className="item" onClick={()=> handleLinkClick("/BusinessPage","menu4")}>메뉴 추가</div>
+                                {userId ?
+                                    <div className="item" onClick={logout}>로그아웃</div>
+                                :   <div className="item" onClick={()=> handleLinkClick("/Login")}>로그인/회원가입</div>
+                                }
+                                <div className="item" onClick={()=> window.location.href = "http://localhost:8111/admin"}>관리자 메뉴</div>
+                           
                             </div>
                     :  <div className="box" onClick={onClickBox}>
                             {userId ?
