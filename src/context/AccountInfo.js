@@ -2,19 +2,18 @@ import React, { createContext, useState } from "react";
 
 export const AccountInfoContext = createContext();
 
-const AccountProvide = ({children} ) => {
-    const [accountInfo, setAccountInfo] = useState({
-        id: "",
-        pw: "",
-        name: "",
-        phone: "",
-        email: ""
-    });
+const AccountProvider = ({children} ) => {
+    const [userId, setUserId] = useState("");
+    const [userPw, setUserPw] = useState("");
+    const [userName, setUserName] = useState("");
+    const [userNickname, setUserNickname] = useState("");
+    const [userPhone, setUserPhone] = useState("");
+    const [userEmail, setUserEmail] = useState("");
 
     return (
-        <AccountInfoContext.Provider value={{ accountInfo, setAccountInfo}}>
+        <AccountInfoContext.Provider value={{userId, setUserId, userPw, setUserPw, userName, setUserName, userNickname, setUserNickname, userPhone, setUserPhone, userEmail, setUserEmail}}>
             {children}
         </AccountInfoContext.Provider>
     );
 }
-export default AccountProvide;
+export default AccountProvider;

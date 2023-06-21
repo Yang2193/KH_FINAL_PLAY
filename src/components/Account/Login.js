@@ -1,10 +1,13 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import AccountApi from "../../api/AccountApi";
 import '../../styles/Account.css';
+import { AccountInfoContext } from "../../context/AccountInfo";
 
 const Login = () => {
     const navigate = useNavigate();
+    const context = useContext(AccountInfoContext);
+    const {setUserId, setUserPw, setUserName, setUserNickname, setUserPhone, setUserEmail} = context;
 
     // 키보드 입력 받기
     const [loginId, setLoginId] = useState(""); // 로그인 아이디
@@ -59,12 +62,21 @@ const Login = () => {
       try {
         const response = await AccountApi.getToken(loginId, loginPw);
         if(response.status === 200) {
-          console.log(response.data);
           window.localStorage.setItem("accessToken", response.data.accessToken);
           window.localStorage.setItem("refreshToken", response.data.refreshToken);
           localStorage.setItem("isLogin", "TRUE");
           localStorage.setItem("userId", loginId);
-          console.log(localStorage.getItem("accessToken"));
+          try {
+            const response2 = await AccountApi.getUserInfo(loginId);
+            const userData = response2.data
+            setUserId(userData.userId);
+            setUserPw(userData.userPw);
+            setUserName(userData.userName);
+            setUserPhone(userData.userPhone);
+            setUserEmail(userData.userEmail);
+          } catch(e) {
+            console.log(e);
+          }
           navigate("/");
         }
       } catch(e) {
@@ -97,8 +109,7 @@ const Login = () => {
                 {isLoginPw && <span className="loginPwOk">{loginPwOkMsg}</span>}
               </div>
               <div className="IdPwSearchButtonBox">
-                <Link to="/find/id" className="IdPwSearchButton">아이디 찾기</Link>
-                <Link to="/find/pw" className="IdPwSearchButton">패스워드 찾기</Link>
+                <Link to="/find" className="IdPwSearchButton">아이디 / 패스워드 찾기</Link>
               </div>
               <button className="loginButton" onClick={onClickLogin}>로그인</button>
               <div>

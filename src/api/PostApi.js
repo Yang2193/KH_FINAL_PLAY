@@ -45,6 +45,7 @@ const PostAPI = {
     const response = await axios.post(`${Posts}/comments`, commentData);
     return response.data;
   },
+
 };
 
 export default PostAPI;
