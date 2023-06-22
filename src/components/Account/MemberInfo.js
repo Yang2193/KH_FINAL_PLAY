@@ -1,26 +1,26 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { AccountInfoContext } from "../../context/AccountInfo";
 import "../../styles/Account.css"
 import AccountApi from "../../api/AccountApi";
 
 const MemberInfo = () => {
     const navigate = useNavigate();
-    const { accountInfo, setAccountInfo } = useContext(AccountInfoContext);
 
     // 키보드 입력
-    const [inputId, setInputId] = useState(accountInfo.id);
-    const [inputPw, setInputPw] = useState(accountInfo.pw);
+    const [inputId, setInputId] = useState("");
+    const [inputPw, setInputPw] = useState("");
     const [inputPwCk, setInputPwCk] = useState("");
-    const [inputName, setInputName] = useState(accountInfo.name);
-    const [inputEmail, setInputEmail] = useState(accountInfo.email);
-    const [inputPhone, setInputPhone] = useState(accountInfo.phone);
+    const [inputName, setInputName] = useState("");
+    const [inputNickname, setInputNickname] = useState("");
+    const [inputEmail, setInputEmail] = useState("");
+    const [inputPhone, setInputPhone] = useState("");
     
 
     // 오류 메세지
     const [idError, setIdError] = useState("");
     const [pwError, setPwError] = useState("");
     const [pwCkError, setPwCkError] = useState("");
+    const [nicknameError, setNicknameError] = useState("");
     const [nameError, setNameError] = useState("");
     const [emailError, setEmailError] = useState("");
     const [phoneError, setPhoneError] = useState("");
@@ -31,6 +31,7 @@ const MemberInfo = () => {
     const [isPw, setIsPw] = useState(false);
     const [isPwCk, setIsPwCk] = useState(false);
     const [isEmail, setIsEmail] = useState(false);
+    const [isNickname, setIsNickname] = useState(false);
     const [isName, setIsName] = useState(false);
     const [isPhone, setIsPhone] = useState(false);
 
@@ -44,6 +45,7 @@ const MemberInfo = () => {
             console.log(inputId, inputPw, inputName, inputPhone, inputEmail);
         } else {
             setIsAllChecked(false);
+            setAllCheckError("필수 회원 정보를 모두 입력 하지 않았습니다.")
         }
     }, [isId, isPw, isPwCk, isEmail, isName, isPhone]);
 
@@ -97,6 +99,17 @@ const MemberInfo = () => {
         }
     };
 
+    const onChangeSignUserNickname = (e) => {
+        const nicknameNow = e.target.value;
+        setInputNickname(nicknameNow); 
+
+        if(nicknameNow.length < 2 || nicknameNow.length > 10) {
+            setIsNickname(false);
+        } else {
+            setIsNickname(true);
+        }
+    };
+
     const onChangeSignUserTel = (e) => {
         const telRegEx = /^\d{2,3}-\d{3,4}-\d{4}$/; // 전화번호 정규표현식
         const telNow = e.target.value;
@@ -127,9 +140,9 @@ const MemberInfo = () => {
 
     const conClickSignUp = async() => {
         try {
-            const response = await AccountApi.memberReg(inputId, inputPw, inputName, inputEmail, inputPhone);
-            console.log(response.data);
-            if(response.data === true) {
+            const response = await AccountApi.memberReg(inputId, inputPw, inputNickname, inputName, inputEmail, inputPhone);
+            if(response.status === 200) {
+                console.log(response.data.message);
                 navigate("/login");
             }
         } catch(e) {
@@ -168,6 +181,10 @@ const MemberInfo = () => {
                             </div>
                             <div>
                                 {inputPwCk.length > 0 && <span className={`message ${inputPwCk === inputPw ? '' : 'error'}`}>{pwCkError}</span>}
+                            </div>
+                            <div>
+                                <i></i>
+                                <input type="text" placeholder="User Nickname" value={inputNickname} onChange={onChangeSignUserNickname} className={isNickname ? 'focused-nickname' : ''}/>
                             </div>
                             <div>
                                 <i></i>

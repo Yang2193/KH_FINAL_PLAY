@@ -22,10 +22,11 @@ const AccountApi = {
     },
     
     // 회원가입
-    memberReg : async(userId, userPw, userName, userPhone, userEmail) => {
+    memberReg : async(userId, userPw, userNickname, userName, userPhone, userEmail) => {
         const memberInfo = {
             userId: userId,
             userPw: userPw,
+            userNickname: userNickname,
             userName: userName,
             userPhone: userPhone,
             userEmail: userEmail
