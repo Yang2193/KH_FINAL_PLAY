@@ -154,12 +154,10 @@ const PostDetailPage = () => {
     try {
       const data = await PostAPI.getPostById(postId);
       setPost(data);
-      if (data.comments) {
-        setComments(data.comments);
-      } else {
-        setComments([]);
-      }
+      // setComments(data.comments || []);
       increaseViews(postId);
+      const comments = await PostAPI.getCommentsByPostId(postId);
+      setComments(comments);
     } catch (error) {
       console.log(error);
     }
@@ -177,24 +175,22 @@ const PostDetailPage = () => {
   const handleCommentChange = (e) => {
     setComment(e.target.value);
   };
+const handleSubmitComment = async () => {
+  try {
+    const newComment = {
+      commentContent: comment,
+      commentDate: new Date(),
+      postId: post.id,
+    };
 
-  const handleSubmitComment = async () => {
-    try {
-      const newComment = {
-        commentContent: comment,
-        commentDate: new Date(),
-        postId: post.id,
-      };
-
-      const response = await PostAPI.createComment(newComment.postId, newComment);
-      setComments([...comments, response]);
-      setComment('');
-
-      console.log('작성된 댓글:', response);
-    } catch (error) {
-      console.log(error);
-    }
-  };
+    const response = await PostAPI.createComment(newComment.postId, newComment);
+    setComments([...comments, response]);
+    setComment('');
+    console.log('작성된 댓글:', response);
+  } catch (error) {
+    console.log(error);
+  }
+};
 
   useEffect(() => {
     const commentSection = document.getElementById('commentSection');
@@ -218,7 +214,7 @@ const PostDetailPage = () => {
             <PostInfo>
               <div>
                 <PostInfoItem userId>작성자: {post.memberInfo.userId}</PostInfoItem>
-                <PostInfoItem>작성 날짜: {formatWriteDate(post.postDate)}</PostInfoItem>
+                <PostInfoItem> {formatWriteDate(post.postDate)}</PostInfoItem>
               </div>
               <PostInfoItem>조회수: {post.postViews}</PostInfoItem>
             </PostInfo>
@@ -227,7 +223,11 @@ const PostDetailPage = () => {
             <img src={post.postImageUrl} alt="Post" />
           </PostImage>
           <PostContent>{post.postContent}</PostContent>
+
+          
           <CommentSection id="commentSection" height={commentSectionHeight}>
+
+
             <CommentInputWrapper>
               <CommentInput
                 type="text"
@@ -237,17 +237,25 @@ const PostDetailPage = () => {
               />
               <CommentButton onClick={handleSubmitComment}>댓글 작성</CommentButton>
             </CommentInputWrapper>
-            <CommentList>
-              {comments.map((comment) => (
-                <CommentItem key={comment.id}>
-                  <CommentDate>{formatWriteDate(comment.commentDate)}</CommentDate>
-                  <CommentContent>{comment.commentContent}</CommentContent>
-                  <CommentInfo>
-                    <CommentAuthor>{comment.author}</CommentAuthor>
-                  </CommentInfo>
-                </CommentItem>
-              ))}
-            </CommentList>
+
+
+
+          <CommentList>
+            {comments.map((comment) => (
+              <CommentItem key={comment.id}>
+                <CommentDate>{formatWriteDate(comment.commentDate)}</CommentDate>
+                <CommentContent>{comment.commentContent}</CommentContent>
+                <CommentInfo>
+                  <CommentAuthor>{comment.author}</CommentAuthor>
+                </CommentInfo>
+              </CommentItem>
+            ))}
+          </CommentList>
+
+
+
+
+
           </CommentSection>
         </PostDetailWrapper>
       </Background>
