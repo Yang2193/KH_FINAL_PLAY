@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import AccountApi from "../../api/AccountApi";
 import '../../styles/Account.css';
 import { AccountInfoContext } from "../../context/AccountInfo";
+import { getCookie, setCookie } from "../../utils/Cookie";
 
 const Login = () => {
     const navigate = useNavigate();
@@ -65,7 +66,8 @@ const Login = () => {
           window.localStorage.setItem("accessToken", response.data.accessToken);
           window.localStorage.setItem("refreshToken", response.data.refreshToken);
           localStorage.setItem("isLogin", "TRUE");
-          localStorage.setItem("userId", loginId);
+          localStorage.setItem("userId", loginId);          
+          console.log("로그인 성공")
           try {
             const response2 = await AccountApi.getUserInfo(loginId);
             const userData = response2.data
@@ -85,6 +87,7 @@ const Login = () => {
       navigate("/join")
     }
 
+    
     return (
       <div className="wrapper">
         <div className="loginWrapper">
