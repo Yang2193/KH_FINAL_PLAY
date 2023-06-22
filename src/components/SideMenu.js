@@ -147,7 +147,6 @@ const SideMenu = () => {
         window.localStorage.setItem("accessToken", '');
         window.localStorage.setItem("refreshToken", '');
         window.localStorage.setItem("authority", '');
-        window.localStorage.setItem("userData", '');
         navigate("/");
         setIsOpen(!isOpen);
         setModalOpen("logout");
@@ -158,23 +157,14 @@ const SideMenu = () => {
         <MenuButton  onClick={onClickMenu} ref={ref}>
                 <Box isOpen={isOpen} >
                    <div className="header">메뉴</div>
-                    {authority==="ROLE_ADMIN" ? 
-                            <div className="box" onClick={onClickBox}>
-                                {userId ?
-                                    <div className="item" onClick={logout}>로그아웃</div>
-                                :   <div className="item" onClick={()=> handleLinkClick("/Login")}>로그인/회원가입</div>
-                                }
-                                <div className="item" onClick={()=> window.location.href = "http://localhost:8111/admin"}>관리자 메뉴</div>
-                           
-                            </div>
-                    :  <div className="box" onClick={onClickBox}>
+                    <div className="box" onClick={onClickBox}>
                             {userId ?
                                 <div className="item" onClick={logout}>로그아웃</div>
                             :   <div className="item" onClick={()=> handleLinkClick("/Login")}>로그인/회원가입</div>
                             }
                             <div className="item" onClick={()=> handleLinkClick("/post")}>리뷰 게시판</div>
                             <div className="item" onClick={()=> handleLinkClick(!userId ? setModalOpen("login") : "/MyPage")}>마이 페이지</div>
-                    </div>}
+                    </div>
                 </Box>
                 <MessageModal open={modalOpen==="login"} close={()=>navigate('/Login') } confirm={onClickLogin} header="로그인">로그인이 필요한 페이지입니다.</MessageModal>
                 <MessageModal open={modalOpen==="logout"} close={onClickClose} confirm={onClickClose} header="로그아웃">로그아웃 하셨습니다.</MessageModal>
