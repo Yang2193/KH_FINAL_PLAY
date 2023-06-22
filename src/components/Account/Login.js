@@ -7,7 +7,7 @@ import { AccountInfoContext } from "../../context/AccountInfo";
 const Login = () => {
     const navigate = useNavigate();
     const context = useContext(AccountInfoContext);
-    const {setUserId, setUserPw, setUserName, setUserNickname, setUserPhone, setUserEmail} = context;
+    const {setUserId, setUserPw, setUserName, setUserNickname, setUserPhone, setUserEmail, isLogin, setIsLogin} = context;
 
     // 키보드 입력 받기
     const [loginId, setLoginId] = useState(""); // 로그인 아이디
@@ -69,11 +69,8 @@ const Login = () => {
           try {
             const response2 = await AccountApi.getUserInfo(loginId);
             const userData = response2.data
-            setUserId(userData.userId);
-            setUserPw(userData.userPw);
-            setUserName(userData.userName);
-            setUserPhone(userData.userPhone);
-            setUserEmail(userData.userEmail);
+            localStorage.setItem("userData", JSON.stringify(userData));
+            console.log(userData);
           } catch(e) {
             console.log(e);
           }

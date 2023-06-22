@@ -147,6 +147,7 @@ const SideMenu = () => {
         window.localStorage.setItem("accessToken", '');
         window.localStorage.setItem("refreshToken", '');
         window.localStorage.setItem("authority", '');
+        window.localStorage.setItem("userData", '');
         navigate("/");
         setIsOpen(!isOpen);
         setModalOpen("logout");
