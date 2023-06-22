@@ -4,11 +4,7 @@ export const AccountInfoContext = createContext();
 
 const AccountProvider = ({children} ) => {
     const [userId, setUserId] = useState("");
-    const [userPw, setUserPw] = useState("");
-    const [userName, setUserName] = useState("");
     const [userNickname, setUserNickname] = useState("");
-    const [userPhone, setUserPhone] = useState("");
-    const [userEmail, setUserEmail] = useState("");
     const [isLogin, setIsLogin] = useState(false);
 
     useEffect(() => {
@@ -21,27 +17,19 @@ const AccountProvider = ({children} ) => {
             if (storedUserData) {
               const userData = JSON.parse(storedUserData);
               setUserId(userData.userId);
-              setUserPw(userData.userPw);
-              setUserName(userData.userName);
               setUserNickname(userData.userNickname);
-              setUserPhone(userData.userPhone);
-              setUserEmail(userData.userEmail);
+              setIsLogin(true);
             }
           } else {
             setIsLogin(false);
-      
             // 로그아웃 시 사용자 정보 초기화
             setUserId("");
-            setUserPw("");
-            setUserName("");
             setUserNickname("");
-            setUserPhone("");
-            setUserEmail("");
           }
     },[]);
 
     return (
-        <AccountInfoContext.Provider value={{userId, setUserId, userPw, setUserPw, userName, setUserName, userNickname, setUserNickname, userPhone, setUserPhone, userEmail, setUserEmail, isLogin, setIsLogin}}>
+        <AccountInfoContext.Provider value={{userId, setUserId,  userNickname, setUserNickname, isLogin, setIsLogin}}>
             {children}
         </AccountInfoContext.Provider>
     );

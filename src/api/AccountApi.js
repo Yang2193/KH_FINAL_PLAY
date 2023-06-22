@@ -13,6 +13,7 @@ const AccountApi = {
         return await axios.post(Domain + "/auth/login", auth);
     },
 
+    // 회원조회
     getUserInfo : async(userId) => {
         Functions.setAuthorizationHeader();
         const infoData = {
@@ -59,7 +60,7 @@ const AccountApi = {
         const getReview = {
             userId: userId
         };
-        return await axios.post(Domain + "/mypage/find/post")
+        return await axios.post(Domain + "/mypage/find/post", getReview);
     }
 }
 

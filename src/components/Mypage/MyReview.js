@@ -2,12 +2,13 @@ import React, { useContext, useState, useEffect } from "react";
 import { AccountInfoContext } from "../../context/AccountInfo";
 import PostAPI from "../../api/PostApi";
 import { Link } from 'react-router-dom';
+import AccountApi from "../../api/AccountApi";
 
 const MyReview = () => {
 
     // 로그인 한 회원정보 가져오기
     const context = useContext(AccountInfoContext);
-    const {userId, userName, userNickname} = context;
+    const {userId} = context;
 
     // 리뷰 내역 저장
     const [posts, setPosts] = useState([]);
@@ -45,20 +46,20 @@ const MyReview = () => {
     useEffect(() => {
         const fetchData = async () => {
           try {
-            const rsp = await PostAPI.getAllPosts();
+            const rsp = await AccountApi.getMemberReview(userId);
             if (rsp.status === 200) {
-              setPosts(rsp.data);
+              setPosts([rsp.data]);
+              console.log(posts);
             } else {
-              console.log("데이터가 없거나 불러오기를 실패함");
+              console.log("데이터가 없음");
             }
           } catch (error) {
             console.log(error);
           }
         };
         fetchData();
-      }, []);
+      }, [userId]);
       
-      console.log(posts);
     return (
         <>
         <h3>{userId}님의 리뷰</h3>
