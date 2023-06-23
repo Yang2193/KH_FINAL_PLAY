@@ -11,7 +11,6 @@ const Background = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
-  
 `;
 
 const PostDetailWrapper = styled.div`
@@ -24,6 +23,7 @@ const PostDetailWrapper = styled.div`
   border-radius: 20px;
   flex-grow: 1;
 `;
+
 const PostHeader = styled.div`
   margin-bottom: 20px;
 `;
@@ -89,7 +89,7 @@ const CommentInput = styled.input`
 const CommentButton = styled.button`
   margin-left: 10px;
   padding: 10px 20px;
-  background-color: #888;
+  background-color: #990A2C;
   color: white;
   border: none;
   border-radius: 5px;
@@ -103,12 +103,19 @@ const CommentList = styled.ul`
 `;
 
 const CommentItem = styled.li`
+  display: flex;
+  align-items: flex-start;
   margin-bottom: 10px;
 `;
 
 const CommentContent = styled.div`
+  position: relative;
   font-size: 14px;
   margin-bottom: 5px;
+  background-color: white;
+  padding: 10px;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 `;
 
 const CommentInfo = styled.div`
@@ -126,6 +133,33 @@ const CommentDate = styled.span`
 const CommentAuthor = styled.span`
   font-weight: bold;
   margin-right: 10px;
+  color: #365899;
+`;
+
+const CommentMenu = styled.div`
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  width: 120px;
+  background-color: #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: column;
+  padding: 5px;
+  border-radius: 5px;
+  z-index: 999;
+  display: ${props => (props.show ? 'block' : 'none')};
+`;
+
+const CommentMenuItem = styled.div`
+  padding: 5px;
+  cursor: pointer;
+  color: #555;
+  transition: background-color 0.3s;
+
+  &:hover {
+    background-color: #f6f6f6;
+  }
 `;
 
 const formatWriteDate = (date) => {
@@ -140,7 +174,8 @@ const PostDetailPage = () => {
   const [comment, setComment] = useState('');
   const [comments, setComments] = useState([]);
   const [commentSectionHeight, setCommentSectionHeight] = useState('auto');
-  const userId = window.localStorage.getItem("isUserId");
+  const [showCommentMenu, setShowCommentMenu] = useState(false);
+  const [selectedCommentId, setSelectedCommentId] = useState('');
 
   useEffect(() => {
     window.localStorage.setItem('postId', postId);
@@ -154,7 +189,6 @@ const PostDetailPage = () => {
     try {
       const data = await PostAPI.getPostById(postId);
       setPost(data);
-      // setComments(data.comments || []);
       increaseViews(postId);
       const comments = await PostAPI.getCommentsByPostId(postId);
       setComments(comments);
@@ -175,22 +209,51 @@ const PostDetailPage = () => {
   const handleCommentChange = (e) => {
     setComment(e.target.value);
   };
-const handleSubmitComment = async () => {
-  try {
-    const newComment = {
-      commentContent: comment,
-      commentDate: new Date(),
-      postId: post.id,
-    };
 
-    const response = await PostAPI.createComment(newComment.postId, newComment);
-    setComments([...comments, response]);
-    setComment('');
-    console.log('작성된 댓글:', response);
-  } catch (error) {
-    console.log(error);
-  }
-};
+  const handleSubmitComment = async () => {
+    try {
+      const newComment = {
+        commentContent: comment,
+        postId: postId,
+        userId: localStorage.getItem("userId"),
+      };
+
+      const response = await PostAPI.createComment(newComment);
+      if (response.status === 200) {
+        console.log(response.data);
+        fetchPost();
+        setComment('');
+      }
+
+      console.log('작성된 댓글:', response);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleCommentMenu = (commentId) => {
+    setShowCommentMenu(true);
+    setSelectedCommentId(commentId);
+  };
+
+  const handleDeleteComment = async () => {
+    try {
+
+      console.log(`댓글 지우기: ${selectedCommentId}`);
+
+      fetchPost();
+
+      setShowCommentMenu(false);
+      setSelectedCommentId('');
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleReportComment = () => {
+    console.log(`댓글이 지워졌습니다${selectedCommentId}`);
+    // Add your report comment logic here
+  };
 
   useEffect(() => {
     const commentSection = document.getElementById('commentSection');
@@ -213,8 +276,8 @@ const handleSubmitComment = async () => {
             <PostTitle>{post.postTitle}</PostTitle>
             <PostInfo>
               <div>
-                <PostInfoItem userId>작성자: {post.memberInfo.userId}</PostInfoItem>
-                <PostInfoItem> {formatWriteDate(post.postDate)}</PostInfoItem>
+                <PostInfoItem userId>작성자: {post.memberInfo ? post.memberInfo.userNickname : ''}</PostInfoItem>
+                <PostInfoItem>{formatWriteDate(post.postDate)}</PostInfoItem>
               </div>
               <PostInfoItem>조회수: {post.postViews}</PostInfoItem>
             </PostInfo>
@@ -224,10 +287,7 @@ const handleSubmitComment = async () => {
           </PostImage>
           <PostContent>{post.postContent}</PostContent>
 
-          
           <CommentSection id="commentSection" height={commentSectionHeight}>
-
-
             <CommentInputWrapper>
               <CommentInput
                 type="text"
@@ -240,22 +300,28 @@ const handleSubmitComment = async () => {
 
 
 
-          <CommentList>
-            {comments.map((comment) => (
-              <CommentItem key={comment.id}>
-                <CommentDate>{formatWriteDate(comment.commentDate)}</CommentDate>
-                <CommentContent>{comment.commentContent}</CommentContent>
-                <CommentInfo>
-                  <CommentAuthor>{comment.author}</CommentAuthor>
-                </CommentInfo>
-              </CommentItem>
-            ))}
-          </CommentList>
+            <CommentList>
+              {comments.map((comment) => (
+                <CommentItem key={comment.id}>
+                  <CommentContent>
+                    <CommentAuthor>{post.memberInfo ? post.memberInfo.userNickname : ''}</CommentAuthor>
+                    <CommentDate>{formatWriteDate(comment.commentDate)}</CommentDate>
+                    {comment.commentContent}
+                    {comment.id === selectedCommentId && (
+                      <CommentMenu show={showCommentMenu}>
+                        <CommentMenuItem onClick={handleDeleteComment}>삭제</CommentMenuItem>
+                        <CommentMenuItem onClick={handleReportComment}>신고</CommentMenuItem>
+                      </CommentMenu>
+                    )}
+                    <CommentInfo>
+                      <span onClick={() => handleCommentMenu(comment.id)}>...</span>
+                    </CommentInfo>
+                  </CommentContent>
+                </CommentItem>
+              ))}
+            </CommentList>
 
-
-
-
-
+            
           </CommentSection>
         </PostDetailWrapper>
       </Background>

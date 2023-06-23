@@ -5,6 +5,9 @@ import Header from '../components/Header';
 import PostAPI from '../api/PostApi';
 import PageNation from '../utils/PageNation';
 import '../pages/ReviewBoard.css';
+import LoginPage from "./LoginPage"
+
+
 
 const Post = () => {
   const [posts, setPosts] = useState([]);
