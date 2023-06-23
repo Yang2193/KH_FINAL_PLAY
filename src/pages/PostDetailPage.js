@@ -251,7 +251,7 @@ const PostDetailPage = () => {
   };
 
   const handleReportComment = () => {
-    console.log(`댓글이 지워졌습니다${selectedCommentId}`);
+    console.log(`댓글이 신고가 접수${selectedCommentId}`);
     // Add your report comment logic here
   };
 
@@ -304,7 +304,7 @@ const PostDetailPage = () => {
               {comments.map((comment) => (
                 <CommentItem key={comment.id}>
                   <CommentContent>
-                    <CommentAuthor>{post.memberInfo ? post.memberInfo.userNickname : ''}</CommentAuthor>
+                    <CommentAuthor>{comment.nickname}</CommentAuthor>
                     <CommentDate>{formatWriteDate(comment.commentDate)}</CommentDate>
                     {comment.commentContent}
                     {comment.id === selectedCommentId && (
