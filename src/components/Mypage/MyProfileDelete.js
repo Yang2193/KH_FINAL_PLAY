@@ -1,8 +1,12 @@
 import React from "react";
+import AccountApi from "../../api/AccountApi";
 
 const MyResaleInfo = () => {
 
-    // 리셀한 내역 및 등록한 정보
+    const userId = localStorage.getItem('userId');
+
+    // 회원 삭제
+    
     return (
         <>
         </>

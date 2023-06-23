@@ -35,23 +35,31 @@ const AccountApi = {
         return await axios.post(Domain + "/auth/signup", memberInfo);
     },
 
+    // 회원탈퇴
+    memeberDel : async(userId) => {
+        const memberDelCmd = {
+            userId: userId
+        };
+        return await axios.post(Domain + "/auth/userdelete", memberDelCmd);
+    },
+
     // 아이디 찾기
     findMemberId : async(userName, userEmail) => {
         const findId = {
             userName: userName,
             userEmail: userEmail
         };
-        return await axios.post(Domain + "/member/find/id", findId);
+        return await axios.post(Domain + "/auth/find/id", findId);
     },
 
     // 비밀번호 찾기
-    findMemberPw : async(userId, userName, userEmail) => {
+    findMemberPw : async(userId, userName, email) => {
         const findPw = {
             userId: userId,
             userName: userName,
-            userEmail: userEmail
+            email: email
         };
-        return await axios.post(Domain + "/member/find/pw", findPw);
+        return await axios.post(Domain + "/auth/find/pw", findPw);
     },
 
     // 마이페이지 회원 별 리뷰 가져오기

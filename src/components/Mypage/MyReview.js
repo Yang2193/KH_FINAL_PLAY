@@ -1,5 +1,4 @@
-import React, { useContext, useState, useEffect } from "react";
-import { AccountInfoContext } from "../../context/AccountInfo";
+import React, { useState } from "react";
 import PostAPI from "../../api/PostApi";
 import { Link } from 'react-router-dom';
 import AccountApi from "../../api/AccountApi";
@@ -7,8 +6,7 @@ import AccountApi from "../../api/AccountApi";
 const MyReview = () => {
 
     // 로그인 한 회원정보 가져오기
-    const context = useContext(AccountInfoContext);
-    const {userId} = context;
+    const userId = localStorage.getItem('userId');
 
     // 리뷰 내역 저장
     const [posts, setPosts] = useState([]);
@@ -43,26 +41,23 @@ const MyReview = () => {
         );
     };
 
-    useEffect(() => {
-        const fetchData = async () => {
-          try {
-            const rsp = await AccountApi.getMemberReview(userId);
-            if (rsp.status === 200) {
-              setPosts([rsp.data]);
-              console.log(posts);
-            } else {
-              console.log("데이터가 없음");
-            }
-          } catch (error) {
-            console.log(error);
-          }
-        };
-        fetchData();
-      }, [userId]);
+    const memberReviewList = async() => {
+      try {
+        const response = await AccountApi.getMemberReview(userId);
+        if (response.status === 200){
+          setPosts(response.data);
+          console.log(posts);
+        } else {
+          console.log('불러오기 실패');
+        } 
+      } catch (e) {
+        console.log(e);
+      }
+    };
       
     return (
         <>
-        <h3>{userId}님의 리뷰</h3>
+        <button onClick={memberReviewList}><h3>{userId}님의 리뷰</h3></button>
         <table className="ReviewTable">
           <thead>
             <tr>

@@ -1,5 +1,4 @@
-import React, { useEffect, useState, useContext } from "react";
-import { AccountInfoContext } from "../../context/AccountInfo";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import AccountApi from "../../api/AccountApi";
 
@@ -7,8 +6,7 @@ const MyProfileEdit = () => {
     const navigate = useNavigate();
 
     // 로그인 한 아이디 가져오기
-    const context = useContext(AccountInfoContext);
-    const {userId} = context;
+    const userId = localStorage.getItem('userId');
 
     // 비밀번호 입력
     const [inputPw, setInputPw] = useState("");
@@ -21,42 +19,33 @@ const MyProfileEdit = () => {
     const [userInfo, setUserInfo] = useState("");
 
     // 회원정보 조회 후 화면 출력
-    useEffect(() => {
-        const userData = async() => {
-            try {
-                const response = await AccountApi.getUserInfo(userId);
-                if (response.status === 200) {
-                    setUserInfo(response.data);
-                    console.log(userInfo.data);
-                  } else {
-                    console.log("데이터가 없음");
-                  }
-              } catch (error) {
-                console.log(error);
-              }
-            };
-            userData();
-        },[]);
-    
-    // 회원정보 변경 클릭 시 비밀번호 입력
-    // const onClickInfoEdit = () => {
-    //     if(!userPw === editPw) {
-    //         setEditPwMsg("비밀번호가 일치하지 않습니다.");
-    //     } else {
-    //         setEditPwOkMsg("");
-    //         navigate("")
-    //     }
-    // }
 
-    // const handleOnKeyPress = e => {
-    //     if(e.key === "Enter") {
-    //         onClickInfoEdit();
-    //     }
-    // }
+    const userData = async() => {
+        try {
+            const response = await AccountApi.getUserInfo(userId);
+            if (response.status === 200) {
+                setUserInfo(response.data);
+                console.log(userInfo);
+                } else {
+                console.log("데이터가 없음");
+                }
+            } catch (error) {
+            console.log(error);
+            }
+        };
+
+        console.log(userInfo);
     return (
         <>
-        <h3>회원정보</h3>
+        <button onClick={userData}><h3>회원정보</h3></button>
         <p>ID : {userInfo.userId}</p>
+        <p>PW : {userInfo.userPw}</p>
+        <p>Name : {userInfo.userName}</p>
+        <p>Nickname : {userInfo.userNickname}</p>
+        <p>Email : {userInfo.userEmail}</p>
+        <p>Phone : {userInfo.userPhone}</p>
+
+
         {/* <button onClick={onClickInfoEdit}>회원정보수정</button> */}
         </>
     );

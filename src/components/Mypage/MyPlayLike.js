@@ -1,6 +1,4 @@
 import React from "react";
-import { useContext } from "react";
-import { AccountInfoContext } from "../../context/AccountInfo";
 import { useEffect } from "react";
 import PlayInfoApi from "../../api/PlayInfoApi";
 import { useState } from "react";
@@ -72,8 +70,7 @@ const ListBox = styled.div`
 
 const MyPlayLike = () => {
     // 로그인 한 회원정보 가져오기
-    const context = useContext(AccountInfoContext);
-    const { userId } = context;
+    const userId = localStorage.getItem('userId');
 
     // 찜목록 데이터 저장하기
     const [likeList, setLikeList] = useState([]);
@@ -86,35 +83,27 @@ const MyPlayLike = () => {
     // 찜목록 선택 시 찜한 컨텐츠의 정보 출력
     // 찜 해제 시 db에서 삭제되고, 리스트에서 제거
     // if 결제가 된다면 바로 예매까지.
-    useEffect(() => {
-        const playLikeData = async() => {
-            try {
-                const likeData = await PlayInfoApi.selectPlayLike(userId);
-                console.log(likeData.data);
-                if(likeData.status === 200) {
-                    setLikeList(likeData.data);
-                } else {
-                    setLikeListMsg("찜한 목록이 없거나 불러오기 실패");
-                }
-            } catch(e) {
-                console.log(e);
+    const playLikeData = async() => {
+        try {
+            const likeData = await PlayInfoApi.selectPlayLike(userId);
+            console.log(likeData.data);
+            if(likeData.status === 200) {
+                setLikeList(likeData.data);
+            } else {
+                setLikeListMsg("찜한 목록이 없거나 불러오기 실패");
             }
-        };
-        playLikeData();
-    }, []);
+        } catch(e) {
+            console.log(e);
+        }
+    };
      
 
     return (
         <>
-        <h3>{userId}님의 찜목록</h3>
+        <button onClick={playLikeData}><h3>{userId}님의 찜목록</h3></button>
         <ListBox>
         <table className="ReviewTable">
           <thead>
-            <tr>
-              <th colSpan={2}>상품명</th>
-              <th>장소</th>
-              <th>기간</th>
-            </tr>
           </thead>
           <tbody>
             {likeList.map((ll) => (
