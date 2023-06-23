@@ -7,6 +7,7 @@ import Header from "../components/Header";
 import Footer from "../components/Footer";
 import { Button } from "../utils/GlobalStyle";
 import moment from "moment/moment";
+import axios from "axios";
 const ReserveStyle = styled.div`
     margin-top: 2%;
     width: 50%;
@@ -17,12 +18,36 @@ const ReserveStyle = styled.div`
     position: relative;
     left: 25%;
     .seat{
+        /* border: 1px solid; */
         width: 100%;
+        height: 20%;
+        display: flex;
         select{
             width: 10%;
+            height: 20%;
             font-size: 1em;
-            margin-left: 10%;
-
+            margin-left: 5%;
+            margin-top:12%;
+        }
+        p{
+            width: 20%;
+            height: 40%;
+            border: 1px solid;
+            border-radius: 10px;
+            margin-top:10%;
+            margin-left: 2%;
+            background-color: white;
+            font-size: 1em;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+        /* 선택된 버튼에 대한 스타일 변경 */
+    
+        }
+        .selected{
+            background-color: #990a2c;
+            color: #fff;
         }
     }
     .time{
@@ -142,7 +167,6 @@ const ReservePage = () =>{
           토요일: 6,
           일요일: 0
         };
-        
         return dayOfWeek[day];
     }
     // 날짜 선택시 해당 날짜에 맞는 요일에 연극 시간을 불러옴
@@ -164,10 +188,8 @@ const ReservePage = () =>{
                 timeOptions = times;
               }
             });
-        return timeOptions ;
-
+        return timeOptions 
       }
-      
       
     const playId = localStorage.getItem("playId"); // 연극 아이디
     const userId = localStorage.getItem("userId"); // 유저 아이디
@@ -175,38 +197,56 @@ const ReservePage = () =>{
     const [value, setValue] = useState();// 선택한 공연 날짜 정보
     const[selTime,setSelTime] = useState(""); // 선택한 공연 시간 정보
     const [timeOptions, setTimeOptions] = useState([]);
+    const [selPrice,setSelPrice] = useState();
+// 가격 정보
+    const price = localStorage.getItem("price");
+    const priceOptions = price.split(", ");
+// 좌석 정보
 
-    function selectSeat(e) { 
-        setSeat(e.target.value);
-    }
-    function setOption(start, end) { // 포문 돌려서 좌석 옵션 생성
-        const options = [];
-        for (let i = start; i <= end; i++) {
-          options.push(
-            <option key={i} value={i}>
-              {i}번
-            </option>
-          );
-        }
-        return options;
-    }
-    function dateData(date) {
+    const dateData = (date) =>{
         setValue(date);
         setTimeOptions(getTimeOptions(timeInfo, date));
       }
-    function timeData(time) {
+    const timeData = (time) => {
         setSelTime(time);
-      }
-    
+    }
+    const priceData = (p) =>{
+        const number = parseInt(p.split(" ")[1].replace(",", ""));
+        const seatRating = p.split(" ")[0]
+        setSelPrice(number)
+        setSeat(seatRating)
+    }
     useEffect(() => {
         // 요일이 변경되면 선택된 시간 초기화
         setSelTime("");
+        setSelPrice("");
     }, [value]);
 
-    const allData =() =>{
-        const date = moment(value).format("YYYY-MM-DD")
-        console.log(seat,date,selTime,userId,playId);
+    // const allData =() =>{
+    //     const date = moment(value).format("YYYY-MM-DD")
+    //     console.log(`
+    //         연극 ID : ${playId}
+    //         회원 ID : ${userId}, 
+    //         날짜 : ${date},
+    //         시간 : ${selTime}, 
+    //         좌석 등급 : ${seat},  
+    //         가격 : ${selPrice}
+    //     `);
+    // }
+
+// 카카오페이
+const handlePayment = async () => {
+    try {
+      const response = await axios.post('http://localhost:8111/payment/ready', {
+        price: selPrice, 
+      });
+      const { next_redirect_pc_url } = response.data;
+      window.location.href = next_redirect_pc_url; // 결제 요청을 위해 리다이렉트
+    } catch (error) {
+      console.error(error);
+      // 에러 처리
     }
+  };
     return(
         <>
         <Header children={"예매하기"}/>
@@ -219,26 +259,51 @@ const ReservePage = () =>{
                 minDate={new(Date)}
                 />  
             </div>
-            <div className="time">
-                <h3>회차 선택</h3>
-                {timeOptions && timeOptions.map((time, index) => (
-                    <p 
-                    className={selTime === time ? "selected" : ""}
-                    onClick={()=>timeData(time)} 
-                    key={index}
-                    >
-                        {time.trim()}
-                    </p>
-                    ))}
-            </div>
+                {timeOptions === null ? 
+                <div className="time">
+                    <h3>회차가 존재하지 않습니다.</h3>
+                </div>
+                : 
+                <div className="time">
+                    <h3>회차 선택</h3>
+                    {timeOptions.map((time, index) => (
+                        <p 
+                        className={selTime === time ? "selected" : ""}
+                        onClick={()=>timeData(time)} 
+                        key={index}
+                        >
+                            {time.trim()}
+                        </p>
+                    ))}        
+                </div>  
+                }          
+            { price.includes("전석") 
+            ? 
             <div className="seat">
-                <h3>좌석 선택</h3>
-                <select onChange={selectSeat} value={seat}>
-                    {setOption(1,10)}
-                </select>            
-            </div>
+                <h3>좌석 선택</h3>           
+                <p
+                onClick={()=>priceData(price)} 
+                className={selPrice === parseInt(price.split(" ")[1].replace(",", "")) ? "selected" : ""}
+                >
+                    {price}
+                </p>   
+            </div> 
+            :
+            <div className="seat">
+                <h3>좌석 선택</h3>           
+                {priceOptions.map((p, index) => (
+                    <p 
+                        className={selPrice === parseInt(p.split(" ")[1].replace(",", "")) ? "selected" : ""}
+                        onClick={()=>priceData(p)} 
+                        key={index}
+                    >
+                        {p}
+                    </p>
+                ))}
+            </div>             
+            }
             <div className="btn">
-                <Button onClick={()=>allData()}> 선택 완료</Button>
+                <Button onClick={()=>handlePayment()}> 선택 완료</Button>
             </div>
         </ReserveStyle>
         <Footer/>

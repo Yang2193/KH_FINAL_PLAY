@@ -15,10 +15,10 @@ import PostPage from './pages/PostPage';
 import PostUpload from './pages/PostUpload';
 import ReservePage from './pages/ReservePage';
 import AccountProvider from './context/AccountInfo';
-import PayReady from './components/playPage/KaKaoPay/PayReady';
-import PayResult from './components/playPage/KaKaoPay/PayResult';
-import PaySelect from './components/playPage/KaKaoPay/PaySelect';
+import PayEnd from './components/playPage/KaKaoPay/PayEnd';
+import PayFail from './components/playPage/KaKaoPay/PayFail';
 import PayCancel from './components/playPage/KaKaoPay/PayCancel';
+
 
 function App() {
   return (
@@ -36,10 +36,10 @@ function App() {
         <Route path="/post" element={<PostPage />} />
         <Route path="/postUpload" element={<PostUpload />} />
         <Route path="/reserve" element={<ReservePage />} />
-          <Route path="/payready" exact={true} component={PayReady} />
-          <Route path="/payresult" component={PayResult} />
-          <Route path="/payselect" component={PaySelect} />
-          <Route path="/paycancel" component={PayCancel} />
+        <Route path="/payEnd" element={<PayEnd />} />
+        <Route path="/payCancel" element={<PayCancel />} />
+        <Route path="/payFail" element={<PayFail />} />
+
       </Routes>
       <ToastContainer />
     </Router>

@@ -165,9 +165,10 @@ const Info = () =>{
     }; 
 
     // 예매하기
-    const reserve = (playPlan)=> {
+    const reserve = (playPlan,price)=> {
         navigate("/reserve")
         localStorage.setItem("time",playPlan)
+        localStorage.setItem("price",price)
     }
     return(
         <>
@@ -227,7 +228,7 @@ const Info = () =>{
                                 }
                             </ul>
                             <div className="btnBox">
-                                <Button onClick={()=>reserve(play.playPlan)}>예매 하기</Button>
+                                <Button onClick={()=>reserve(play.playPlan,play.playPrice)}>예매 하기</Button>
                             </div>
                         </div>
                     </div>
