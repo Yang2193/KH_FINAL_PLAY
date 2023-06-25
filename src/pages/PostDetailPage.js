@@ -231,28 +231,35 @@ const PostDetailPage = () => {
     }
   };
 
+
+
+  
+  const [isCommentAuthor, setIsCommentAuthor] = useState(false);
+
+
   const handleCommentMenu = (commentId) => {
-    setShowCommentMenu(true);
-    setSelectedCommentId(commentId);
-  };
-
-  const handleDeleteComment = async () => {
-    try {
-
-      console.log(`댓글 지우기: ${selectedCommentId}`);
-
-      fetchPost();
-
-      setShowCommentMenu(false);
+    const loggedInUserId = localStorage.getItem("userId");
+    const selectedComment = comments.find(comment => comment.id === commentId);
+  
+    if (selectedComment && selectedComment.userId === loggedInUserId) {
+      setSelectedCommentId(commentId);
+      setIsCommentAuthor(true);
+      setShowCommentMenu(true);
+    } else {
+      setIsCommentAuthor(false);
       setSelectedCommentId('');
-    } catch (error) {
-      console.log(error);
+      alert("본인만 수정 삭제를 할 수 있습니다");
     }
   };
+  
 
-  const handleReportComment = () => {
-    console.log(`댓글이 신고가 접수${selectedCommentId}`);
-    // Add your report comment logic here
+  const handleDeleteComment = async () => {
+    
+    
+  };
+
+  const handleUpdateComment = () => {
+
   };
 
   useEffect(() => {
@@ -306,16 +313,15 @@ const PostDetailPage = () => {
                   <CommentContent>
                     <CommentAuthor>{comment.nickname}</CommentAuthor>
                     <CommentDate>{formatWriteDate(comment.commentDate)}</CommentDate>
-                    {comment.commentContent}
-                    {comment.id === selectedCommentId && (
-                      <CommentMenu show={showCommentMenu}>
+                    <CommentMenuItem>
+                      <div onClick={() => handleCommentMenu(comment.id)}>{comment.commentContent}</div>
+                    </CommentMenuItem>
+                    {comment.id === selectedCommentId && isCommentAuthor && (
+                      <CommentMenu  show={showCommentMenu}>
                         <CommentMenuItem onClick={handleDeleteComment}>삭제</CommentMenuItem>
-                        <CommentMenuItem onClick={handleReportComment}>신고</CommentMenuItem>
+                        <CommentMenuItem onClick={handleUpdateComment}>수정</CommentMenuItem>
                       </CommentMenu>
                     )}
-                    <CommentInfo>
-                      <span onClick={() => handleCommentMenu(comment.id)}>...</span>
-                    </CommentInfo>
                   </CommentContent>
                 </CommentItem>
               ))}

@@ -16,8 +16,8 @@ const PostAPI = {
     return response.data;
   },
 
-  // 게시물 등록
-  addPost: async (postTitle, postContent, postImageUrl, postCategory, userId) => {
+   // 게시물 등록
+   addPost: async (postTitle, postContent, postImageUrl, postCategory, userId) => {
     try {
       const postData = {
         postTitle: postTitle,
@@ -44,13 +44,10 @@ const PostAPI = {
     return response.data;
   },
 
-
-  //댓글 생성
-
-  createComment: async(newComment) => {
-        console.log(newComment);
-    return await axios.post(Posts + "/comments/createComment", newComment);
-
+  // 댓글 생성
+  createComment: async (newComment) => {
+    console.log(newComment);
+    return await axios.post(`${Posts}/comments/createComment`, newComment);
   },
 
   // 게시물 ID로 댓글 리스트 조회
@@ -58,10 +55,11 @@ const PostAPI = {
     const response = await axios.get(`${Posts}/comments/detail/${postId}`);
     return response.data;
   },
-    // 댓글 삭제
-    handleDeleteComment: async (commentId) => {
-      return await axios.get(`${Posts}/comments/delete/${commentId}`);
-    },
+
+  // 댓글 삭제
+  handleDeleteComment: async (commentId) => {
+    return await axios.get(`${Posts}/comments/delete/${commentId}`);
+  },
 };
 
 export default PostAPI;
