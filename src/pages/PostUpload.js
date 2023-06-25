@@ -77,7 +77,7 @@ const PostUpload = () => {
         postData.postContent,
         postData.postImage,
         '1',
-        localStorage.getItem("userId")// userId 값을 전송
+        localStorage.getItem("userId")
         
       );
   
@@ -92,9 +92,10 @@ const PostUpload = () => {
     }
   };
   
+
   return (
     <>
-      <ToastContainer /> 
+      <ToastContainer />
       <Container>
         <Heading>게시물 등록</Heading>
         <div>
@@ -129,6 +130,6 @@ const PostUpload = () => {
       </Container>
     </>
   );
-}
+};
 
 export default PostUpload;
