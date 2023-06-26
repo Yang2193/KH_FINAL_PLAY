@@ -23,14 +23,14 @@ const AccountApi = {
     },
     
     // 회원가입
-    memberReg : async(userId, userPw, userNickname, userName, userPhone, userEmail) => {
+    memberReg : async(userId, userPw, userNickname, userName, userEmail, userPhone) => {
         const memberInfo = {
             userId: userId,
             userPw: userPw,
             userNickname: userNickname,
             userName: userName,
-            userPhone: userPhone,
-            userEmail: userEmail
+            userEmail: userEmail,
+            userPhone: userPhone
         };
         return await axios.post(Domain + "/auth/signup", memberInfo);
     },
@@ -52,14 +52,13 @@ const AccountApi = {
         return await axios.post(Domain + "/auth/find/id", findId);
     },
 
-    // 비밀번호 찾기
-    findMemberPw : async(userId, userName, email) => {
+    findMemberPw: async (userId, userName, email) => {
         const findPw = {
             userId: userId,
             userName: userName,
             email: email
         };
-        return await axios.post(Domain + "/auth/find/pw", findPw);
+        return await axios.post(Domain + "/auth/find/pw?email=" + email, findPw);
     },
 
     // 마이페이지 회원 별 리뷰 가져오기
