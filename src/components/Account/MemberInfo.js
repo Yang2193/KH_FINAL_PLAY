@@ -125,12 +125,12 @@ const MemberInfo = () => {
     };
 
     const onChangeUserEmail = (e) => {
-        const emailRegex = /([\w-.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/ // 이메일 정규표현식
+        const emailRegex = /([\w-.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/; // 이메일 정규표현식
         const emailNow = e.target.value ;
         setInputEmail(emailNow);
 
         if (!emailRegex.test(emailNow)) {
-            setEmailError('이메일 형식이 맞지 않아요 다시 입력해주세요.')
+            setEmailError('이메일 형식이 맞지 않습니다. 다시 입력해주세요.');
             setIsEmail(false)
         } else {
             setEmailError('');

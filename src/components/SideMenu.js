@@ -1,7 +1,8 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import MessageModal from "../utils/MessageModal";
 import styled, {css} from "styled-components";
+import { AccountInfoContext } from "../context/AccountInfo";
 import { MdMenu, MdLogin, MdMyLocation } from "react-icons/md";
 
 
@@ -88,6 +89,7 @@ const Box = styled.div`
 `;
 
 const SideMenu = () => {
+    const {resetUser} = useContext(AccountInfoContext);
     const [isOpen, setIsOpen] = useState(false);
     const ref = useRef(null);
     const navigate = useNavigate();
@@ -142,11 +144,8 @@ const SideMenu = () => {
       };
 
     const logout = () =>{
-        window.localStorage.setItem("userId", '');
-        window.localStorage.setItem("memberType", '');
-        window.localStorage.setItem("accessToken", '');
-        window.localStorage.setItem("refreshToken", '');
-        window.localStorage.setItem("authority", '');
+        localStorage.clear();
+        resetUser();
         navigate("/");
         setIsOpen(!isOpen);
         setModalOpen("logout");
