@@ -143,14 +143,12 @@ const CommentMenu = styled.div`
   width: 120px;
   background-color: #fff;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-  display: flex;
+  display: ${props => (props.show ? 'block' : 'none')};
   flex-direction: column;
   padding: 5px;
   border-radius: 5px;
   z-index: 999;
-  display: ${props => (props.show ? 'block' : 'none')};
 `;
-
 const CommentMenuItem = styled.div`
   padding: 5px;
   cursor: pointer;
@@ -244,20 +242,29 @@ const PostDetailPage = () => {
     if (selectedComment && selectedComment.userId === loggedInUserId) {
       setSelectedCommentId(commentId);
       setIsCommentAuthor(true);
-      setShowCommentMenu(true);
+      setShowCommentMenu(!showCommentMenu); // showCommentMenu 상태를 토글합니다.
     } else {
       setIsCommentAuthor(false);
       setSelectedCommentId('');
       alert("본인만 수정 삭제를 할 수 있습니다");
     }
   };
-  
-
   const handleDeleteComment = async () => {
-    
-    
+    try {
+      const response = await PostAPI.deleteComment(selectedCommentId);
+      if (response.status === 200) {
+        alert('댓글이 삭제되었습니다.');
+        // 삭제된 댓글을 제외한 나머지 댓글만 남도록 업데이트
+        const updatedComments = comments.filter(comment => comment.id !== selectedCommentId);
+        setComments(updatedComments);
+        setShowCommentMenu(false);
+        setSelectedCommentId('');
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
-
+  
   const handleUpdateComment = () => {
 
   };

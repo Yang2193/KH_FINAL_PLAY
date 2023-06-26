@@ -44,11 +44,8 @@ const PostAPI = {
     return response.data;
   },
 
-  // 댓글 생성
-  createComment: async (newComment) => {
-    console.log(newComment);
-    return await axios.post(`${Posts}/comments/createComment`, newComment);
-  },
+
+
 
   // 게시물 ID로 댓글 리스트 조회
   getCommentsByPostId: async (postId) => {
@@ -56,9 +53,18 @@ const PostAPI = {
     return response.data;
   },
 
+    // 댓글 생성
+  createComment: async (newComment) => {
+    console.log(newComment);
+    return await axios.post(`${Posts}/comments/createComment`, newComment);
+  },
+
   // 댓글 삭제
-  handleDeleteComment: async (commentId) => {
-    return await axios.get(`${Posts}/comments/delete/${commentId}`);
+  deleteComment: async (commentId) => {
+
+    return await axios.delete(`${Posts}/comments/${commentId}`);
+     
+   
   },
 };
 
