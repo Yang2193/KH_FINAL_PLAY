@@ -37,6 +37,10 @@ const PostAPI = {
       return response1.data;
     }
   },
+    // 게시물 삭제
+    deletePost: async (postId) => {
+      return await axios.delete(`${Posts}/post/delete/${postId}`);
+    },
 
   // 조회수 증가
   increasePostViews: async (postId) => {
@@ -66,6 +70,7 @@ const PostAPI = {
      
    
   },
+
 };
 
 export default PostAPI;

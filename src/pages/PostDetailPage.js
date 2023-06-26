@@ -4,6 +4,10 @@ import styled from 'styled-components';
 import PostAPI from '../api/PostApi';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
+import cogIcon from '../images/Cog.png';
+import { useNavigate } from 'react-router-dom';
+
+
 
 const Background = styled.div`
   background-color: #E2E2E2;
@@ -13,8 +17,9 @@ const Background = styled.div`
   justify-content: flex-start;
 `;
 
+
 const PostDetailWrapper = styled.div`
-  width: 900px;
+  width: 65%;
   height: auto;
   min-height: 890px;
   margin: 30px;
@@ -31,7 +36,7 @@ const PostHeader = styled.div`
 const PostTitle = styled.h2`
   font-size: 23px;
   margin-bottom: 30px;
-  margin-right: 80%;
+  margin-right: auto;
 `;
 
 const PostInfo = styled.div`
@@ -55,6 +60,12 @@ const PostInfoItem = styled.span`
 
 const PostImage = styled.div`
   margin-bottom: 20px;
+ img{
+  width: 50%;
+  
+ }
+
+
 `;
 
 const PostContent = styled.div`
@@ -94,6 +105,9 @@ const CommentButton = styled.button`
   border: none;
   border-radius: 5px;
   cursor: pointer;
+  max-height: 40px;
+  width: 100px;
+  font-size: 13px;
 `;
 
 const CommentList = styled.ul`
@@ -111,35 +125,40 @@ const CommentItem = styled.li`
 const CommentContent = styled.div`
   position: relative;
   font-size: 14px;
-  margin-bottom: 5px;
+  margin-bottom: 10px;
   background-color: white;
   padding: 10px;
   border-radius: 5px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 70px;
 `;
 
-const CommentInfo = styled.div`
-  display: flex;
-  align-items: center;
-  font-size: 12px;
-  color: #888;
-`;
+
 
 const CommentDate = styled.span`
-  margin-right: 10px;
+  margin-left: auto;
   color: #888;
+  margin-bottom: 30px;
+  font-size: 10px;
 `;
-
+const CogImg = styled.div`
+  margin-bottom: 30px;
+  display: ${props => (props.isAuthor ? 'block' : 'none')};
+`;
 const CommentAuthor = styled.span`
   font-weight: bold;
   margin-right: 10px;
+  margin-bottom: 30px;
   color: #365899;
 `;
 
 const CommentMenu = styled.div`
   position: absolute;
-  top: -5px;
-  right: -5px;
+  top: 10px;
+  right: -120px;
   width: 120px;
   background-color: #fff;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
@@ -159,7 +178,31 @@ const CommentMenuItem = styled.div`
     background-color: #f6f6f6;
   }
 `;
-
+const C1 = styled.div`
+  position: absolute;
+  bottom: 16;
+  left: 60;
+  margin-top: 25px;
+  margin-right: 200px;
+  width: 200px;
+`;
+const PostD = styled.div`
+  
+  display: ${props => (props.isAuthor ? 'block' : 'none')};
+  margin-right: auto;
+  button {
+    padding: 10px 20px;
+    background-color: white;
+    color: #f34336 ;
+    position: relative;
+    left: 80%;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 13px;
+  
+  }
+`;
 const formatWriteDate = (date) => {
   const options = { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' };
   const formattedDate = new Date(date).toLocaleString('ko', options);
@@ -194,6 +237,25 @@ const PostDetailPage = () => {
       console.log(error);
     }
   };
+  const navigate = useNavigate();
+
+  const handleDeletePost = async () => {
+    const confirmDelete = window.confirm('게시물을 삭제하시겠습니까?'); // 삭제 여부를 확인하는 경고 창
+  
+    if (confirmDelete) {
+      try {
+        const response = await PostAPI.deletePost(postId);
+        if (response.status === 200) {
+          alert('게시물이 삭제되었습니다.');
+          navigate(-1); 
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  };
+  
+  
 
   const increaseViews = async (postId) => {
     try {
@@ -287,13 +349,20 @@ const PostDetailPage = () => {
       <Background>
         <PostDetailWrapper>
           <PostHeader>
+            
             <PostTitle>{post.postTitle}</PostTitle>
+            <PostD isAuthor={post.memberInfo && post.memberInfo.userId === localStorage.getItem("userId")}>
+                <button onClick={handleDeletePost}>＊게시물 삭제＊</button>
+              </PostD>
             <PostInfo>
               <div>
                 <PostInfoItem userId>작성자: {post.memberInfo ? post.memberInfo.userNickname : ''}</PostInfoItem>
                 <PostInfoItem>{formatWriteDate(post.postDate)}</PostInfoItem>
               </div>
+             
+
               <PostInfoItem>조회수: {post.postViews}</PostInfoItem>
+              
             </PostInfo>
           </PostHeader>
           <PostImage>
@@ -320,14 +389,24 @@ const PostDetailPage = () => {
                   <CommentContent>
                     <CommentAuthor>{comment.nickname}</CommentAuthor>
                     <CommentDate>{formatWriteDate(comment.commentDate)}</CommentDate>
-                    <CommentMenuItem>
-                      <div onClick={() => handleCommentMenu(comment.id)}>{comment.commentContent}</div>
-                    </CommentMenuItem>
-                    {comment.id === selectedCommentId && isCommentAuthor && (
+                        <CogImg isAuthor={comment.userId === localStorage.getItem("userId")}>
+                          <img
+                            src={cogIcon}
+                            alt="Cog Icon"
+                            onClick={() => handleCommentMenu(comment.id)}
+                            style={{ marginTop: '3px', marginLeft: '5px', cursor: 'pointer', height: '18px' }}
+                          />
+                        </CogImg>
+                   
+                       <C1>
+                      {comment.commentContent}
+                      </C1>
+                    {(comment.id === selectedCommentId) && isCommentAuthor && (
                       <CommentMenu  show={showCommentMenu}>
                         <CommentMenuItem onClick={handleDeleteComment}>삭제</CommentMenuItem>
                         <CommentMenuItem onClick={handleUpdateComment}>수정</CommentMenuItem>
                       </CommentMenu>
+                      
                     )}
                   </CommentContent>
                 </CommentItem>

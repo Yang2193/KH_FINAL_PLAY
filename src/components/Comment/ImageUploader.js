@@ -4,12 +4,24 @@
 
   const UploadButton = styled.button`
     padding: 10px 20px;
-    font-size: 16px;
+    font-size: 13px;
     background-color: #800634;
     color: #fff;
     border: none;
     cursor: pointer;
+    height: 40px;
+    border-radius: 4px;
+    margin-left: 10px;
   `;
+  const UploadImg=styled.div`
+  img{
+    width: 100%;
+  }
+  `
+   
+
+
+
 
   const ImageUploader = ({ onChange }) => {
     const [file, setFile] = useState(null);
@@ -36,7 +48,9 @@
       <div>
         <input type="file" onChange={handleFileInputChange}  />
         <UploadButton onClick={handleUploadClick}>Upload</UploadButton>
+        <UploadImg>
         {url && <img src={url} alt="uploaded" />}
+        </UploadImg>
       </div>
     );
   }
