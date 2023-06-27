@@ -71,11 +71,17 @@ const Login = () => {
           console.log(localStorage.getItem("accessToken"));
           try {
             const response2 = await AccountApi.userInfo();
-            const userData = response2.data
-            setUserId(userData.userId);
-            console.log(userData.userId);
-            localStorage.setItem("userData", JSON.stringify(userData));
-            console.log(localStorage.getItem('userData'));
+            const userData = JSON.stringify(response2, null, 2);
+            const userDataObject = JSON.parse(userData);
+            // localStorage.setItem("userData", JSON.stringify(userData));
+            // console.log(localStorage.getItem('userData'));
+            console.log(userDataObject.data[0].userId);
+            setUserId(userDataObject.data[0].userId);
+            setUserPw(loginPw);
+            setUserNickname(userDataObject.data[0].userNickname);
+            setUserName(userDataObject.data[0].userName);
+            setUserPhone(userDataObject.data[0].userPhone);
+            setUserEmail(userDataObject.data[0].userEmail);
           } catch(e) {
             console.log(e);
           }

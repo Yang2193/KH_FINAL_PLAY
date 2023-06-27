@@ -82,6 +82,19 @@ const AccountApi = {
             userPw: userPw
         };
         return await axios.post(Domain + "/mypage/checkmemberPw", checkMemberPwcmd);
+    },
+
+    updateUserInfo: async(userId, userPw, userNickname, userName, userPhone, userEmail) => {
+        Functions.setAuthorizationHeader();
+        const updateUserInfocmd = {
+            userId: userId,
+            userPw: userPw,
+            userNickname: userNickname,
+            userName: userName,
+            userPhone: userPhone,
+            userEmail: userEmail
+        };
+        return await axios.post(Domain + "/mypage/edit", updateUserInfocmd);
     }
 }
 

@@ -4,7 +4,6 @@ import {MyProfileEditDetail, PwCheck } from "./MyProfileEditDetail";
 
 const MyProfileEdit = () => {
   const { isPwd } = useContext(AccountInfoContext);
-
   return (
     <>
     {isPwd ? <MyProfileEditDetail/> : <PwCheck/>}

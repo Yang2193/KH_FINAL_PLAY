@@ -5,7 +5,7 @@ import { AccountInfoContext } from "../../context/AccountInfo";
 
 export const MyProfileEditDetail = () => {
   const navigate = useNavigate();
-  const { userId } = useContext(AccountInfoContext);
+  const { userId, userPw, userName } = useContext(AccountInfoContext);
   const [userInfo, setUserInfo] = useState([]);
 
   // 변경할 프로필 변수
@@ -28,18 +28,18 @@ export const MyProfileEditDetail = () => {
   const [isNickname, setIsNickname] = useState(false);
   const [isPhone, setIsPhone] = useState(false);
   const [isEmail, setIsEmail] = useState(false);
+  const [isAll, setIsAll] = useState(false);
 
   useEffect(() => {
     const fetchUserInfo = async () => {
         try {
         const response = await AccountApi.getUserInfo(userId);
         if (response) {
-            setUserInfo([response]);
-            setPassword(response.data.userPw);
+            setUserInfo([response.data]);
             setNickname(response.data.userNickname);
             setPhone(response.data.userPhone);
             setEmail(response.data.userEmail);
-            console.log(userInfo.data);
+            setPassword(userPw);
         } else {
             console.log("데이터가 없음");
         }
@@ -48,8 +48,7 @@ export const MyProfileEditDetail = () => {
         }
     };
     fetchUserInfo();
-  }, [userId]);
-
+  }, []);
 
   const onChagePw = (e) => {
     const pwRegex = /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,20}$/;
@@ -60,6 +59,7 @@ export const MyProfileEditDetail = () => {
     } else {
         setPasswordMsg("");
         setIsPassword(true);
+        
     }
   }
 
@@ -110,14 +110,38 @@ export const MyProfileEditDetail = () => {
     }
   }
 
-  const updateUserInfo = async() => {
-
-  }
+  const updateInfo = async() => {
+      try {
+        const response = await AccountApi.updateUserInfo(userId, password, nickname, userName, phone, email);
+        console.log("회원정보 수정", response);
+      } catch (e) {
+        console.log(e);
+      }
+    }
 
   return (
     <>
-    </>
-  );
+    {userInfo.length > 0 ? (
+      <>
+        <p>아이디: {userId}</p>
+        <p>비밀번호: </p>
+        <input style={{ display: 'inline' }} type="password" value={password} onChange={onChagePw} />
+        <p>비밀번호 확인: </p>
+        <input style={{ display: 'inline' }} type="password" value={conPassword} onChange={onChageConPw} />
+        <p>닉네임: </p>
+        <input style={{ display: 'inline' }} type="text" value={nickname} onChange={onChageNickname} />
+        <p>이름: {userName}</p>
+        <p>전화번호: </p>
+        <input style={{ display: 'inline' }} type="text" value={phone} onChange={onChagePhone} />
+        <p>이메일: </p>
+        <input style={{ display: 'inline' }} type="text" value={email} onChange={onChageEmail} />
+        <button onClick={updateInfo}>수정</button>
+      </>
+    ) : (
+      <p>Loading...</p>
+    )}
+  </>
+  )
 };
 
 export const PwCheck = () => {
