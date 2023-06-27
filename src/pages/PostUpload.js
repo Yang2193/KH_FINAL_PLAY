@@ -84,7 +84,7 @@ const PostUpload = () => {
   
       if (response.id) {
         toast.success('게시물 등록 성공');
-        navigate(-1); // 이전 페이지로 이동
+        navigate(-1);
       } else {
         toast.error('게시물 등록 실패');
       }

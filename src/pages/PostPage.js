@@ -34,12 +34,11 @@ const Post = () => {
     fetchData();
   }, []);
 
-  const sortSortNo = () => {
-    setSortedPosts([...posts].sort((a, b) => b.id - a.id));
+  const sortViews = () => {
+    setSortedPosts([...posts].sort((a, b) => b.postViews - a.postViews));
   };
 
-  // 프론트에서 증가 시키는 이유
-  // posts 배열을 순회하면서 변경된 게시물의 조회수만 1 실시간으로 증가시키기 위해
+
   const increaseViews = async (postId) => {
     try {
       await PostAPI.increasePostViews(postId);
@@ -88,8 +87,8 @@ const Post = () => {
           <Link to="/postUpload">
             <button className="insert">등록하기</button>
           </Link>
-          <button className="insert" onClick={sortSortNo}>
-            최신순
+          <button className="insert" onClick={sortViews}>
+            조회순
           </button>
         </div>
         <table className="ReviewTable">

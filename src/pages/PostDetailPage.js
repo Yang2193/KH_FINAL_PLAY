@@ -6,7 +6,8 @@ import Header from '../components/Header';
 import Footer from '../components/Footer';
 import cogIcon from '../images/Cog.png';
 import { useNavigate } from 'react-router-dom';
-
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 
 const Background = styled.div`
@@ -132,8 +133,9 @@ const CommentContent = styled.div`
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  height: 70px;
+  height: 80%;
+
+
 `;
 
 
@@ -141,17 +143,17 @@ const CommentContent = styled.div`
 const CommentDate = styled.span`
   margin-left: auto;
   color: #888;
-  margin-bottom: 30px;
-  font-size: 10px;
+ 
+  font-size: 11px;
 `;
 const CogImg = styled.div`
-  margin-bottom: 30px;
+
   display: ${props => (props.isAuthor ? 'block' : 'none')};
 `;
 const CommentAuthor = styled.span`
   font-weight: bold;
   margin-right: 10px;
-  margin-bottom: 30px;
+
   color: #365899;
 `;
 
@@ -179,12 +181,8 @@ const CommentMenuItem = styled.div`
   }
 `;
 const C1 = styled.div`
-  position: absolute;
-  bottom: 16;
-  left: 60;
-  margin-top: 25px;
-  margin-right: 200px;
-  width: 200px;
+  
+margin-top: 10px;
 `;
 const PostD = styled.div`
   
@@ -203,6 +201,7 @@ const PostD = styled.div`
   
   }
 `;
+
 const formatWriteDate = (date) => {
   const options = { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' };
   const formattedDate = new Date(date).toLocaleString('ko', options);
@@ -217,6 +216,7 @@ const PostDetailPage = () => {
   const [commentSectionHeight, setCommentSectionHeight] = useState('auto');
   const [showCommentMenu, setShowCommentMenu] = useState(false);
   const [selectedCommentId, setSelectedCommentId] = useState('');
+  const [isCommentAuthor, setIsCommentAuthor] = useState(false);
 
   useEffect(() => {
     window.localStorage.setItem('postId', postId);
@@ -237,30 +237,29 @@ const PostDetailPage = () => {
       console.log(error);
     }
   };
+
   const navigate = useNavigate();
 
   const handleDeletePost = async () => {
-    const confirmDelete = window.confirm('게시물을 삭제하시겠습니까?'); // 삭제 여부를 확인하는 경고 창
-  
+    const confirmDelete = window.confirm('게시물을 삭제하시겠습니까?');
+
     if (confirmDelete) {
       try {
         const response = await PostAPI.deletePost(postId);
         if (response.status === 200) {
-          alert('게시물이 삭제되었습니다.');
-          navigate(-1); 
+          toast.error('게시물이 삭제되었습니다.');
+          navigate(-1);
         }
       } catch (error) {
         console.log(error);
       }
     }
   };
-  
-  
 
   const increaseViews = async (postId) => {
     try {
       await PostAPI.increasePostViews(postId);
-      setPost(prevPost => ({ ...prevPost, postViews: prevPost.postViews + 1 }));
+      setPost((prevPost) => ({ ...prevPost, postViews: prevPost.postViews + 1 }));
     } catch (error) {
       console.log(error);
     }
@@ -275,7 +274,7 @@ const PostDetailPage = () => {
       const newComment = {
         commentContent: comment,
         postId: postId,
-        userId: localStorage.getItem("userId"),
+        userId: localStorage.getItem('userId'),
       };
 
       const response = await PostAPI.createComment(newComment);
@@ -291,33 +290,23 @@ const PostDetailPage = () => {
     }
   };
 
-
-
-  
-  const [isCommentAuthor, setIsCommentAuthor] = useState(false);
-
-
   const handleCommentMenu = (commentId) => {
-    const loggedInUserId = localStorage.getItem("userId");
-    const selectedComment = comments.find(comment => comment.id === commentId);
-  
+    const loggedInUserId = localStorage.getItem('userId');
+    const selectedComment = comments.find((comment) => comment.id === commentId);
+
     if (selectedComment && selectedComment.userId === loggedInUserId) {
       setSelectedCommentId(commentId);
       setIsCommentAuthor(true);
-      setShowCommentMenu(!showCommentMenu); // showCommentMenu 상태를 토글합니다.
-    } else {
-      setIsCommentAuthor(false);
-      setSelectedCommentId('');
-      alert("본인만 수정 삭제를 할 수 있습니다");
+      setShowCommentMenu(!showCommentMenu);
     }
   };
+
   const handleDeleteComment = async () => {
     try {
       const response = await PostAPI.deleteComment(selectedCommentId);
       if (response.status === 200) {
-        alert('댓글이 삭제되었습니다.');
-        // 삭제된 댓글을 제외한 나머지 댓글만 남도록 업데이트
-        const updatedComments = comments.filter(comment => comment.id !== selectedCommentId);
+        toast.error('댓글이 삭제되었습니다');
+        const updatedComments = comments.filter((comment) => comment.id !== selectedCommentId);
         setComments(updatedComments);
         setShowCommentMenu(false);
         setSelectedCommentId('');
@@ -326,9 +315,35 @@ const PostDetailPage = () => {
       console.log(error);
     }
   };
-  
-  const handleUpdateComment = () => {
 
+  const handleUpdateComment = async () => {
+    try {
+      const updatedCommentContent = prompt(
+        '댓글을 수정하세요',
+        comments.find((comment) => comment.id === selectedCommentId).commentContent
+      );
+
+      const response = await PostAPI.updateComment(selectedCommentId, updatedCommentContent);
+
+      if (response.status === 200) {
+        toast.success('댓글이 수정되었습니다.');
+        console.log(response.data);
+        const updatedComments = comments.map((comment) => {
+          if (comment.id === selectedCommentId) {
+            return {
+              ...comment,
+              commentContent: updatedCommentContent,
+            };
+          }
+          return comment;
+        });
+        setComments(updatedComments);
+        setShowCommentMenu(false);
+        setSelectedCommentId('');
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   useEffect(() => {
@@ -345,29 +360,28 @@ const PostDetailPage = () => {
 
   return (
     <>
+      <ToastContainer />
       <Header />
       <Background>
         <PostDetailWrapper>
           <PostHeader>
-            
             <PostTitle>{post.postTitle}</PostTitle>
-            <PostD isAuthor={post.memberInfo && post.memberInfo.userId === localStorage.getItem("userId")}>
-                <button onClick={handleDeletePost}>＊게시물 삭제＊</button>
-              </PostD>
+            <PostD isAuthor={post.memberInfo && post.memberInfo.userId === localStorage.getItem('userId')}>
+              <button onClick={handleDeletePost}>게시물 삭제</button>
+            </PostD>
             <PostInfo>
               <div>
                 <PostInfoItem userId>작성자: {post.memberInfo ? post.memberInfo.userNickname : ''}</PostInfoItem>
                 <PostInfoItem>{formatWriteDate(post.postDate)}</PostInfoItem>
               </div>
-             
-
               <PostInfoItem>조회수: {post.postViews}</PostInfoItem>
-              
             </PostInfo>
           </PostHeader>
+
           <PostImage>
-            <img src={post.postImageUrl} alt="Post" />
+            <img src={post.postImageUrl} alt="" />
           </PostImage>
+
           <PostContent>{post.postContent}</PostContent>
 
           <CommentSection id="commentSection" height={commentSectionHeight}>
@@ -381,39 +395,35 @@ const PostDetailPage = () => {
               <CommentButton onClick={handleSubmitComment}>댓글 작성</CommentButton>
             </CommentInputWrapper>
 
-
-
             <CommentList>
               {comments.map((comment) => (
                 <CommentItem key={comment.id}>
                   <CommentContent>
-                    <CommentAuthor>{comment.nickname}</CommentAuthor>
-                    <CommentDate>{formatWriteDate(comment.commentDate)}</CommentDate>
-                        <CogImg isAuthor={comment.userId === localStorage.getItem("userId")}>
-                          <img
-                            src={cogIcon}
-                            alt="Cog Icon"
-                            onClick={() => handleCommentMenu(comment.id)}
-                            style={{ marginTop: '3px', marginLeft: '5px', cursor: 'pointer', height: '18px' }}
-                          />
-                        </CogImg>
-                   
-                       <C1>
-                      {comment.commentContent}
-                      </C1>
-                    {(comment.id === selectedCommentId) && isCommentAuthor && (
-                      <CommentMenu  show={showCommentMenu}>
+                    <div>
+                      <CommentAuthor>{comment.nickname}</CommentAuthor>
+                      <CommentDate>{formatWriteDate(comment.commentDate)}</CommentDate>
+                      <C1>{comment.commentContent}</C1>
+                    </div>
+
+                    <CogImg isAuthor={comment.userId === localStorage.getItem('userId')}>
+                      <img
+                        src={cogIcon}
+                        alt="Cog Icon"
+                        onClick={() => handleCommentMenu(comment.id)}
+                        style={{ marginTop: '3px', marginLeft: '5px', cursor: 'pointer', height: '18px' }}
+                      />
+                    </CogImg>
+
+                    {comment.id === selectedCommentId && isCommentAuthor && (
+                      <CommentMenu show={showCommentMenu}>
                         <CommentMenuItem onClick={handleDeleteComment}>삭제</CommentMenuItem>
                         <CommentMenuItem onClick={handleUpdateComment}>수정</CommentMenuItem>
                       </CommentMenu>
-                      
                     )}
                   </CommentContent>
                 </CommentItem>
               ))}
             </CommentList>
-
-            
           </CommentSection>
         </PostDetailWrapper>
       </Background>

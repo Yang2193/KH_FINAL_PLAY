@@ -19,6 +19,7 @@ const PostAPI = {
    // 게시물 등록
    addPost: async (postTitle, postContent, postImageUrl, postCategory, userId) => {
     try {
+      Functions.setAuthorizationHeader();
       const postData = {
         postTitle: postTitle,
         postContent: postContent,
@@ -39,7 +40,7 @@ const PostAPI = {
   },
     // 게시물 삭제
     deletePost: async (postId) => {
-      return await axios.delete(`${Posts}/post/delete/${postId}`);
+      return await axios.post(`${Posts}/post/delete/${postId}`);
     },
 
   // 조회수 증가
@@ -59,6 +60,7 @@ const PostAPI = {
 
     // 댓글 생성
   createComment: async (newComment) => {
+    Functions.setAuthorizationHeader();
     console.log(newComment);
     return await axios.post(`${Posts}/comments/createComment`, newComment);
   },
@@ -66,11 +68,21 @@ const PostAPI = {
   // 댓글 삭제
   deleteComment: async (commentId) => {
 
-    return await axios.delete(`${Posts}/comments/${commentId}`);
-     
+    return await axios.post(`${Posts}/comments/delete/${commentId}`);
    
   },
 
+  // 댓글 수정
+  updateComment: async (commentId, updatedComment) => {
+    return await axios.post(`${Posts}/comments/${commentId}`, updatedComment);
+  },
+  // 카테고리에 해당하는 게시물 목록 조회
+   getPostsByCategory: async (categoryId) => {
+    return await axios.get(`${Posts}/post/category/${categoryId}`);
+  },
+  
 };
+
+
 
 export default PostAPI;
