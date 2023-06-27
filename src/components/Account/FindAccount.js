@@ -34,6 +34,7 @@ export const FindUserId = () => {
             console.log(e);
         }
     }
+    console.log(idUserName + " " + idUserEmail);
 
     return (
         <>

@@ -6,8 +6,7 @@ import 'react-calendar/dist/Calendar.css';
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import { Button } from "../utils/GlobalStyle";
-import moment from "moment/moment";
-import axios from "axios";
+import { useNavigate } from "react-router-dom";
 const ReserveStyle = styled.div`
     margin-top: 2%;
     width: 50%;
@@ -191,22 +190,19 @@ const ReservePage = () =>{
         return timeOptions 
       }
       
-    const playId = localStorage.getItem("playId"); // 연극 아이디
-    const userId = localStorage.getItem("userId"); // 유저 아이디
-    const [seat, setSeat] = useState(1); // 선택한 좌석 정보
     const [value, setValue] = useState();// 선택한 공연 날짜 정보
     const[selTime,setSelTime] = useState(""); // 선택한 공연 시간 정보
     const [timeOptions, setTimeOptions] = useState([]);
-    const [selPrice,setSelPrice] = useState();
+    const [selPrice,setSelPrice] = useState(0);
+
 // 가격 정보
     const price = localStorage.getItem("price");
     const priceOptions = price.split(", ");
 // 좌석 정보
-
     const dateData = (date) =>{
         setValue(date);
         setTimeOptions(getTimeOptions(timeInfo, date));
-      }
+    }
     const timeData = (time) => {
         setSelTime(time);
     }
@@ -214,39 +210,21 @@ const ReservePage = () =>{
         const number = parseInt(p.split(" ")[1].replace(",", ""));
         const seatRating = p.split(" ")[0]
         setSelPrice(number)
-        setSeat(seatRating)
+        localStorage.setItem("selPrice",number)
+        localStorage.setItem("seatInfo",seatRating)
     }
     useEffect(() => {
         // 요일이 변경되면 선택된 시간 초기화
         setSelTime("");
         setSelPrice("");
     }, [value]);
+    const nav = useNavigate();
+const payPage =() =>{
+    nav("payReady");
+}
+    localStorage.setItem("dateInfo",value);
+    localStorage.setItem("timeInfo",selTime);
 
-    // const allData =() =>{
-    //     const date = moment(value).format("YYYY-MM-DD")
-    //     console.log(`
-    //         연극 ID : ${playId}
-    //         회원 ID : ${userId}, 
-    //         날짜 : ${date},
-    //         시간 : ${selTime}, 
-    //         좌석 등급 : ${seat},  
-    //         가격 : ${selPrice}
-    //     `);
-    // }
-
-// 카카오페이
-const handlePayment = async () => {
-    try {
-      const response = await axios.post('http://localhost:8111/payment/ready', {
-        price: selPrice, 
-      });
-      const { next_redirect_pc_url } = response.data;
-      window.location.href = next_redirect_pc_url; // 결제 요청을 위해 리다이렉트
-    } catch (error) {
-      console.error(error);
-      // 에러 처리
-    }
-  };
     return(
         <>
         <Header children={"예매하기"}/>
@@ -302,13 +280,12 @@ const handlePayment = async () => {
                 ))}
             </div>             
             }
-            <div className="btn">
-                <Button onClick={()=>handlePayment()}> 선택 완료</Button>
-            </div>
-        </ReserveStyle>
-        <Footer/>
+            <Button onClick={()=>payPage()}>결제 페이지로 이동</Button>
+    </ReserveStyle>
+    <Footer/>
     </>
     )
 }
+
 
 export default ReservePage;

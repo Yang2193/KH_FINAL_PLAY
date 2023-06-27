@@ -21,6 +21,12 @@ const AccountApi = {
         };
         return await axios.post(Domain + "/member/userinfo", infoData);
     },
+
+    // Context에서 회원조회
+    userInfo: async() => {
+        Functions.setAuthorizationHeader();
+        return await axios.get(Domain + "/user");
+    },
     
     // 회원가입
     memberReg : async(userId, userPw, userNickname, userName, userEmail, userPhone) => {
@@ -68,6 +74,27 @@ const AccountApi = {
             userId: userId
         };
         return await axios.post(Domain + "/mypage/find/post", getReview);
+    },
+
+    checkMemberPw: async(userPw) => {
+        Functions.setAuthorizationHeader();
+        const checkMemberPwcmd = {
+            userPw: userPw
+        };
+        return await axios.post(Domain + "/mypage/checkmemberPw", checkMemberPwcmd);
+    },
+
+    updateUserInfo: async(userId, userPw, userNickname, userName, userPhone, userEmail) => {
+        Functions.setAuthorizationHeader();
+        const updateUserInfocmd = {
+            userId: userId,
+            userPw: userPw,
+            userNickname: userNickname,
+            userName: userName,
+            userPhone: userPhone,
+            userEmail: userEmail
+        };
+        return await axios.post(Domain + "/mypage/edit", updateUserInfocmd);
     }
 }
 
