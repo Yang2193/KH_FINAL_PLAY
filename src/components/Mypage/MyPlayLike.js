@@ -85,7 +85,7 @@ const MyPlayLike = () => {
     // if 결제가 된다면 바로 예매까지.
     const playLikeData = async() => {
         try {
-            const likeData = await PlayInfoApi.selectPlayLike(userId);
+            const likeData = await PlayInfoApi.myPagePlayLike(userId);
             console.log(likeData.data);
             if(likeData.status === 200) {
                 setLikeList(likeData.data);

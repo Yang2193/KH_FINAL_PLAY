@@ -2,9 +2,7 @@ import React from "react";
 import { useState,useEffect } from "react";
 import axios from "axios";
 const PayReady = () => {
-          
-    const playId = localStorage.getItem("playId"); // 연극 아이디
-    const userId = localStorage.getItem("userId"); // 유저 아이디
+    const title = localStorage.getItem("titleInfo")
     const priceInfo = localStorage.getItem("selPrice"); // 선택한 가격정보
     const seatInfo = localStorage.getItem("seatInfo");// 선택한 좌석 정보
     const timeInfo = localStorage.getItem("timeInfo");
@@ -20,7 +18,7 @@ const PayReady = () => {
             // 가맹점 회원 id
             partner_user_id: "partner_user_id",
             // 상품 이름
-            item_name: playId,
+            item_name: title,
             // 상품 수량
             quantity: 1,
             // 총 가격
@@ -30,9 +28,9 @@ const PayReady = () => {
             // 결제 성공 URL
             approval_url: "http://localhost:3000/payresult",
             // 결제 실패 URL
-            fail_url: "http://localhost:3000/resultfalse",
+            fail_url: "http://localhost:3000/info",
             // 결제 취소 URL
-            cancel_url: "http://localhost:3000/resultfalse"
+            cancel_url: "http://localhost:3000/info"
     });
     
     useEffect(() => {
@@ -62,7 +60,7 @@ const PayReady = () => {
     return (
         <>
             <h1> 결제 정보 </h1>
-            <p>유저 ID : {userId}</p>
+            <p>상품 정보 : {title}</p>
             <p>좌석 정보 : {seatInfo}</p>
             <p>가격 정보 : {priceInfo}</p>
             <p>날짜 정보 : {dateInfo}</p>

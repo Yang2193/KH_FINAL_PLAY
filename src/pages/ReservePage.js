@@ -6,9 +6,6 @@ import 'react-calendar/dist/Calendar.css';
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import { Button } from "../utils/GlobalStyle";
-import moment from "moment/moment";
-import axios from "axios";
-import PayApi from "../api/PayApi";
 import { useNavigate } from "react-router-dom";
 const ReserveStyle = styled.div`
     margin-top: 2%;

@@ -17,7 +17,7 @@ const PlayInfoApi = {
         return await axios.get(KH_DOMAIN + `/play/theater/${mt10id}`, theaterId);
     },
     selectPlayLike : async(userId)=>{
-        return await axios.get(KH_DOMAIN + `/play/playLikeList?id=${userId}`)
+        return await axios.get(KH_DOMAIN + `/play/playLikeList2?id=${userId}`)
     },
     addPlayLike : async(playId,userId)=>{
         const id = {
@@ -32,7 +32,10 @@ const PlayInfoApi = {
             userId : userId
         }
         return await axios.post(KH_DOMAIN + `/play/deletePlayLike`,id)
-    }
+    },
+    myPagePlayLike : async(userId)=>{
+        return await axios.get(KH_DOMAIN + `/play/playLikeList?id=${userId}`)
+    },
 }
 
 
