@@ -73,7 +73,17 @@ const AccountApi = {
         const getReview = {
             userId: userId
         };
-        return await axios.post(Domain + "/mypage/find/post", getReview);
+        return await axios.post(Domain + "/mypage/post", getReview);
+    },
+
+    // 마이페이지 댓글 가져오기
+
+    getMemberComment: async(userId) => {
+        Functions.setAuthorizationHeader();
+        const getMemberCommentcmd = {
+            userId: userId
+        };
+        return await axios.post(Domain + "/mypage/comment", getMemberCommentcmd);
     },
 
     checkMemberPw: async(userPw) => {
@@ -95,7 +105,16 @@ const AccountApi = {
             userEmail: userEmail
         };
         return await axios.post(Domain + "/mypage/edit", updateUserInfocmd);
-    }
+    },
+
+    deleteMember: async(userId) => {
+        Functions.setAuthorizationHeader();
+        const deleteMembercmd = {
+            userId: userId
+        };
+        return await axios.post(Domain + "/mypage/deletemember", deleteMembercmd);
+    },
+
 }
 
 export default AccountApi;

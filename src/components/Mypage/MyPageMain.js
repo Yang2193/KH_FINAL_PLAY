@@ -5,6 +5,8 @@ import MyProfileEdit from "./MyProfileEdit";
 import MyReview from "./MyReview";
 import MyPlayLike from "./MyPlayLike";
 import styled from "styled-components";
+import DeleteMember from "../Account/DeleteMemberInfo";
+import MyComment from "./MyComment";
 
 const categories = [
     {
@@ -53,7 +55,9 @@ const MyPageMain = () => {
         <>
         <MyProfileEdit/>
         <MyReview/>
+        <MyComment/> <br />
         <MyPlayLike/>
+        <DeleteMember/>
         </>
     );
 }

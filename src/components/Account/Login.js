@@ -67,14 +67,12 @@ const Login = () => {
           localStorage.setItem("refreshToken", response.data.refreshToken);
           localStorage.setItem("isLogin", "TRUE");
           localStorage.setItem("userId", loginId);  
-          console.log("로그인 성공")
-          console.log(localStorage.getItem("accessToken"));
+          console.log("토큰 발급 완료")
+          console.log(response);
           try {
             const response2 = await AccountApi.userInfo();
             const userData = JSON.stringify(response2, null, 2);
             const userDataObject = JSON.parse(userData);
-            // localStorage.setItem("userData", JSON.stringify(userData));
-            // console.log(localStorage.getItem('userData'));
             console.log(userDataObject.data[0].userId);
             setUserId(userDataObject.data[0].userId);
             setUserPw(loginPw);

@@ -1,8 +1,9 @@
 import React from "react";
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
 import PlayInfoApi from "../../api/PlayInfoApi";
-import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import Info from "../playPage/Info";
 
 const ListBox = styled.div`
     position: relative;
@@ -78,11 +79,14 @@ const MyPlayLike = () => {
     // 오류 메세지
     const [likeListMsg, setLikeListMsg] = useState("");
     const [likeListOkMsg, setLikeListOkMsg] = useState("");
+
+    const nav = useNavigate();
+
+    const movePage =(playId)=>{
+        localStorage.setItem("playId",playId);
+        nav("/info");
+    }
     
-    // 찜목록 리스트 출력
-    // 찜목록 선택 시 찜한 컨텐츠의 정보 출력
-    // 찜 해제 시 db에서 삭제되고, 리스트에서 제거
-    // if 결제가 된다면 바로 예매까지.
     const playLikeData = async() => {
         try {
             const likeData = await PlayInfoApi.myPagePlayLike(userId);
@@ -96,7 +100,7 @@ const MyPlayLike = () => {
             console.log(e);
         }
     };
-     
+    
 
     return (
         <>
@@ -107,7 +111,7 @@ const MyPlayLike = () => {
           </thead>
           <tbody>
             {likeList.map((ll) => (
-              <tr className="likeItem" key={ll.id}>
+              <tr className="likeItem" key={ll.id} onClick={() => movePage(ll.playInfo.playId)}>
                 <td className="image"><img src={ll.playInfo.imageUrl} alt="image1" className="img-thumb"/></td>
                 <td className="title">{ll.playInfo.title}</td>
                 <td className="location">{ll.playInfo.theaterName}</td>
