@@ -31,7 +31,7 @@ const Box = styled.div`
     color: #990A2C;
     border-radius: 20px;
     position: absolute;
-    top: 0px;
+    top: 90px;
     left: -166px;
     border: 1px solid #990A2C;
 
