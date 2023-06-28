@@ -62,9 +62,9 @@ const AccountApi = {
         const findPw = {
             userId: userId,
             userName: userName,
-            email: email
+            userEmail: email
         };
-        return await axios.post(Domain + "/auth/find/pw?email=" + email, findPw);
+        return await axios.post(Domain + "/auth/find/pw", findPw);
     },
 
     // 마이페이지 회원 별 리뷰 가져오기
