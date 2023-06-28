@@ -129,11 +129,11 @@ const Header = ({children}) => {
     };
   }, []);
 
-// children 자리에 나중에 Logo대신 SearchBox를 넣을 생각
-  const onClickMenu = () => {
-      setIsOpen(!isOpen);
-      console.log(isOpen);
-  }
+
+  const handleIsOpen = (openOrClose) => {
+    setIsOpen(openOrClose);
+  };
+
     return(
         <Container>
           <HomeImgWrapper onClick={() => navigate("/")}>
@@ -144,10 +144,10 @@ const Header = ({children}) => {
           <LogoBox>
             <LogoImage src={logo} alt="Logo" />
           </LogoBox>}   
-          <MenuBurgerWrapper onClick={onClickMenu}>
+          <MenuBurgerWrapper>
             {!isOpen ? <MenuBurger/> : <OutLineClose/>}
             <HighlightCircle/>
-            <SideMenu/>
+            <SideMenu handleIsOpen={handleIsOpen} isOpen={isOpen}/>
           </MenuBurgerWrapper>      
         </Container>
     );
