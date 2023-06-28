@@ -1,9 +1,9 @@
 import React, { useEffect, useRef, useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import MessageModal from "../utils/MessageModal";
-import styled, {css} from "styled-components";
+import styled, {css, keyframes} from "styled-components";
 import { AccountInfoContext } from "../context/AccountInfo";
-import { MdMenu, MdLogin, MdMyLocation } from "react-icons/md";
+
 
 
 
@@ -31,8 +31,8 @@ const Box = styled.div`
     color: #990A2C;
     border-radius: 20px;
     position: absolute;
-    top: 0px;
-    left: -166px;
+    top: 90px;
+    left: -150px;
     border: 1px solid #990A2C;
 
     z-index: 3;
@@ -45,6 +45,7 @@ const Box = styled.div`
       flex-wrap: wrap;
       justify-content: space-evenly;
       align-content: center;
+      animation: ${slideIn} 0.3s ease-in-out;
      
       .header{
         height: 100px;
@@ -88,13 +89,21 @@ const Box = styled.div`
    
 `;
 
-const SideMenu = () => {
+const slideIn = keyframes`
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0%);
+  }
+`;
+
+
+const SideMenu = ({handleIsOpen, isOpen}) => {
     const {resetUser} = useContext(AccountInfoContext);
-    const [isOpen, setIsOpen] = useState(false);
     const ref = useRef(null);
     const navigate = useNavigate();
     const userId = window.localStorage.getItem("userId");
-    const authority = window.localStorage.getItem("authority");
 
     //팝업창
     const [modalOpen, setModalOpen] = useState(false);
@@ -105,7 +114,7 @@ const SideMenu = () => {
         
         const clickOutside = (event) =>{
             if(ref.current && !ref.current.contains(event.target)){
-                setIsOpen(false);
+                handleIsOpen(false);
             }
         };
 
@@ -129,7 +138,7 @@ const SideMenu = () => {
 
     
     const onClickMenu = () => {
-        setIsOpen(!isOpen);
+        handleIsOpen(!isOpen);
     }
 
     const onClickBox = (event) => {
@@ -140,14 +149,14 @@ const SideMenu = () => {
         const queryParams = new URLSearchParams();
         if(category) queryParams.set("category", category);
         navigate({ pathname: path, search: queryParams.toString() }); 
-        setIsOpen(false);
+        handleIsOpen(false);
       };
 
     const logout = () =>{
         localStorage.clear();
         resetUser();
         navigate("/");
-        setIsOpen(!isOpen);
+        handleIsOpen(!isOpen);
         setModalOpen("logout");
     }
     

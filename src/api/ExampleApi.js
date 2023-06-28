@@ -15,8 +15,8 @@ const ExampleApi = {
             return await axios.get(KH_DOMAIN + "/example"); // 요청 재실행
         }
       },
-    postAllExamples: async(ex1, ex2, ex3) => {
       
+    postAllExamples: async(ex1, ex2, ex3) => {
       const example = {
         example1 : ex1,
         example2 : ex2,

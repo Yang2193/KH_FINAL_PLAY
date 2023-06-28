@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import styled from "styled-components";
-import { MdMenu, MdLogin, MdMyLocation } from "react-icons/md";
+import { MdHome, MdMenu, MdOutlineClose } from "react-icons/md";
 import SideMenu from "./SideMenu";
+import logo from "../images/logo-no-background.png";
 
 const Container = styled.div`
   width: 100%;
@@ -16,7 +17,7 @@ const Container = styled.div`
   `
 
 const LogoBox = styled.div`
-  width: 200px;
+  width: 300px;
   height: 100px;
   color: white;
   display: flex;
@@ -24,11 +25,25 @@ const LogoBox = styled.div`
   align-items: center;
 `
 
+const LogoImage = styled.img`
+  width: 90%;
+  height: 70%;
+`;
+
+const HomeImg = styled(MdHome)`
+  width: 80px;
+  height: 80px;
+  position: absolute;
+  color: white;
+  @media (max-width: 768px) {
+        width: 60px;
+        height: 60px;
+    }
+`
 const MenuBurger = styled(MdMenu)`
   width: 80px;
   height: 80px;
   position: absolute;
-  right: 16px;
   color: white;
 
   @media (max-width: 768px) {
@@ -38,37 +53,64 @@ const MenuBurger = styled(MdMenu)`
         
     }
 `
-const LoginBox = styled(MdLogin)`
-  width: 50px;
-  height: 50px;
-  color: white;
+const OutLineClose = styled(MdOutlineClose)`
+ width: 80px;
+  height: 80px;
   position: absolute;
-  left: 16px;
-  top: 50%;
-  transform: translateY(-50%);
+  color: white;
 
   @media (max-width: 768px) {
-    width: 40px;
-    height: 40px;
-    left: 8px;
-  }
+        width: 60px;
+        height: 60px;
+        right: 8px;
+        
+    }
 `
+const HighlightCircle = styled.div`
+  position: absolute;
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background-color: none;
+  transition: background-color 0.3s ease-in-out;
+  @media (max-width: 768px) {
+        width: 60px;
+        height: 60px;
+    }
+`;
 
-const MyPageBox = styled(MdMyLocation)`
-  width: 50px;
-  height: 50px;
-  color: white;
+const HomeImgWrapper = styled.div`
   position: absolute;
   left: 16px;
-  top: 50%;
-  transform: translateY(-50%);
+  width: 80px;
+  height: 80px;
+  cursor: pointer;
 
-  @media (max-width: 768px) {
-    width: 40px;
-    height: 40px;
-    left: 8px;
+  &:hover ${HighlightCircle} {
+    background-color: rgba(255, 255, 255, 0.2);
   }
-`
+  @media (max-width: 768px) {
+        width: 60px;
+        height: 60px;
+    }
+`;
+
+const MenuBurgerWrapper = styled.div`
+  position: absolute;
+  right: 16px;
+  width: 80px;
+  height: 80px;
+  cursor: pointer;
+
+  &:hover ${HighlightCircle} {
+    background-color: rgba(255, 255, 255, 0.2);
+  }
+  @media (max-width: 768px) {
+        width: 60px;
+        height: 60px;
+    }
+`;
+
 
 const Header = ({children}) => {
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
@@ -87,16 +129,26 @@ const Header = ({children}) => {
     };
   }, []);
 
-// children 자리에 나중에 Logo대신 SearchBox를 넣을 생각
-  const onClickMenu = () => {
-      setIsOpen(!isOpen);
-      console.log(isOpen);
-  }
+
+  const handleIsOpen = (openOrClose) => {
+    setIsOpen(openOrClose);
+  };
+
     return(
         <Container>
-          {isMobile ? <>{children}</> : <LogoBox>{children}</LogoBox>}         
-          <MenuBurger/>
-          <SideMenu/>
+          <HomeImgWrapper onClick={() => navigate("/")}>
+            <HomeImg/>
+            <HighlightCircle/>
+          </HomeImgWrapper>
+          {isMobile ? <>{children}</> : 
+          <LogoBox>
+            <LogoImage src={logo} alt="Logo" />
+          </LogoBox>}   
+          <MenuBurgerWrapper>
+            {!isOpen ? <MenuBurger/> : <OutLineClose/>}
+            <HighlightCircle/>
+            <SideMenu handleIsOpen={handleIsOpen} isOpen={isOpen}/>
+          </MenuBurgerWrapper>      
         </Container>
     );
 
