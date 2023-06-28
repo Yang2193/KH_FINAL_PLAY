@@ -5,14 +5,15 @@ import Header from '../components/Header';
 import PostAPI from '../api/PostApi';
 import PageNation from '../utils/PageNation';
 import '../pages/ReviewBoard.css';
-import LoginPage from "./LoginPage"
+import SearchBar from '../components/Comment/SearchBar';
+
 
 
 
 const Post = () => {
   const [posts, setPosts] = useState([]);
   const [sortedPosts, setSortedPosts] = useState([]);
-  const [isDataFetched, setIsDataFetched] = useState(false);
+  // const [isDataFetched, setIsDataFetched] = useState(false);
   const [currentPage, setCurrentPage] = useState(0);
   const ITEMS_PAGE = 10;
 
@@ -84,12 +85,14 @@ const Post = () => {
       <div className="ReviewBoardWrapper">
         <h2>리뷰 게시판</h2>
         <div className="ButtonWrapper">
+        <SearchBar></SearchBar>
           <Link to="/postUpload">
             <button className="insert">등록하기</button>
           </Link>
           <button className="insert" onClick={sortViews}>
             조회순
           </button>
+          
         </div>
         <table className="ReviewTable">
           <thead>
@@ -103,7 +106,7 @@ const Post = () => {
           </thead>
           <tbody>
             {currentPageData.map((post) => (
-              <tr className="ReviewItem" key={post.id}>
+              <tr className={`ReviewItem ${post.memberInfo?.userNickname === '운영자' ? 'AdminRow' : ''}`} key={post.id}>
                 <td className="ReviewTitle">
                   <Link
                     to={`/post/select/${post.id}`}

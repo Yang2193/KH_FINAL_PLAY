@@ -9,7 +9,7 @@ import PlayList from "../components/main/PlayList";
 const Container = styled.div`
     height: 100vh;
     position: relative;
-    overflow: hidden;
+    overflow-x: hidden;
 `
 
 const MainPage = () => {
