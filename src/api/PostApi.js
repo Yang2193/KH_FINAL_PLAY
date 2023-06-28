@@ -80,6 +80,10 @@ const PostAPI = {
    getPostsByCategory: async (categoryId) => {
     return await axios.get(`${Posts}/post/category/${categoryId}`);
   },
+    // 게시물 수정
+    updatePost: async (postId, updatedPostData) => {
+      return await axios.post(`${Posts}/post/update/${postId}`, updatedPostData);
+    },
   
 };
 

@@ -18,6 +18,7 @@ import AccountProvider from './context/AccountInfo';
 import PayResult from './components/playPage/KaKaoPay/PayResult';
 import PayCancel from './components/playPage/KaKaoPay/PayCancel';
 import PayReady from './components/playPage/KaKaoPay/PayReady';
+import PostUpdate from './components/Comment/PostUpdate';
 
 function App() {
   return (
@@ -33,10 +34,11 @@ function App() {
         <Route path="/oneReview" element={<OneReview />} />
         <Route path="/post/select/:postId" element={<PostDetail />} />
         <Route path="/post" element={<PostPage />} />
-        <Route path="/postUpload" element={<PostUpload />} />
+        <Route path="/postUpdate/:postId" element={<PostUpdate />} />
         <Route path="/reserve" element={<ReservePage />} />
         <Route path="/payresult" element={<PayResult />} />
         <Route path="/payCancel" element={<PayCancel />} />
+        <Route path="/postUpdate" element={<PostUpdate />} />
         <Route path="/reserve/payReady" element={<PayReady />} />
       </Routes>
       <ToastContainer />

@@ -8,12 +8,15 @@
 .ReviewTitle{
   font-size: 14px;
   font-weight: bold;
+  white-space: nowrap;
 }
 
 .Id{
-  font-size: 14px;
+  font-size: 13px;
 }
-
+.AdminRow {
+  background-color: #f8f9fa;
+}
 h2 {
   text-align: center;
   margin-bottom: 20px;
