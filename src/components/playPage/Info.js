@@ -4,6 +4,7 @@ import { Button } from "../../utils/GlobalStyle";
 import PlayInfoApi from "../../api/PlayInfoApi";
 import { FaHeart } from 'react-icons/fa';
 import { useNavigate } from "react-router-dom";
+import ReserveApi from "../../api/ReserveApi";
 const FixData = styled.div`
     width: 100%;
     height: 80vh;
@@ -169,11 +170,17 @@ const Info = () =>{
     }; 
 
     // 예매하기
-    const reserve = (playPlan,price,title)=> {
-        navigate("/reserve")
-        localStorage.setItem("time",playPlan)
-        localStorage.setItem("price",price)
-        localStorage.setItem("titleInfo",title)
+    const reserve = (playPlan,price,title,theaterId)=> {
+        if (userId==="") {
+            alert("로그인이 필요합니다.");
+            navigate("/login")
+        } else {
+            localStorage.setItem("time",playPlan)
+            localStorage.setItem("price",price)
+            localStorage.setItem("titleInfo",title) 
+            localStorage.setItem("theaterId",theaterId) 
+            navigate("/reserve")
+        }
     }
     return(
         <>
@@ -233,7 +240,7 @@ const Info = () =>{
                                 }
                             </ul>
                             <div className="btnBox">
-                                <Button onClick={()=>reserve(play.playPlan,play.playPrice,play.title)}>예매 하기</Button>
+                                <Button onClick={()=>reserve(play.playPlan,play.playPrice,play.title,play.theaterId)}>예매 하기</Button>
                             </div>
                         </div>
                     </div>

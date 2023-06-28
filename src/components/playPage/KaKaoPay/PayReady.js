@@ -1,6 +1,10 @@
 import React from "react";
 import { useState,useEffect } from "react";
 import axios from "axios";
+
+
+
+
 const PayReady = () => {
     const title = localStorage.getItem("titleInfo")
     const priceInfo = localStorage.getItem("selPrice"); // 선택한 가격정보

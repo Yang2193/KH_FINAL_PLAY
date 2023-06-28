@@ -1,6 +1,7 @@
 import { useState,useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import ReserveApi from "../../../api/ReserveApi";
 
 const PayResult = () => {
     // 선택한 좌석의 인덱스를 받아옴
@@ -74,11 +75,27 @@ const PayResult = () => {
         });
     }, []);
 
-      const navigate = useNavigate();
+    const seatInfo = localStorage.getItem("seatInfo");// 선택한 좌석 정보
+    const timeInfo = localStorage.getItem("timeInfo");
+    const dateInfo = localStorage.getItem("dateInfo");
+    const userId = localStorage.getItem("userId");
+    const playId = localStorage.getItem("playId");
 
-      const onClick =() =>{
-        navigate("/")
+    const navigate = useNavigate();
+    const addRes =async() =>{
+      const rsp = await ReserveApi.addReserve(userId,playId,dateInfo+" "+timeInfo,seatInfo);
+      if(rsp.status === 200) {
+        console.log("성공");
+      } else {
+          console.log("전송 실패");
+      }
     }
+
+    const onClick =() =>{
+      addRes();
+      navigate("/");
+    }
+
         return(
             <div>
                 <h1>결제가 정상 진행 되었습니다.</h1>

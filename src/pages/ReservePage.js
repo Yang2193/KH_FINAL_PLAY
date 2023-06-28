@@ -7,6 +7,8 @@ import Header from "../components/Header";
 import Footer from "../components/Footer";
 import { Button } from "../utils/GlobalStyle";
 import { useNavigate } from "react-router-dom";
+import moment from "moment/moment";
+import ReserveApi from "../api/ReserveApi";
 const ReserveStyle = styled.div`
     margin-top: 2%;
     width: 50%;
@@ -16,21 +18,17 @@ const ReserveStyle = styled.div`
     flex-direction: column;
     position: relative;
     left: 25%;
-    .seat{
-        /* border: 1px solid; */
+    .container{
         width: 100%;
-        height: 20%;
+        height: 100%;
+    }
+    .seat{
         display: flex;
-        select{
-            width: 10%;
-            height: 20%;
-            font-size: 1em;
-            margin-left: 5%;
-            margin-top:12%;
-        }
+        width: 100%;
+        height: 100%;
         p{
-            width: 20%;
-            height: 40%;
+            width: 2%;
+            height: 2%;
             border: 1px solid;
             border-radius: 10px;
             margin-top:10%;
@@ -188,17 +186,17 @@ const ReservePage = () =>{
               }
             });
         return timeOptions 
-      }
+    }
       
     const [value, setValue] = useState();// 선택한 공연 날짜 정보
     const[selTime,setSelTime] = useState(""); // 선택한 공연 시간 정보
     const [timeOptions, setTimeOptions] = useState([]);
-    const [selPrice,setSelPrice] = useState(0);
+    const [seatInfo,setSeatInfo] = useState([]);
+    const theaterId = localStorage.getItem("theaterId")
+    localStorage.setItem("dateInfo",moment(value).format("YYYY-MM-DD"));
+    localStorage.setItem("timeInfo",selTime);
 
-// 가격 정보
-    const price = localStorage.getItem("price");
-    const priceOptions = price.split(", ");
-// 좌석 정보
+// 날짜 및 시간 선택
     const dateData = (date) =>{
         setValue(date);
         setTimeOptions(getTimeOptions(timeInfo, date));
@@ -206,83 +204,81 @@ const ReservePage = () =>{
     const timeData = (time) => {
         setSelTime(time);
     }
-    const priceData = (p) =>{
-        const number = parseInt(p.split(" ")[1].replace(",", ""));
-        const seatRating = p.split(" ")[0]
-        setSelPrice(number)
-        localStorage.setItem("selPrice",number)
-        localStorage.setItem("seatInfo",seatRating)
-    }
-    useEffect(() => {
-        // 요일이 변경되면 선택된 시간 초기화
-        setSelTime("");
-        setSelPrice("");
-    }, [value]);
-    const nav = useNavigate();
-const payPage =() =>{
-    nav("payReady");
-}
-    localStorage.setItem("dateInfo",value);
-    localStorage.setItem("timeInfo",selTime);
+// 좌석 정보 
+    useEffect(()=>{
+        const seat = async()=>{
+            const rsp = await ReserveApi.selectSeat(theaterId);
+            setSeatInfo(rsp.data);
+            console.log(rsp.data)
+        };  
+        seat();
+        },[])
 
+// 요일이 변경되면 선택된 시간 초기화
+    useEffect(() => {
+        setSelTime("");
+    }, [value]);
+
+    const nav = useNavigate();
+    const payReady=()=>{
+        nav("/payReady")
+    }
+// 타입설정
+    const[type,setType] = useState("default");
+    const nextPage =() =>{
+        setType("seat");
+    }
     return(
         <>
         <Header children={"예매하기"}/>
-        <ReserveStyle>
-            <div className="cal">
-                <Calendar
-                onChange={dateData} 
-                value={value}
-                calendarType="US"
-                minDate={new(Date)}
-                />  
-            </div>
-                {timeOptions === null ? 
-                <div className="time">
-                    <h3>회차가 존재하지 않습니다.</h3>
+        {type === "default" && (
+            <ReserveStyle>
+                <div className="cal">
+                    <Calendar
+                    onChange={dateData} 
+                    value={value}
+                    calendarType="US"
+                    minDate={new(Date)}
+                    />  
                 </div>
-                : 
-                <div className="time">
-                    <h3>회차 선택</h3>
-                    {timeOptions.map((time, index) => (
-                        <p 
-                        className={selTime === time ? "selected" : ""}
-                        onClick={()=>timeData(time)} 
-                        key={index}
-                        >
-                            {time.trim()}
-                        </p>
-                    ))}        
-                </div>  
-                }          
-            { price.includes("전석") 
-            ? 
-            <div className="seat">
-                <h3>좌석 선택</h3>           
-                <p
-                onClick={()=>priceData(price)} 
-                className={selPrice === parseInt(price.split(" ")[1].replace(",", "")) ? "selected" : ""}
-                >
-                    {price}
-                </p>   
-            </div> 
-            :
-            <div className="seat">
-                <h3>좌석 선택</h3>           
-                {priceOptions.map((p, index) => (
-                    <p 
-                        className={selPrice === parseInt(p.split(" ")[1].replace(",", "")) ? "selected" : ""}
-                        onClick={()=>priceData(p)} 
-                        key={index}
-                    >
-                        {p}
-                    </p>
-                ))}
-            </div>             
-            }
-            <Button onClick={()=>payPage()}>결제 페이지로 이동</Button>
-    </ReserveStyle>
-    <Footer/>
+                    {timeOptions === null ? 
+                    <div className="time">
+                        <h3>회차가 존재하지 않습니다.</h3>
+                    </div>
+                    : 
+                    <div className="time">
+                        <h3>회차 선택</h3>
+                        {timeOptions.map((time, index) => (
+                            <p 
+                            className={selTime === time ? "selected" : ""}
+                            onClick={()=>timeData(time)} 
+                            key={index}
+                            >
+                                {time.trim()}
+                            </p>
+                        ))}        
+                    </div>  
+                    }
+                    <Button onClick={()=>nextPage()}>좌석 선택</Button>
+            </ReserveStyle>
+        )}
+        {type === "seat" &&(
+            <ReserveStyle>
+                <div>좌석 선택</div>
+                <div className="container">
+                    <div class="stage">
+                        <h2>STAGE</h2>
+                    </div>
+                    <div className="seat">
+                    {seatInfo.R.map((seat, index) => (
+                            <p>{seat}</p>
+                    ))}
+                    </div>
+                </div>
+                <Button onClick={()=>payReady()}>결제 하기</Button>
+            </ReserveStyle>
+        )}
+        <Footer/>
     </>
     )
 }

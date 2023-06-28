@@ -37,7 +37,7 @@ function App() {
         <Route path="/reserve" element={<ReservePage />} />
         <Route path="/payresult" element={<PayResult />} />
         <Route path="/payCancel" element={<PayCancel />} />
-        <Route path="/reserve/payReady" element={<PayReady />} />
+        <Route path="/payReady" element={<PayReady />} />
       </Routes>
       <ToastContainer />
     </Router>
