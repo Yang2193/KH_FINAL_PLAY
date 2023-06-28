@@ -1,9 +1,9 @@
 import React, { useEffect, useRef, useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import MessageModal from "../utils/MessageModal";
-import styled, {css} from "styled-components";
+import styled, {css, keyframes} from "styled-components";
 import { AccountInfoContext } from "../context/AccountInfo";
-import { MdMenu, MdLogin, MdMyLocation } from "react-icons/md";
+
 
 
 
@@ -45,6 +45,7 @@ const Box = styled.div`
       flex-wrap: wrap;
       justify-content: space-evenly;
       align-content: center;
+      animation: ${slideIn} 0.3s ease-in-out;
      
       .header{
         height: 100px;
@@ -87,6 +88,16 @@ const Box = styled.div`
 
    
 `;
+
+const slideIn = keyframes`
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0%);
+  }
+`;
+
 
 const SideMenu = () => {
     const {resetUser} = useContext(AccountInfoContext);
