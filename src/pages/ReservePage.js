@@ -25,27 +25,35 @@ const ReserveStyle = styled.div`
     .seat{
         display: flex;
         width: 100%;
-        height: 100%;
+        height: 50%;
+        /* border: 1px solid; */
+        flex-direction: column;
+
+    }
+    .seat-row{
+        display: flex;
+        align-items: center;
+        width: 100%;
+        height: 30%;
+        margin-bottom: 1%;
         p{
-            width: 2%;
-            height: 2%;
+            width: 4%;
+
+        }
+        span{
             border: 1px solid;
-            border-radius: 10px;
-            margin-top:10%;
-            margin-left: 2%;
-            background-color: white;
-            font-size: 1em;
+            width: 4%;
+            height: 50%;
             display: flex;
             justify-content: center;
             align-items: center;
             cursor: pointer;
-        /* 선택된 버튼에 대한 스타일 변경 */
-    
+            margin-left: 1%;  
         }
-        .selected{
+    .selected{
             background-color: #990a2c;
             color: #fff;
-        }
+        }      
     }
     .time{
         width: 100%;
@@ -189,7 +197,7 @@ const ReservePage = () =>{
     }
       
     const [value, setValue] = useState();// 선택한 공연 날짜 정보
-    const[selTime,setSelTime] = useState(""); // 선택한 공연 시간 정보
+    const [selTime,setSelTime] = useState(""); // 선택한 공연 시간 정보
     const [timeOptions, setTimeOptions] = useState([]);
     const [seatInfo,setSeatInfo] = useState([]);
     const theaterId = localStorage.getItem("theaterId")
@@ -205,15 +213,38 @@ const ReservePage = () =>{
         setSelTime(time);
     }
 // 좌석 정보 
+    const [selSeat,setSelSeat] = useState();
     useEffect(()=>{
         const seat = async()=>{
             const rsp = await ReserveApi.selectSeat(theaterId);
             setSeatInfo(rsp.data);
-            console.log(rsp.data)
+            if (rsp.status ===200) {
+                console.log("성공");
+            }
+            console.log(rsp.data);
         };  
         seat();
         },[])
 
+    const clickSeat = (seat)=>{
+        if(selSeat === seat){
+            setSelSeat("");
+        }else {setSelSeat(seat);}
+        console.log(selSeat);
+    }
+
+    const groupedSeats = seatInfo.reduce((groups, seat) => {
+        const row = seat.seatNumber.charAt(0); // R 또는 S
+        const seatColumn = seat.seatNumber.slice(1); // 열 번호
+      
+        if (!groups[row]) {
+          groups[row] = [];
+        }
+        groups[row].push({ seatNumber: seatColumn });
+      
+        return groups;
+      }, {});
+      
 // 요일이 변경되면 선택된 시간 초기화
     useEffect(() => {
         setSelTime("");
@@ -263,20 +294,25 @@ const ReservePage = () =>{
             </ReserveStyle>
         )}
         {type === "seat" &&(
-            <ReserveStyle>
-                <div>좌석 선택</div>
-                <div className="container">
-                    <div class="stage">
-                        <h2>STAGE</h2>
-                    </div>
-                    <div className="seat">
-                    {seatInfo.R.map((seat, index) => (
-                            <p>{seat}</p>
+        <ReserveStyle>
+        <div>좌석 선택</div>
+        <div className="container">
+            <div className="stage">
+                <h2>STAGE</h2>
+            </div>
+            <div className="seat">
+                {Object.entries(groupedSeats).map(([row, seats]) => (
+                <div className="seat-row">
+                    <p>{row}열</p>
+                    {seats.map((seat) => (
+                    <span className={selSeat === row+seat.seatNumber ? "selected" : ""} onClick={()=>clickSeat(row+seat.seatNumber)}>{seat.seatNumber}</span>
                     ))}
-                    </div>
                 </div>
-                <Button onClick={()=>payReady()}>결제 하기</Button>
-            </ReserveStyle>
+                ))}
+            </div>
+        </div>
+        <Button onClick={() => payReady()}>결제 하기</Button>
+        </ReserveStyle>
         )}
         <Footer/>
     </>
