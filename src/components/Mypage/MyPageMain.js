@@ -1,64 +1,35 @@
-import React, { useContext } from "react";
-import { useNavigate } from "react-router";
-import { AccountInfoContext } from "../../context/AccountInfo";
-import MyProfileEdit from "./MyProfileEdit";
-import MyReview from "./MyReview";
-import MyPlayLike from "./MyPlayLike";
+import React, { useState, useEffect, useCallback } from "react";
+import { useLocation } from "react-router";
+import MenuBar from "./MypageMenu";
 import styled from "styled-components";
-import DeleteMember from "../Account/DeleteMemberInfo";
-import MyComment from "./MyComment";
+import MyprofileEdit from "./MyProfileEdit";
 
-const categories = [
-    {
-        name: 'menu1',
-        text: '내정보 / 수정'
-    },
-    {
-        name: 'menu2',
-        text: '내가 쓴 리뷰'
-    },
-    {
-        name: 'menu3',
-        text: '찜 목록'
-    },
-    {
-        name: 'menu4',
-        text: '결제 내역'
-    },
-]
+const MypageBlock = styled.div`
+    .section {
+        display: flex;
+        flex-direction: row;
+        margin: 20px auto;
+        justify-content:center;
+    }
+`;
 
 const MyPageMain = () => {
-    const MenuBlock = styled.div`
-        background-color: #990A2C;
-        width: 300px;
-        height: auto;
-        text-align: center;
-        position: relative;
-        border-radius: 5px;
-        margin-right: 10px;
-    `
+    const location = useLocation();
+    const queryParmas = new URLSearchParams(location.search);
+    const headerSelect = queryParmas.get("category");
 
-    const Category = styled.div`
-        cursor: pointer;
-        padding-bottom: 2rem;
-        text-align: center;
+    const [category, setCategory] = useState(headerSelect || 'nomal');
+    const onSelect = useCallback(category => setCategory(category), []);
 
-    `
-    // 나의 프로필 정보 (회원탈퇴 포함)
-    // 50% 
-    // 내가 올렸던 리뷰 보기
-    // 90% 프론트만 남음
-    // 찜 목록 보기
-    // 50% 중복체크 시 안되게
-    // 내가 결제했던 티겟 보기
+    useEffect(() => {
+        setCategory(headerSelect || 'nomal');
+    }, [headerSelect]);
+
     return (
-        <>
-        <MyProfileEdit/>
-        <MyReview/>
-        <MyComment/> <br />
-        <MyPlayLike/>
-        <DeleteMember/>
-        </>
+        <MypageBlock>
+        <MyprofileEdit/>
+        <MenuBar/>
+        </MypageBlock>
     );
 }
 

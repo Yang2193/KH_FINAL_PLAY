@@ -114,7 +114,6 @@ const AccountApi = {
         };
         return await axios.post(Domain + "/mypage/deletemember", deleteMembercmd);
     },
-
 }
 
 export default AccountApi;
