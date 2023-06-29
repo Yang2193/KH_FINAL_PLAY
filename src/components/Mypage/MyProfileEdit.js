@@ -3,9 +3,16 @@ import { AccountInfoContext } from "../../context/AccountInfo";
 import {MyProfileEditDetail, PwCheck } from "./MyProfileEditDetail";
 
 const MyProfileEdit = () => {
-  const { isPwd } = useContext(AccountInfoContext);
+  const context = useContext(AccountInfoContext);
+  const {userId, userName, userNickname, isPwd} = context;
+
+  const onClickEdit = () => {
+    
+  }
+
   return (
     <>
+    <p>{userId}</p>
     {isPwd ? <MyProfileEditDetail/> : <PwCheck/>}
     </>
   );
