@@ -84,12 +84,13 @@ const Post = () => {
       <Header />
       <div className="ReviewBoardWrapper">
         <h2>리뷰 게시판</h2>
-        <div className="ButtonWrapper">
         <SearchBar></SearchBar>
+        <div className="ButtonWrapper">
+       
           <Link to="/postUpload">
-            <button className="insert">등록하기</button>
+            <button className="insert1">등록하기</button>
           </Link>
-          <button className="insert" onClick={sortViews}>
+          <button className="insert2" onClick={sortViews}>
             조회순
           </button>
           

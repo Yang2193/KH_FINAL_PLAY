@@ -56,28 +56,31 @@ const PostUpdate = () => {
   });
 
   const navigate = useNavigate();
-
   useEffect(() => {
-    const fetchPostData = async () => {
+    const fetchPost = async () => {
       try {
         const response = await PostAPI.getPostById(postId);
+        const post = response.data;
 
-        if (response.id) {
+        if (post) {
           setPostData({
-            postTitle: response.title,
-            postImage: response.image,
-            postContent: response.content,
+            postTitle: post.postTitle || '',
+            postImage: post.postImage || '',
+            postContent: post.postContent || '',
           });
         } else {
-          toast.error('게시물 가져오기 실패');
+          console.error('게시물을 찾을 수 없습니다.');
         }
       } catch (error) {
-        console.error('게시물 가져오기 에러:', error);
+        console.error('게시물 불러오기 에러:', error);
       }
     };
 
-    fetchPostData();
+    fetchPost();
   }, [postId]);
+  
+  
+  
 
   const handleImageChange = (image) => {
     setPostData((prevData) => ({
@@ -96,14 +99,8 @@ const PostUpdate = () => {
 
   const handleUpdate = async () => {
     try {
-      const response = await PostAPI.updatePost(
-        postId,
-        postData.postTitle,
-        postData.postContent,
-        postData.postImage,
-      );
-
-      if (response.id) {
+      const response = await PostAPI.updatePost(postId, postData);
+      if (response) {
         toast.success('게시물 수정 성공');
         navigate(-1);
       } else {

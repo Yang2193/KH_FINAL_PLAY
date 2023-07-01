@@ -1,5 +1,6 @@
 import axios from "axios";
 import Functions from "../utils/Functions";
+import Post from './../pages/PostPage';
 
 const Posts = "http://localhost:8111"; // 백엔드 API 서버 주소
 
@@ -81,10 +82,17 @@ const PostAPI = {
     return await axios.get(`${Posts}/post/category/${categoryId}`);
   },
     // 게시물 수정
-    updatePost: async (postId, updatedPostData) => {
-      return await axios.post(`${Posts}/post/update/${postId}`, updatedPostData);
-    },
-  
+    updatePost: async (postId, updatedPost) => {
+      try {
+        Functions.setAuthorizationHeader();
+        const response = await axios.post(`${Posts}/post/update/${postId}`, updatedPost);
+        return response.data;
+      } catch (error) {
+        await Functions.handleApiError(error);
+        const response1 = await axios.post(`${Posts}/post/update/${postId}`);
+        return response1.data;
+      }
+    }
 };
 
 
