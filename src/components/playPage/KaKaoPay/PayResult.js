@@ -80,10 +80,12 @@ const PayResult = () => {
     const dateInfo = localStorage.getItem("dateInfo");
     const userId = localStorage.getItem("userId");
     const playId = localStorage.getItem("playId");
-
+    const seatRating = localStorage.getItem("seatRating"); // 좌석 등급
+    console.log(seatInfo,timeInfo,dateInfo,userId,playId,seatRating);
     const navigate = useNavigate();
+    
     const addRes =async() =>{
-      const rsp = await ReserveApi.addReserve(userId,playId,dateInfo+" "+timeInfo,seatInfo);
+      const rsp = await ReserveApi.addReserve(userId,playId,dateInfo,timeInfo,seatInfo,seatRating);
       if(rsp.status === 200) {
         console.log("성공");
       } else {

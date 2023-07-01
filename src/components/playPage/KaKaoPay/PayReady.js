@@ -11,6 +11,7 @@ const PayReady = () => {
     const seatInfo = localStorage.getItem("seatInfo");// 선택한 좌석 정보
     const timeInfo = localStorage.getItem("timeInfo");
     const dateInfo = localStorage.getItem("dateInfo");
+    const seatRating = localStorage.getItem("seatRating"); // 좌석 등급
 // 카카오페이
     let [data, setData] = useState({
         next_redirect_pc_url: "",
@@ -65,7 +66,8 @@ const PayReady = () => {
         <>
             <h1> 결제 정보 </h1>
             <p>상품 정보 : {title}</p>
-            <p>좌석 정보 : {seatInfo}</p>
+            <p>좌석 등급 : {seatRating}</p>
+            <p>좌석 번호 : {seatInfo}</p>
             <p>가격 정보 : {priceInfo}</p>
             <p>날짜 정보 : {dateInfo}</p>
             <p>시간 정보 : {timeInfo}</p>

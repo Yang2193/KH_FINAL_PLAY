@@ -18,9 +18,30 @@ const ReserveStyle = styled.div`
     flex-direction: column;
     position: relative;
     left: 25%;
+    .reserved{
+        background-color: #eee;
+        color: #fff;
+        cursor: not-allowed;
+    }
+    .stage{
+        /* border: 1px solid; */
+        width: 100%;
+        height: 20%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        h2{
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid;
+            width: 30%;
+            height: 50%;
+        }
+    }
     .container{
         width: 100%;
-        height: 100%;
+        height: 60%;
     }
     .seat{
         display: flex;
@@ -28,7 +49,6 @@ const ReserveStyle = styled.div`
         height: 50%;
         /* border: 1px solid; */
         flex-direction: column;
-
     }
     .seat-row{
         display: flex;
@@ -49,6 +69,9 @@ const ReserveStyle = styled.div`
             align-items: center;
             cursor: pointer;
             margin-left: 1%;  
+        }
+        .empty{
+            border: none;
         }
     .selected{
             background-color: #990a2c;
@@ -86,17 +109,18 @@ const ReserveStyle = styled.div`
 
     }
     .btn{
-        width: 100%;
-        height: 30%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        button{
-            width: 30%;
-            height: 20%;
+            width: 20%;
+            height: 10%;
             border: none;
+            font-size: 1em;
             border-radius: 15px;
             cursor: pointer;
+        }
+    .priceInfo{
+        width: 100%;
+        /* border: 1px solid; */
+        p{
+            /* border: 1px solid; */
         }
     }
     .react-calendar {
@@ -199,7 +223,6 @@ const ReservePage = () =>{
     const [value, setValue] = useState();// 선택한 공연 날짜 정보
     const [selTime,setSelTime] = useState(""); // 선택한 공연 시간 정보
     const [timeOptions, setTimeOptions] = useState([]);
-    const [seatInfo,setSeatInfo] = useState([]);
     const theaterId = localStorage.getItem("theaterId")
     localStorage.setItem("dateInfo",moment(value).format("YYYY-MM-DD"));
     localStorage.setItem("timeInfo",selTime);
@@ -213,7 +236,10 @@ const ReservePage = () =>{
         setSelTime(time);
     }
 // 좌석 정보 
-    const [selSeat,setSelSeat] = useState();
+    const [seatInfo,setSeatInfo] = useState([]);// 좌석정보 불러오기
+    const [selSeat,setSelSeat] = useState("");// 선택한 좌석 번호
+    const seatText = `${selSeat.charAt(0)}열 ${selSeat.slice(1)}번`
+    localStorage.setItem("seatInfo",seatText)
     useEffect(()=>{
         const seat = async()=>{
             const rsp = await ReserveApi.selectSeat(theaterId);
@@ -221,30 +247,73 @@ const ReservePage = () =>{
             if (rsp.status ===200) {
                 console.log("성공");
             }
-            console.log(rsp.data);
         };  
         seat();
         },[])
-
-    const clickSeat = (seat)=>{
-        if(selSeat === seat){
-            setSelSeat("");
-        }else {setSelSeat(seat);}
+        const clickSeat = (seat) => {
+        if (selSeat === seat) {
+          setSelSeat("");
+        } else {
+          setSelSeat(seat);
+        }
         console.log(selSeat);
-    }
+      };
 
     const groupedSeats = seatInfo.reduce((groups, seat) => {
-        const row = seat.seatNumber.charAt(0); // R 또는 S
-        const seatColumn = seat.seatNumber.slice(1); // 열 번호
-      
+        const row = seat.seatNumber.charAt(0); // 열 이름
+        const seatColumn = seat.seatNumber.slice(1); // 번호 
         if (!groups[row]) {
           groups[row] = [];
         }
         groups[row].push({ seatNumber: seatColumn });
-      
         return groups;
       }, {});
-      
+  
+// 예약된 좌석 조회
+    const playId = localStorage.getItem("playId")
+    const [findSeat,setFindSeat] = useState([]);
+    useEffect(()=>{
+        const reservedSeat = async()=>{
+            const rsp = await ReserveApi.findSeat(playId);// 연극 기준으로 예매목록을 조회하여 예매된 좌석 찾기
+            setFindSeat(rsp.data);
+            if (rsp.status ===200) {
+                console.log("성공");
+            }
+        };  
+        reservedSeat();
+        },[])
+    // useEffect(() => {
+    //     if (findSeat.some(s => 
+    //         s.seatNumbers.replace(/[^0-9]/g, "") === seatInfo.seatNumber &&
+    //         s.seeDate === moment(value).format("YYYY-MM-DD")&&
+    //         s.time === selTime
+    //         )) 
+    //     { 
+    //     } else {
+    //     }
+    // }, [findSeat]);
+    
+// 가격 정보 
+    const priceInfo = localStorage.getItem("price");
+    const priceOptions = priceInfo.split(", ");   
+    if (priceInfo.includes("전석")) {
+        const price = parseInt(priceInfo.split(" ")[1].replace(",", ""))
+        localStorage.setItem("selPrice",price)
+        localStorage.setItem("seatRating",priceOptions[0].split(" ")[0])
+
+    } else {
+        const selectedRow = parseInt(selSeat.charAt(0));
+        if (selectedRow >= 1 && selectedRow <= 3) {
+            const price = parseInt(priceOptions[0].split(" ")[1].replace(",", ""));
+            localStorage.setItem("selPrice",price)
+            localStorage.setItem("seatRating",priceOptions[0].split(" ")[0])
+        } else if (selectedRow >= 4 && selectedRow <= 6) {
+            const price = parseInt(priceOptions[1].split(" ")[1].replace(",", ""));
+            localStorage.setItem("selPrice",price)
+            localStorage.setItem("seatRating",priceOptions[0].split(" ")[0])
+
+        }
+      }
 // 요일이 변경되면 선택된 시간 초기화
     useEffect(() => {
         setSelTime("");
@@ -259,11 +328,13 @@ const ReservePage = () =>{
     const nextPage =() =>{
         setType("seat");
     }
+
     return(
         <>
         <Header children={"예매하기"}/>
         {type === "default" && (
             <ReserveStyle>
+                <h1>날짜 및 시간 선택</h1>
                 <div className="cal">
                     <Calendar
                     onChange={dateData} 
@@ -290,28 +361,74 @@ const ReservePage = () =>{
                         ))}        
                     </div>  
                     }
-                    <Button onClick={()=>nextPage()}>좌석 선택</Button>
+                    <Button className="btn" onClick={()=>nextPage()}>좌석 선택</Button>
             </ReserveStyle>
         )}
         {type === "seat" &&(
         <ReserveStyle>
-        <div>좌석 선택</div>
+        <h1>좌석 선택</h1>
         <div className="container">
             <div className="stage">
                 <h2>STAGE</h2>
             </div>
             <div className="seat">
-                {Object.entries(groupedSeats).map(([row, seats]) => (
+            {Object.entries(groupedSeats).map(([row, seats]) => (
                 <div className="seat-row">
                     <p>{row}열</p>
-                    {seats.map((seat) => (
-                    <span className={selSeat === row+seat.seatNumber ? "selected" : ""} onClick={()=>clickSeat(row+seat.seatNumber)}>{seat.seatNumber}</span>
-                    ))}
+                    {seats.map((seat) => {
+                        if (findSeat.some(
+                            (s) =>
+                            s.seatNumbers.replace(/[^0-9]/g, "") === row + seat.seatNumber &&
+                            s.seeDate === moment(value).format("YYYY-MM-DD") &&
+                            s.time === selTime
+                        )
+                        ) {
+                        // 예약된 좌석인 경우 클릭 불가능한 스타일 적용
+                        return (
+                            <span className="reserved">{seat.seatNumber}</span>
+                        );
+                        } else {
+                            if (seat.seatNumber.includes("C")) {
+                                const seatNumber = seat.seatNumber.replace("C", "");
+                                return (
+                                    <>
+                                    <span
+                                        className={selSeat === row + seatNumber ? "selected" : ""}
+                                        onClick={() => clickSeat(row + seatNumber)}>
+                                        {seatNumber}
+                                    </span>
+                                    <span className="empty"> </span>
+                                    </>
+                                );
+                                
+                            } else {
+                                return (
+                                    <span
+                                    className={selSeat === row + seat.seatNumber ? "selected" : ""}
+                                    onClick={() => clickSeat(row + seat.seatNumber)}>
+                                    {seat.seatNumber}
+                                    </span>
+                                );
+                            }
+                        }
+                    })}
                 </div>
-                ))}
+            ))}
             </div>
+
+
         </div>
-        <Button onClick={() => payReady()}>결제 하기</Button>
+        <div className="priceInfo">
+        {priceInfo.includes("전석") ? <p>{priceInfo}</p>:
+        <>
+        <p>1 ~ 3열 R석</p>
+        <p>4 ~ 6열 S석</p>
+        <p>{priceInfo}</p>
+        </>
+ }
+        </div>
+
+        <Button className="btn" onClick={() => payReady()}>결제 하기</Button>
         </ReserveStyle>
         )}
         <Footer/>
