@@ -224,7 +224,7 @@
       const [selectedCommentId, setSelectedCommentId] = useState('');
       const [isCommentAuthor, setIsCommentAuthor] = useState(false);
       const [showRtMenu, setShowRtMenu] = useState(false);
-
+      const isAuthor = comment.userId === localStorage.getItem('userId');
   
 
       useEffect(() => {
@@ -307,6 +307,8 @@
           setSelectedCommentId(commentId);
           setIsCommentAuthor(true);
           setShowCommentMenu(!showCommentMenu);
+          
+          
         }
       };
 
@@ -409,22 +411,23 @@
                   {comments.map((comment) => (
                     <CommentItem key={comment.id} isAuthor={comment.userId === localStorage.getItem('userId')}>
                       <CommentContent isAuthor={comment.userId === localStorage.getItem('userId')}>
+                        
+                      <CogImg isAuthor={comment.userId === localStorage.getItem('userId')}>
+                          <img
+                            src={cogIcon}
+                            alt="Cog Icon"
+                            onClick={() => handleCommentMenu(comment.id)}
+                            style={{ marginTop: '4px', marginLeft:'3px', cursor: 'pointer', height: '16px' }}
+                          />
+                        </CogImg>
                         <div>
                           <CommentAuthor>{comment.nickname}</CommentAuthor>
                           <CommentDate>{formatWriteDate(comment.commentDate)}</CommentDate>
                           <C1>{comment.commentContent}</C1>
                         </div>
 
-                        <CogImg isAuthor={comment.userId === localStorage.getItem('userId')}>
-                          <img
-                            src={cogIcon}
-                            alt="Cog Icon"
-                            onClick={() => handleCommentMenu(comment.id)}
-                            style={{ marginTop: '3px', marginLeft:'', cursor: 'pointer', height: '18px' }}
-                          />
-                        </CogImg>
                       
-                        <RtMenu showRtMenu={showRtMenu}  />
+                        {comment.userId !== localStorage.getItem('userId') && <RtMenu showRtMenu={showRtMenu} />}
 
                         
                         {comment.id === selectedCommentId && isCommentAuthor && (

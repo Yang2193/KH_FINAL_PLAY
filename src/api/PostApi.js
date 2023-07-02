@@ -77,6 +77,25 @@ const PostAPI = {
   updateComment: async (commentId, updatedComment) => {
     return await axios.post(`${Posts}/comments/${commentId}`, updatedComment);
   },
+
+// 댓글 신고
+reportComment: async (commentId, reportReason, userId, postId) => {
+  const reportData = {
+    commentId: commentId,
+    reportContent: reportReason,
+    userId: userId, 
+    postId: postId 
+  };
+
+  try {
+    const response = await axios.post(`${Posts}/reports/report`, reportData);
+    return response.data;
+  } catch (error) {
+    const response1 = await axios.post(`${Posts}/reports/report`);
+    return response1.data;
+  }
+},
+  
   // 카테고리에 해당하는 게시물 목록 조회
    getPostsByCategory: async (categoryId) => {
     return await axios.get(`${Posts}/post/category/${categoryId}`);
@@ -93,6 +112,7 @@ const PostAPI = {
         return response1.data;
       }
     }
+    
 };
 
 
