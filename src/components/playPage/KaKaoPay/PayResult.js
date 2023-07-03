@@ -4,7 +4,6 @@ import { useNavigate } from "react-router-dom";
 import ReserveApi from "../../../api/ReserveApi";
 
 const PayResult = () => {
-    // 선택한 좌석의 인덱스를 받아옴
     // 초기값 세팅 그리고 위에서 결제한 결제 고유번호를 세팅 이건 백에다 넘길 정보 카카오랑 어쩌다보니 따로 구분됨
     const [payment, setPayment] = useState({
       // 가격
@@ -75,7 +74,7 @@ const PayResult = () => {
         });
     }, []);
 
-    const seatInfo = localStorage.getItem("seatInfo");// 선택한 좌석 정보
+    const seatInfo = localStorage.getItem("totalSeat");// 선택한 좌석 정보
     const timeInfo = localStorage.getItem("timeInfo");
     const dateInfo = localStorage.getItem("dateInfo");
     const userId = localStorage.getItem("userId");
@@ -85,7 +84,7 @@ const PayResult = () => {
     const navigate = useNavigate();
     
     const addRes =async() =>{
-      const rsp = await ReserveApi.addReserve(userId,playId,dateInfo,timeInfo,seatInfo,seatRating);
+      const rsp = await ReserveApi.addReserve(userId,playId,dateInfo,timeInfo,seatInfo);
       if(rsp.status === 200) {
         console.log("성공");
       } else {
