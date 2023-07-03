@@ -116,13 +116,12 @@ const Login = () => {
                 {!isLoginPw && <span className="loginPwErr">{loginPwMsg}</span>}
                 {isLoginPw && <span className="loginPwOk">{loginPwOkMsg}</span>}
               </div>
-              <div className="IdPwSearchButtonBox">
-                <Link to="/find" className="IdPwSearchButton">아이디 / 패스워드 찾기</Link>
+              <div className="IdPwdSearchButtonBox">
+                <Link to="/find" className="IdPwdSearchButton">아이디 / 패스워드 찾기</Link>
+                <Link to="/join" className="JoinButton">회원 가입</Link>
               </div>
               <button className="loginButton" onClick={onClickLogin}>로그인</button>
-              <div>
-                <button className="regButton" onClick={onClickGoToAgree}>회원가입</button>
-              </div>
+              <button className="kakaoLogin" onClick={onClickLogin}>kakao 로그인</button>
             </div>
           </div>
         </div>
