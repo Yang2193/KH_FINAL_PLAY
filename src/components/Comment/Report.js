@@ -102,7 +102,7 @@ const RtMenu = ({ commentId, nickname, userId,postId }) => {
   const handleExampleClick = example => {
     setReportReason(example);
   };
-
+//ㅅㅈ
   return (
     <>
       <RtMenuImage
