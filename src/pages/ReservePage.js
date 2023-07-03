@@ -119,8 +119,10 @@ const ReserveStyle = styled.div`
             cursor: pointer;
         }
     .priceInfo{
-        width: 100%;
-        /* border: 1px solid; */
+        width: 50%;
+        padding-left: 2%;
+        background-color: #eee;
+        border-radius: 15px;
         p{
             /* border: 1px solid; */
         }
