@@ -77,7 +77,7 @@ const PostAPI = {
   updateComment: async (commentId, updatedComment) => {
     return await axios.post(`${Posts}/comments/${commentId}`, updatedComment);
   },
-
+//ㅅㅈ
 // 댓글 신고
 reportComment: async (commentId, reportReason, nickname, postId,userId) => {
   const reportData = {
