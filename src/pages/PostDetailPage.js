@@ -9,7 +9,7 @@
     import { useNavigate } from 'react-router-dom';
     import { toast, ToastContainer } from 'react-toastify';
     import 'react-toastify/dist/ReactToastify.css';
-
+    import PostReport from '../components/Comment/PostReport ';
     
 
 
@@ -371,10 +371,9 @@
           <Header />
           <Background>
             <PostDetailWrapper>
-            
               <PostHeader>
                 <PostTitle>{post.postTitle}</PostTitle>
-                
+                <PostReport postId={post.id} userId={comment.userId}  showRtMenu={showRtMenu} nickname={comment.nickname} ></PostReport>
                 <PostD isAuthor={post.memberInfo && post.memberInfo.userId === localStorage.getItem('userId')}>
                 <button onClick={handleDeletePost}>게시물 삭제</button>
                 <button onClick={() => navigate(`/postupdate/${post.id}`)}>게시물 수정</button>
