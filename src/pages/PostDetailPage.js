@@ -375,7 +375,7 @@
                 <PostTitle>{post.postTitle}</PostTitle>
                 <PostD isAuthor={post.memberInfo && post.memberInfo.userId === localStorage.getItem('userId')}>
                 <button onClick={handleDeletePost}>게시물 삭제</button>
-                <button onClick={() => navigate(`/postUpdate/${post.id}`)}>게시물 수정</button>
+                <button onClick={() => navigate(`/postupdate/${post.id}`)}>게시물 수정</button>
               </PostD>
                 <PostInfo>
                   <div>
@@ -424,7 +424,7 @@
 
                       
                                               
-                        {comment.userId !== localStorage.getItem('userId') && <RtMenu commentId={comment.id} showRtMenu={showRtMenu} nickname={comment.nickname} />}
+                        {comment.userId !== localStorage.getItem('userId') && <RtMenu userId={comment.userId} commentId={comment.id} showRtMenu={showRtMenu} nickname={comment.nickname} />}
 
 
                         

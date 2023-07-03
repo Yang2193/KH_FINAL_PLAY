@@ -61,7 +61,7 @@ const RtMenuImage = styled.img`
   cursor: pointer;
 `;
 
-const RtMenu = ({ commentId, nickname }) => {
+const RtMenu = ({ commentId, nickname, userId }) => {
   const [showRtMenu, setShowRtMenu] = useState(false);
   const [reportReason, setReportReason] = useState('');
   const location = useLocation();
@@ -74,13 +74,14 @@ const RtMenu = ({ commentId, nickname }) => {
     }
   }, [location.search]);
 
-  const handleReport = async (commentId, reportReason, nickname, postId) => {
+  const handleReport = async (commentId, reportReason, nickname, postId, reportUserId) => {
     try {
       const response = await PostAPI.reportComment(
         commentId,
         reportReason,
         nickname,
-        postId
+        postId,
+        reportUserId
       );
       console.log('Report:', response.data);
       toast.success('신고가 접수 되었습니다');
@@ -95,7 +96,7 @@ const RtMenu = ({ commentId, nickname }) => {
 
   const handleSubmit = async e => {
     e.preventDefault();
-    handleReport(commentId, reportReason, nickname, postId);
+    handleReport(commentId, reportReason, nickname, postId,userId);
 
     setShowRtMenu(false);
     setReportReason('');

@@ -79,12 +79,13 @@ const PostAPI = {
   },
 
 // 댓글 신고
-reportComment: async (commentId, reportReason, nickname, postId) => {
+reportComment: async (commentId, reportReason, nickname, postId,userId) => {
   const reportData = {
     commentId: commentId,
     reportContent: reportReason,
     nickname: nickname,
     postId: postId,
+    reportUserId: userId
   };
 
   try {

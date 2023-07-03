@@ -59,8 +59,8 @@ const PostUpdate = () => {
   useEffect(() => {
     const fetchPost = async () => {
       try {
-        const response = await PostAPI.getPostById(postId);
-        const post = response.data;
+        const post = await PostAPI.getPostById(postId);
+        
 
         if (post) {
           setPostData({
