@@ -87,14 +87,10 @@ reportComment: async (commentId, reportReason, nickname, postId,userId) => {
     postId: postId,
     reportUserId: userId
   };
+  console.log(reportData);
+  
+  return await axios.post(`${Posts}/reports/report`, reportData);
 
-  try {
-    const response = await axios.post(`${Posts}/reports/report`, reportData);
-    return response.data;
-  } catch (error) {
-    const response1 = await axios.post(`${Posts}/reports/report`, reportData);
-    return response1.data;
-  }
 },
   
   // 카테고리에 해당하는 게시물 목록 조회
