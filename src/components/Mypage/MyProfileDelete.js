@@ -1,14 +1,17 @@
-import React from "react";
-import AccountApi from "../../api/AccountApi";
+import React, {useContext} from "react";
+import { AccountInfoContext } from "../../context/AccountInfo";
+import { useNavigate } from "react-router-dom";
+import { MyProfileDeleteDetail, WithdrawPwCheck} from "./MyProfileDeleteDetail";
 
 const MyResaleInfo = () => {
-
-    const userId = localStorage.getItem('userId');
+    const context = useContext(AccountInfoContext);
+    const {withdraw} = context;
 
     // 회원 삭제
     
     return (
         <>
+        {withdraw ? <MyProfileDeleteDetail/> : <WithdrawPwCheck/>}
         </>
     );
 }

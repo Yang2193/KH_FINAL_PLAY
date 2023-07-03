@@ -12,7 +12,6 @@ const MyProfileEdit = () => {
 
   return (
     <>
-    <p>{userId}</p>
     {isPwd ? <MyProfileEditDetail/> : <PwCheck/>}
     </>
   );

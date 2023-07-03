@@ -66,7 +66,8 @@ const Login = () => {
           localStorage.setItem("accessToken", response.data.accessToken);
           localStorage.setItem("refreshToken", response.data.refreshToken);
           localStorage.setItem("isLogin", "TRUE");
-          localStorage.setItem("userId", loginId);  
+          localStorage.setItem("userId", loginId);
+          localStorage.setItem("userPw", loginPw);
           console.log("토큰 발급 완료")
           console.log(response);
           try {

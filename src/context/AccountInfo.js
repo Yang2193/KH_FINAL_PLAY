@@ -12,6 +12,7 @@ const AccountProvider = ({children} ) => {
     const [userEmail, setUserEmail] = useState("");
     const [isLogin, setIsLogin] = useState(false);
     const [isPwd, setIsPwd] = useState(false);
+    const [withdraw, setWithdraw] = useState(false);
 
     useEffect(() => {
       const restoreSession = async() => {
@@ -44,10 +45,11 @@ const AccountProvider = ({children} ) => {
       setUserPhone("");
       setUserEmail("");
       setIsPwd(false);
+      setWithdraw(false);
     }
 
     return (
-        <AccountInfoContext.Provider value={{isPwd, setIsPwd, resetUser, userId, setUserId, userPw, setUserPw, userNickname, setUserNickname, userName, setUserName, userPhone, setUserPhone, userEmail, setUserEmail, isLogin, setIsLogin}}>
+        <AccountInfoContext.Provider value={{withdraw, setWithdraw, isPwd, setIsPwd, resetUser, userId, setUserId, userPw, setUserPw, userNickname, setUserNickname, userName, setUserName, userPhone, setUserPhone, userEmail, setUserEmail, isLogin, setIsLogin}}>
             {children}
         </AccountInfoContext.Provider>
     );

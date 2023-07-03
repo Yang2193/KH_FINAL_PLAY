@@ -107,12 +107,12 @@ const AccountApi = {
         return await axios.post(Domain + "/mypage/edit", updateUserInfocmd);
     },
 
-    deleteMember: async(userId) => {
+    withdraw: async(userId) => {
         Functions.setAuthorizationHeader();
-        const deleteMembercmd = {
+        const withdrawcmd = {
             userId: userId
         };
-        return await axios.post(Domain + "/mypage/deletemember", deleteMembercmd);
+        return await axios.post(Domain + "/mypage/withdraw", withdrawcmd);
     },
 }
 
