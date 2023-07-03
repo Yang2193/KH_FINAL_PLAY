@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import PostAPI from '../../api/PostApi';
-
+import { toast, ToastContainer } from 'react-toastify';
 import RtMenuIcon from './ReortIcon.png';
 
 const CommentMenu = styled.div`
@@ -19,7 +19,33 @@ const CommentMenu = styled.div`
   z-index: 999;
 `;
 
-const CommentMenuItem = styled.div`
+const Title = styled.h3`
+  font-size: 16px;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 10px;
+`;
+
+const ReportForm = styled.form`
+  display: flex;
+  flex-direction: column;
+  margin-top: 10px;
+`;
+
+const ReportInput = styled.input`
+  padding: 5px;
+  margin-bottom: 10px;
+`;
+
+const ReportButton = styled.button`
+  padding: 5px 10px;
+  background-color: #990A2C;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+`;
+
+const ExampleItem = styled.div`
   padding: 5px;
   cursor: pointer;
   color: #555;
@@ -35,30 +61,7 @@ const RtMenuImage = styled.img`
   cursor: pointer;
 `;
 
-const ReportForm = styled.form`
-  display: flex;
-  flex-direction: column;
-  margin-top: 10px;
-`;
-
-const ReportLabel = styled.label`
-  margin-bottom: 5px;
-`;
-
-const ReportInput = styled.input`
-  padding: 5px;
-  margin-bottom: 10px;
-`;
-
-const ReportButton = styled.button`
-  padding: 5px 10px;
-  background-color: #555;
-  color: #fff;
-  border: none;
-  cursor: pointer;
-`;
-
-const RtMenu = () => {
+const RtMenu = ({ commentId, nickname }) => {
   const [showRtMenu, setShowRtMenu] = useState(false);
   const [reportReason, setReportReason] = useState('');
   const location = useLocation();
@@ -71,12 +74,18 @@ const RtMenu = () => {
     }
   }, [location.search]);
 
-
-  const handleReport = async (commentId, reportReason, userId, postId) => {
+  const handleReport = async (commentId, reportReason, nickname, postId) => {
     try {
-      const response = await PostAPI.reportComment(commentId, reportReason, userId, postId);
+      const response = await PostAPI.reportComment(
+        commentId,
+        reportReason,
+        nickname,
+        postId
+      );
       console.log('Report:', response.data);
+      toast.success('신고가 접수 되었습니다');
     } catch (error) {
+      console.error(error);
     }
   };
 
@@ -86,13 +95,12 @@ const RtMenu = () => {
 
   const handleSubmit = async e => {
     e.preventDefault();
-    const commentId = parseInt(window.localStorage.getItem('commentId'),10);
-    const userId = parseInt(window.localStorage.getItem('userId'), 10); 
-    handleReport(commentId, reportReason, userId, postId); 
-  
+    handleReport(commentId, reportReason, nickname, postId);
+
     setShowRtMenu(false);
     setReportReason('');
   };
+
   const handleInputChange = e => {
     setReportReason(e.target.value);
   };
@@ -111,23 +119,27 @@ const RtMenu = () => {
       />
 
       <CommentMenu show={showRtMenu}>
-        <CommentMenuItem>신고하기</CommentMenuItem>
+        <Title>신고하기</Title>
         <ReportForm onSubmit={handleSubmit}>
-          <ReportLabel>신고 사유:</ReportLabel>
-          <ReportInput type="text" value={reportReason} onChange={handleInputChange} />
-          <ReportLabel>신고 예시:</ReportLabel>
-          <CommentMenuItem onClick={() => handleExampleClick('욕설 및 혐오 표현 사용')}>
+          <ReportInput
+            type="text"
+            placeholder="신고 사유를 입력해주세요"
+            value={reportReason}
+            onChange={handleInputChange}
+          />
+          <Title>신고 예시</Title>
+          <ExampleItem onClick={() => handleExampleClick('욕설 및 혐오 표현 사용')}>
             욕설 및 혐오 표현 사용
-          </CommentMenuItem>
-          <CommentMenuItem onClick={() => handleExampleClick('스팸 또는 광고')}>
+          </ExampleItem>
+          <ExampleItem onClick={() => handleExampleClick('스팸 또는 광고')}>
             스팸 또는 광고
-          </CommentMenuItem>
-          <CommentMenuItem onClick={() => handleExampleClick('폭력적인 콘텐츠')}>
+          </ExampleItem>
+          <ExampleItem onClick={() => handleExampleClick('폭력적인 콘텐츠')}>
             폭력적인 콘텐츠
-          </CommentMenuItem>
-          <CommentMenuItem onClick={() => handleExampleClick('개인정보 유출')}>
+          </ExampleItem>
+          <ExampleItem onClick={() => handleExampleClick('개인정보 유출')}>
             개인정보 유출
-          </CommentMenuItem>
+          </ExampleItem>
           <ReportButton type="submit">신고</ReportButton>
         </ReportForm>
       </CommentMenu>

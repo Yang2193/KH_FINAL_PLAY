@@ -79,19 +79,19 @@ const PostAPI = {
   },
 
 // 댓글 신고
-reportComment: async (commentId, reportReason, userId, postId) => {
+reportComment: async (commentId, reportReason, nickname, postId) => {
   const reportData = {
     commentId: commentId,
     reportContent: reportReason,
-    userId: userId, 
-    postId: postId 
+    nickname: nickname,
+    postId: postId,
   };
 
   try {
     const response = await axios.post(`${Posts}/reports/report`, reportData);
     return response.data;
   } catch (error) {
-    const response1 = await axios.post(`${Posts}/reports/report`);
+    const response1 = await axios.post(`${Posts}/reports/report`, reportData);
     return response1.data;
   }
 },

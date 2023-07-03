@@ -227,9 +227,7 @@
       const isAuthor = comment.userId === localStorage.getItem('userId');
   
 
-      useEffect(() => {
-        window.localStorage.setItem('postId', postId);
-      }, [postId]);
+
 
       useEffect(() => {
         fetchPost();
@@ -307,8 +305,6 @@
           setSelectedCommentId(commentId);
           setIsCommentAuthor(true);
           setShowCommentMenu(!showCommentMenu);
-          
-          
         }
       };
 
@@ -417,7 +413,7 @@
                             src={cogIcon}
                             alt="Cog Icon"
                             onClick={() => handleCommentMenu(comment.id)}
-                            style={{ marginTop: '4px', marginLeft:'3px', cursor: 'pointer', height: '16px' }}
+                            style={{ marginTop: '5px', marginLeft:'3px', cursor: 'pointer', height: '16px' }}
                           />
                         </CogImg>
                         <div>
@@ -427,7 +423,9 @@
                         </div>
 
                       
-                        {comment.userId !== localStorage.getItem('userId') && <RtMenu showRtMenu={showRtMenu} />}
+                                              
+                        {comment.userId !== localStorage.getItem('userId') && <RtMenu commentId={comment.id} showRtMenu={showRtMenu} nickname={comment.nickname} />}
+
 
                         
                         {comment.id === selectedCommentId && isCommentAuthor && (
