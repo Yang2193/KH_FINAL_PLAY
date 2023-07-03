@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
+
 import styled from 'styled-components';
 import PostAPI from '../../api/PostApi';
 import { toast, ToastContainer } from 'react-toastify';
@@ -61,18 +61,11 @@ const RtMenuImage = styled.img`
   cursor: pointer;
 `;
 
-const RtMenu = ({ commentId, nickname, userId }) => {
+const RtMenu = ({ commentId, nickname, userId,postId }) => {
   const [showRtMenu, setShowRtMenu] = useState(false);
   const [reportReason, setReportReason] = useState('');
-  const location = useLocation();
-  const [postId, setPostId] = useState('');
 
-  useEffect(() => {
-    const postId = new URLSearchParams(location.search).get('postId');
-    if (postId) {
-      setPostId(postId);
-    }
-  }, [location.search]);
+
 
   const handleReport = async (commentId, reportReason, nickname, postId, reportUserId) => {
     try {
@@ -96,7 +89,7 @@ const RtMenu = ({ commentId, nickname, userId }) => {
 
   const handleSubmit = async e => {
     e.preventDefault();
-    handleReport(commentId, reportReason, nickname, postId,userId);
+    handleReport(commentId, reportReason, nickname, postId, userId);
 
     setShowRtMenu(false);
     setReportReason('');

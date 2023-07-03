@@ -371,8 +371,10 @@
           <Header />
           <Background>
             <PostDetailWrapper>
+            
               <PostHeader>
                 <PostTitle>{post.postTitle}</PostTitle>
+                
                 <PostD isAuthor={post.memberInfo && post.memberInfo.userId === localStorage.getItem('userId')}>
                 <button onClick={handleDeletePost}>게시물 삭제</button>
                 <button onClick={() => navigate(`/postupdate/${post.id}`)}>게시물 수정</button>
@@ -382,6 +384,7 @@
                     <PostInfoItem userId>작성자: {post.memberInfo ? post.memberInfo.userNickname : ''}</PostInfoItem>
                     <PostInfoItem>{formatWriteDate(post.postDate)}</PostInfoItem>
                   </div>
+
                   <PostInfoItem>조회수: {post.postViews}</PostInfoItem>
                 </PostInfo>
               </PostHeader>
@@ -424,7 +427,7 @@
 
                       
                                               
-                        {comment.userId !== localStorage.getItem('userId') && <RtMenu userId={comment.userId} commentId={comment.id} showRtMenu={showRtMenu} nickname={comment.nickname} />}
+                        {comment.userId !== localStorage.getItem('userId') && <RtMenu postId={post.id} userId={comment.userId} commentId={comment.id} showRtMenu={showRtMenu} nickname={comment.nickname} />}
 
 
                         
