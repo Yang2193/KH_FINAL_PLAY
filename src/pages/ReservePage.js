@@ -52,6 +52,7 @@ const ReserveStyle = styled.div`
     }
     .seat-row{
         display: flex;
+        justify-content: center;
         align-items: center;
         width: 100%;
         height: 30%;
@@ -109,16 +110,19 @@ const ReserveStyle = styled.div`
 
     }
     .btn{
+        margin-top: 10%;
             width: 20%;
-            height: 10%;
+            height: 5%;
             border: none;
             font-size: 1em;
             border-radius: 15px;
             cursor: pointer;
         }
     .priceInfo{
-        width: 100%;
-        /* border: 1px solid; */
+        width: 50%;
+        padding-left: 2%;
+        background-color: #eee;
+        border-radius: 15px;
         p{
             /* border: 1px solid; */
         }
@@ -237,9 +241,8 @@ const ReservePage = () =>{
     }
 // 좌석 정보 
     const [seatInfo,setSeatInfo] = useState([]);// 좌석정보 불러오기
-    const [selSeat,setSelSeat] = useState("");// 선택한 좌석 번호
-    const seatText = `${selSeat.charAt(0)}열 ${selSeat.slice(1)}번`
-    localStorage.setItem("seatInfo",seatText)
+    const [selSeat,setSelSeat] = useState([]);// 선택한 좌석 번호
+    const [seatDetails, setSeatDetails] = useState([]); // 선택한 좌석의 등급과 번호 저장
     useEffect(()=>{
         const seat = async()=>{
             const rsp = await ReserveApi.selectSeat(theaterId);
@@ -250,15 +253,13 @@ const ReservePage = () =>{
         };  
         seat();
         },[])
-        const clickSeat = (seat) => {
-        if (selSeat === seat) {
-          setSelSeat("");
-        } else {
-          setSelSeat(seat);
-        }
-        console.log(selSeat);
-      };
-
+    const clickSeat = (seat) => {
+        if (selSeat.includes(seat)) {
+            setSelSeat(selSeat.filter((selectedSeat) => selectedSeat !== seat));
+          } else {
+            setSelSeat([...selSeat, seat]);
+          }
+    };
     const groupedSeats = seatInfo.reduce((groups, seat) => {
         const row = seat.seatNumber.charAt(0); // 열 이름
         const seatColumn = seat.seatNumber.slice(1); // 번호 
@@ -272,6 +273,7 @@ const ReservePage = () =>{
 // 예약된 좌석 조회
     const playId = localStorage.getItem("playId")
     const [findSeat,setFindSeat] = useState([]);
+    console.log(findSeat);
     useEffect(()=>{
         const reservedSeat = async()=>{
             const rsp = await ReserveApi.findSeat(playId);// 연극 기준으로 예매목록을 조회하여 예매된 좌석 찾기
@@ -282,38 +284,76 @@ const ReservePage = () =>{
         };  
         reservedSeat();
         },[])
-    // useEffect(() => {
-    //     if (findSeat.some(s => 
-    //         s.seatNumbers.replace(/[^0-9]/g, "") === seatInfo.seatNumber &&
-    //         s.seeDate === moment(value).format("YYYY-MM-DD")&&
-    //         s.time === selTime
-    //         )) 
-    //     { 
-    //     } else {
-    //     }
-    // }, [findSeat]);
     
-// 가격 정보 
+// 가격 정보 추출 및 전달
     const priceInfo = localStorage.getItem("price");
     const priceOptions = priceInfo.split(", ");   
+
     if (priceInfo.includes("전석")) {
-        const price = parseInt(priceInfo.split(" ")[1].replace(",", ""))
-        localStorage.setItem("selPrice",price)
-        localStorage.setItem("seatRating",priceOptions[0].split(" ")[0])
+        const price = parseInt(priceInfo.split(" ")[1].replace(",", "")) 
+        const total= price * selSeat.length
+        localStorage.setItem("selPrice",total)
+        localStorage.setItem("tiketCount",selSeat.length)
+    } else if(priceInfo.includes("R") && priceInfo.includes("S") && !priceInfo.includes("A")){
+        let price = 0
+        selSeat.forEach((seat)=>{
+            const seatRow = parseInt(seat.charAt(0));
+            if (seatRow >= 1 && seatRow <= 3) {
+                price += parseInt(priceOptions[0].split(" ")[1].replace(",", ""));
+            } else if (seatRow >= 4 && seatRow <= 6) {
+                price += parseInt(priceOptions[1].split(" ")[1].replace(",", ""));
+            }
+        })
+        const total = price
+        localStorage.setItem("selPrice", total);
+        localStorage.setItem("tiketCount", selSeat.length);
+    }else if(priceInfo.includes("R") && priceInfo.includes("S") && priceInfo.includes("A")){
+        let price = 0
+        selSeat.forEach((seat)=>{
+            const seatRow = parseInt(seat.charAt(0));
+            if (seatRow >= 1 && seatRow <= 2) {
+                price += parseInt(priceOptions[0].split(" ")[1].replace(",", ""));
+            } else if (seatRow >= 3 && seatRow <= 4) {
+                price += parseInt(priceOptions[1].split(" ")[1].replace(",", ""));
+            }else if (seatRow >= 5 && seatRow <= 6) {
+                price += parseInt(priceOptions[2].split(" ")[1].replace(",", ""));
+            }
+        })
+        const total = price
+        localStorage.setItem("selPrice", total);
+        localStorage.setItem("tiketCount", selSeat.length);
+    }
+    // 좌석 등급 열 번호 전달
+    useEffect(() => {
+        const updatedSeatDetails = selSeat.map(seat => {
+          let seatInfo = '';
+          if (priceInfo.includes('전석')) {
+            seatInfo = `${priceOptions[0].split(" ")[0]} ${seat.charAt(0)}열 ${seat.slice(1)}번`;
+          } else if (priceInfo.includes('R') && priceInfo.includes('S') && !priceInfo.includes('A')) {
+            const seatRow = parseInt(seat.charAt(0));
+            if (seatRow >= 1 && seatRow <= 3) {
+              seatInfo = `${priceOptions[0].split(" ")[0]} ${seatRow}열 ${seat.slice(1)}번`;
+            } else if (seatRow >= 4 && seatRow <= 6) {
+              seatInfo = `${priceOptions[1].split(" ")[0]} ${seatRow}열 ${seat.slice(1)}번`;
+            }
+          } else if (priceInfo.includes('R') && priceInfo.includes('S') && priceInfo.includes('A')) {
+            const seatRow = parseInt(seat.charAt(0));
+            if (seatRow >= 1 && seatRow <= 2) {
+              seatInfo = `${priceOptions[0].split(" ")[0]} ${seatRow}열 ${seat.slice(1)}번`;
+            } else if (seatRow >= 3 && seatRow <= 4) {
+              seatInfo = `${priceOptions[1].split(" ")[0]} ${seatRow}열 ${seat.slice(1)}번`;
+            } else if (seatRow >= 5 && seatRow <= 6) {
+              seatInfo = `${priceOptions[2].split(" ")[0]} ${seatRow}열 ${seat.slice(1)}번`;
+            }
+          }
+          return seatInfo;
+        });
+      
+        setSeatDetails(updatedSeatDetails);
+      }, [selSeat]);
+    localStorage.setItem("totalSeat",seatDetails)
 
-    } else {
-        const selectedRow = parseInt(selSeat.charAt(0));
-        if (selectedRow >= 1 && selectedRow <= 3) {
-            const price = parseInt(priceOptions[0].split(" ")[1].replace(",", ""));
-            localStorage.setItem("selPrice",price)
-            localStorage.setItem("seatRating",priceOptions[0].split(" ")[0])
-        } else if (selectedRow >= 4 && selectedRow <= 6) {
-            const price = parseInt(priceOptions[1].split(" ")[1].replace(",", ""));
-            localStorage.setItem("selPrice",price)
-            localStorage.setItem("seatRating",priceOptions[0].split(" ")[0])
 
-        }
-      }
 // 요일이 변경되면 선택된 시간 초기화
     useEffect(() => {
         setSelTime("");
@@ -331,7 +371,7 @@ const ReservePage = () =>{
 
     return(
         <>
-        <Header children={"예매하기"}/>
+        <Header/>
         {type === "default" && (
             <ReserveStyle>
                 <h1>날짜 및 시간 선택</h1>
@@ -372,69 +412,82 @@ const ReservePage = () =>{
                 <h2>STAGE</h2>
             </div>
             <div className="seat">
-            {Object.entries(groupedSeats).map(([row, seats]) => (
+                {Object.entries(groupedSeats).map(([row, seats]) => (
                 <div className="seat-row">
                     <p>{row}열</p>
                     {seats.map((seat) => {
-                        if (findSeat.some(
-                            (s) =>
-                            s.seatNumbers.replace(/[^0-9]/g, "") === row + seat.seatNumber &&
-                            s.seeDate === moment(value).format("YYYY-MM-DD") &&
+                        const seatNumber = seat.seatNumber.toString();
+                        const isSeatTaken = findSeat.some( s =>
+                            (s.seatInfo.includes(`${row}열 ${seatNumber}번`) ||
+                            (seatNumber.includes("C") && s.seatInfo.includes(`${row}열 ${seatNumber.replace("C", "")}번`))) && 
+                            s.seeDate === moment(value).format("YYYY-MM-DD") && 
                             s.time === selTime
-                        )
-                        ) {
-                        // 예약된 좌석인 경우 클릭 불가능한 스타일 적용
-                        return (
-                            <span className="reserved">{seat.seatNumber}</span>
                         );
-                        } else {
-                            if (seat.seatNumber.includes("C")) {
-                                const seatNumber = seat.seatNumber.replace("C", "");
-                                return (
+                        if (isSeatTaken) {
+                            if (seatNumber.includes("C")) {
+                                return(
                                     <>
-                                    <span
-                                        className={selSeat === row + seatNumber ? "selected" : ""}
-                                        onClick={() => clickSeat(row + seatNumber)}>
-                                        {seatNumber}
-                                    </span>
-                                    <span className="empty"> </span>
+                                        <span className="reserved">{seatNumber.replace("C", "")}</span>
+                                        <span className="empty"> </span>
                                     </>
-                                );
-                                
-                            } else {
+                                )
+                            }else{
                                 return (
-                                    <span
-                                    className={selSeat === row + seat.seatNumber ? "selected" : ""}
-                                    onClick={() => clickSeat(row + seat.seatNumber)}>
-                                    {seat.seatNumber}
-                                    </span>
+                                    <span className="reserved">{seatNumber.replace("C", "")}</span>
                                 );
                             }
+                        } else {
+                            if (seatNumber.includes("C")) {
+                                const seatNumberWithoutC = seatNumber.replace("C", "");
+                            return (
+                                <>
+                                    <span
+                                        className={selSeat.includes(row + seatNumberWithoutC) ? "selected" : ""}
+                                        onClick={() => clickSeat(row + seatNumberWithoutC)}>
+                                        {seatNumberWithoutC}
+                                    </span>
+                                    <span className="empty"> </span>
+                                </>
+                            );
+                            } else {
+                            return (
+                                <span
+                                className={selSeat.includes(row + seatNumber) ? "selected" : ""}
+                                onClick={() => clickSeat(row + seatNumber)}>
+                                    {seatNumber}
+                                </span>
+                            );
                         }
-                    })}
+                    }
+                })}
                 </div>
             ))}
             </div>
-
-
         </div>
         <div className="priceInfo">
-        {priceInfo.includes("전석") ? <p>{priceInfo}</p>:
-        <>
-        <p>1 ~ 3열 R석</p>
-        <p>4 ~ 6열 S석</p>
-        <p>{priceInfo}</p>
-        </>
- }
+            {priceInfo.includes("전석")&&( <p>{priceInfo}</p>)}
+            {priceInfo.includes("R") && priceInfo.includes("S") && !priceInfo.includes("A") && (
+                <>
+                    <p>1 ~ 3열 R석</p>
+                    <p>4 ~ 6열 S석</p>
+                    <p>{priceInfo}</p>
+                </>
+            )}
+            {priceInfo.includes("R") && priceInfo.includes("S") && priceInfo.includes("A") && (
+                <>
+                    <p>1 ~ 2열 R석</p>
+                    <p>3 ~ 4열 S석</p>
+                    <p>5 ~ 6열 A석</p>
+                    <p>{priceInfo}</p>
+                </>
+            )}
         </div>
-
         <Button className="btn" onClick={() => payReady()}>결제 하기</Button>
         </ReserveStyle>
         )}
         <Footer/>
-    </>
-    )
+        </>
+        )
 }
-
 
 export default ReservePage;

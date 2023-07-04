@@ -114,7 +114,6 @@ const Info = () =>{
 // 찜기능 
     const [isLiked, setIsLiked] = useState(false); // 최종 찜 상태 
     const [likedList,setLikedList] = useState([]); // 찜 리스트 배열
-    console.log(likedList);
     useEffect(()=>{ // 로그인한 회원id를 기준으로 찜 연극 리스트를 db에서 불러와 확인하고 배열에 삽입/
         const liked = async() => {
             const rsp = await PlayInfoApi.selectPlayLike(userId);
@@ -137,8 +136,6 @@ const Info = () =>{
             console.log("찜 등록 성공");
             setLikedList([...likedList, { playId, userId }]);
             setIsLiked(true);
-            console.log(likedList);
-            console.log(isLiked);
             } else {
                 console.log(" 등록 전송 실패");
             }
@@ -150,8 +147,6 @@ const Info = () =>{
             console.log("찜 삭제 성공");
             setLikedList(likedList.filter(item => !(item.playId === playId && item.userId === userId))); // 찜 삭제 성공시 배열에도 삭제
             setIsLiked(false);
-            console.log(likedList);
-            console.log(isLiked);
             } else {
             console.log("삭제 전송 실패");
             }
