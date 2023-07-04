@@ -26,7 +26,7 @@ const NavBar = styled.div`
       margin-right: 1%;
       @media (max-width:768px) {
             font-size:1em;
-            }
+          }
     }
     .nav-item {
     position: relative;

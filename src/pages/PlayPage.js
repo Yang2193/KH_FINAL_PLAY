@@ -7,6 +7,7 @@ import Detail from "../components/playPage/Detail";
 import Info from "../components/playPage/Info";
 import styled from "styled-components";
 import PlayInfoApi from "../api/PlayInfoApi";
+import SearchBox from "../components/SearchBox";
 const Contents = styled.div`
     width: 60%;
     position: relative;
@@ -22,7 +23,18 @@ const All = styled.div`
 
 
 const PlayPage = () => {
-
+    const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+    useEffect(() => {
+        const handleResize = () => {
+          setIsMobile(window.innerWidth <= 768);
+        };
+    
+        window.addEventListener("resize", handleResize);
+    
+        return () => {
+          window.removeEventListener("resize", handleResize);
+        };
+      }, []);
     const[type,setType] = useState("default");
 
 	const handleType = (e) =>{
@@ -38,9 +50,18 @@ const PlayPage = () => {
         };
         play();
     },[])
+
+
     return(
         <All>
-            <Header/>
+        {isMobile ? (
+            <Header>
+                <SearchBox/>
+            </Header>) : (
+                <>
+                    <Header></Header>
+                </>
+            )}            
             {playInfo && playInfo.map(play =>(
             <Contents key = {play.playId}>
                 <Info/>
