@@ -107,6 +107,14 @@ const AccountApi = {
         return await axios.post(Domain + "/mypage/edit", updateUserInfocmd);
     },
 
+    buyTicketList: async(userId) => {
+        Functions.setAuthorizationHeader();
+        const buyListcmd = {
+            userId: userId
+        };
+        return await axios.post(Domain + "/mypage/buylist", buyListcmd);
+    },
+
     withdraw: async(userId) => {
         Functions.setAuthorizationHeader();
         const withdrawcmd = {
