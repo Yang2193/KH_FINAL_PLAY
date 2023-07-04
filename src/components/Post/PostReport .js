@@ -3,12 +3,12 @@ import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import PostAPI from '../../api/PostApi';
 import { toast, ToastContainer } from 'react-toastify';
-import RtMenuIcon from './ReortIcon.png';
+
 
 const CommentMenu = styled.div`
   position: absolute;
-  top: 10px;
-  right: -220px;
+  top: 210px;
+  right: 20px;
   width: 220px;
   background-color: #fff;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
@@ -56,12 +56,16 @@ const ExampleItem = styled.div`
   }
 `;
 
-const RtMenuImage = styled.img`
-  margin-left: 5px;
-  cursor: pointer;
-`;
+//ㅅㅈ
+const T1 =styled.div`
+color: red;
+font-size: 12px;
+cursor: pointer;
+margin-bottom: 7px;
+margin-left: 82%;
 
-const RtMenu = ({ commentId, nickname, userId,postId }) => {
+`
+const PostReport  = ({ commentId, nickname, userId,postId }) => {
   const [showRtMenu, setShowRtMenu] = useState(false);
   const [reportReason, setReportReason] = useState('');
 
@@ -102,18 +106,13 @@ const RtMenu = ({ commentId, nickname, userId,postId }) => {
   const handleExampleClick = example => {
     setReportReason(example);
   };
-//ㅅㅈ
+
   return (
     <>
-      <RtMenuImage
-        src={RtMenuIcon}
-        alt="Rt 메뉴"
-        onClick={toggleRtMenu}
-        style={{ marginTop: '5px', marginLeft: '', cursor: 'pointer', height: '15px' }}
-      />
+      <T1  onClick={toggleRtMenu}>※게시물 신고하기※</T1>
 
       <CommentMenu show={showRtMenu}>
-        <Title>신고하기</Title>
+        <Title>게시물 신고하기</Title>
         <ReportForm onSubmit={handleSubmit}>
           <ReportInput
             type="text"
@@ -141,4 +140,4 @@ const RtMenu = ({ commentId, nickname, userId,postId }) => {
   );
 };
 
-export default RtMenu;
+export default PostReport ;

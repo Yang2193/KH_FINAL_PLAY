@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useNavigate } from 'react-router-dom';
-import ImageUploader from '../components/Comment/ImageUploader';
+import ImageUploader from '../components/Post/ImageUploader';
 import PostAPI from '../api/PostApi';
 
 const Container = styled.div`

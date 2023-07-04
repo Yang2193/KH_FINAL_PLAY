@@ -5,7 +5,7 @@ import Header from '../components/Header';
 import PostAPI from '../api/PostApi';
 import PageNation from '../utils/PageNation';
 import '../pages/ReviewBoard.css';
-import SearchBar from '../components/Comment/SearchBar';
+import SearchBar from '../components/Post/SearchBar';
 
 
 

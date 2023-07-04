@@ -5,15 +5,16 @@
     import Header from '../components/Header';
     import Footer from '../components/Footer';
     import cogIcon from '../images/Cog.png';
-    import RtMenu from '../components/Comment/Report';
+    import RtMenu from '../components/Post/Report';
     import { useNavigate } from 'react-router-dom';
     import { toast, ToastContainer } from 'react-toastify';
     import 'react-toastify/dist/ReactToastify.css';
-    import PostReport from '../components/Comment/PostReport ';
-    
+    import PostReport from '../components/Post/PostReport ';
+
 
 
     const Background = styled.div`
+    min-width: 861px;
       background-color: #E2E2E2;
       display: flex;
       flex-direction: column;
@@ -193,11 +194,11 @@
       display: ${props => (props.isAuthor ? 'block' : 'none')};
       margin-right: auto;
       button {
-        padding: 10px 20px;
+        
         background-color: white;
         color: #f34336 ;
         position: relative;
-        left: 70%;
+        left: 76%;
         border: none;
         border-radius: 5px;
         cursor: pointer;
@@ -373,7 +374,7 @@
             <PostDetailWrapper>
               <PostHeader>
                 <PostTitle>{post.postTitle}</PostTitle>
-                <PostReport postId={post.id} userId={comment.userId}  showRtMenu={showRtMenu} nickname={comment.nickname} ></PostReport>
+                {post.memberInfo.userId!== localStorage.getItem('userId') &&<PostReport postId={post.id} userId={post.userId}  showRtMenu={showRtMenu} nickname={post.nickname} ></PostReport>}
                 <PostD isAuthor={post.memberInfo && post.memberInfo.userId === localStorage.getItem('userId')}>
                 <button onClick={handleDeletePost}>게시물 삭제</button>
                 <button onClick={() => navigate(`/postupdate/${post.id}`)}>게시물 수정</button>

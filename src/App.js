@@ -18,7 +18,7 @@ import AccountProvider from './context/AccountInfo';
 import PayResult from './components/playPage/KaKaoPay/PayResult';
 import PayCancel from './components/playPage/KaKaoPay/PayCancel';
 import PayReady from './components/playPage/KaKaoPay/PayReady';
-import PostUpdate from './components/Comment/PostUpdate';
+import PostUpdate from './components/Post/PostUpdate';
 
 function App() {
   return (
