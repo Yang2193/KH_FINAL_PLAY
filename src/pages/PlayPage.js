@@ -11,6 +11,13 @@ const Contents = styled.div`
     width: 60%;
     position: relative;
     left: 20%;
+    @media (max-width: 768px) {
+        position: static;
+        width: 100%;
+    }
+`
+const All = styled.div`
+    width: 100%;
 `
 
 
@@ -32,7 +39,7 @@ const PlayPage = () => {
         play();
     },[])
     return(
-        <>
+        <All>
             <Header/>
             {playInfo && playInfo.map(play =>(
             <Contents key = {play.playId}>
@@ -47,7 +54,7 @@ const PlayPage = () => {
             </Contents>
             ))}
             <Footer/>
-        </>
+        </All>
     )
 }
 

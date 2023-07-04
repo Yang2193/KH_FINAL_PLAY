@@ -18,6 +18,10 @@ const ReserveStyle = styled.div`
     flex-direction: column;
     position: relative;
     left: 25%;
+    @media (max-width:768px) {
+        width: 100%;
+        position: static;
+    }
     .reserved{
         background-color: #eee;
         color: #fff;
