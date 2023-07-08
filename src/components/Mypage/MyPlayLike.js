@@ -3,7 +3,6 @@ import { useState, useEffect } from "react";
 import PlayInfoApi from "../../api/PlayInfoApi";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import Info from "../playPage/Info";
 
 const ListBox = styled.div`
     position: relative;
@@ -87,24 +86,27 @@ const MyPlayLike = () => {
         nav("/info");
     }
     
-    const playLikeData = async() => {
-        try {
-            const likeData = await PlayInfoApi.myPagePlayLike(userId);
-            console.log(likeData.data);
-            if(likeData.status === 200) {
-                setLikeList(likeData.data);
-            } else {
-                setLikeListMsg("찜한 목록이 없거나 불러오기 실패");
+    useEffect(() => {
+        const playLikeData = async() => {
+            try {
+                const likeData = await PlayInfoApi.myPagePlayLike(userId);
+                console.log(likeData.data);
+                if(likeData.status === 200) {
+                    setLikeList(likeData.data);
+                } else {
+                    setLikeListMsg("찜한 목록이 없거나 불러오기 실패");
+                }
+            } catch(e) {
+                console.log(e);
             }
-        } catch(e) {
-            console.log(e);
         }
-    };
+        playLikeData();
+    }, [])
     
 
     return (
         <>
-        <button onClick={playLikeData}><h3>{userId}님의 찜목록</h3></button>
+        <h3>{userId}님의 찜목록</h3>
         <ListBox>
         <table className="ReviewTable">
           <thead>

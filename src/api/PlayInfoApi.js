@@ -1,5 +1,6 @@
 import React from "react";
 import axios from "axios";
+import Functions from "../utils/Functions";
 const KH_DOMAIN = "http://localhost:8111";
 
 const PlayInfoApi = {
@@ -18,7 +19,13 @@ const PlayInfoApi = {
     },
     // 찜 조회
     selectPlayLike : async(userId)=>{
-        return await axios.get(KH_DOMAIN + `/play/playLikeList2?id=${userId}`)
+        try{
+            Functions.setAuthorizationHeader();
+            return await axios.get(KH_DOMAIN + `/play/playLikeList2?id=${userId}`)
+        } catch(error){
+            await Functions.handleApiError(error);
+            return await axios.get(KH_DOMAIN + `/play/playLikeList2?id=${userId}`)
+        }
     },
     // 찜추가
     addPlayLike : async(playId,userId)=>{
@@ -26,7 +33,14 @@ const PlayInfoApi = {
             playId : playId,
             userId : userId
         }
-        return await axios.post(KH_DOMAIN + `/play/addPlayLike`,id)
+        try{
+            Functions.setAuthorizationHeader();
+            return await axios.post(KH_DOMAIN + `/play/addPlayLike`,id)
+
+        }catch(error){
+            await Functions.handleApiError(error);
+            return await axios.post(KH_DOMAIN + `/play/addPlayLike`,id)
+        }
     },
     // 찜삭제
     delPlayLike : async(playId,userId)=>{
@@ -34,11 +48,25 @@ const PlayInfoApi = {
             playId : playId,
             userId : userId
         }
-        return await axios.post(KH_DOMAIN + `/play/deletePlayLike`,id)
+        try{
+            Functions.setAuthorizationHeader();
+            return await axios.post(KH_DOMAIN + `/play/deletePlayLike`,id)
+
+        }catch(error){
+            await Functions.handleApiError(error);
+            return await axios.post(KH_DOMAIN + `/play/deletePlayLike`,id)
+        }
     },
     // 마이페이지 용 찜조회
     myPagePlayLike : async(userId)=>{
-        return await axios.get(KH_DOMAIN + `/play/playLikeList?id=${userId}`)
+        try{
+            Functions.setAuthorizationHeader();
+            return await axios.get(KH_DOMAIN + `/play/playLikeList?id=${userId}`)
+
+        }catch(error){
+            await Functions.handleApiError(error);
+            return await axios.get(KH_DOMAIN + `/play/playLikeList?id=${userId}`)
+        }
     },
 }
 

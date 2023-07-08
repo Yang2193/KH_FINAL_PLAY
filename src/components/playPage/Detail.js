@@ -12,44 +12,8 @@ const DetailBox = styled.div`
     div{
         width: 100%;
         display: flex;
-        /* justify-content: center; */
-        /* align-items: center; */
         flex-direction: column;
-        h3{
-
-        }
-    }
-    .casting{
-        margin-top: 3%;
-        height: 40vh;
-        .castingBox{
-            display: flex;
-            flex-direction: row;
-            justify-content: center;
-        }
-        .actorBox{
-            width: 13%;
-            height: 80%;
-            .actor{
-                margin-left: 5%;
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                flex-direction: column;
-                width: 100%;
-                height: 100%;
-                p{
-                    margin: 0;
-                    font-size: 0.8em;
-                }
-                img{
-                    border-radius: 50%;
-                    width: 75%;
-                    height: 75%;
-                }
-        }
-        }
-
+  
     }
     .more{
         border: none;
@@ -63,34 +27,14 @@ const DetailBox = styled.div`
         flex-direction: column;
         img{
             width: 50%;
+            @media (max-width:768px) {
+                width: 100%;
+            }
         }
     }
 
 `
 const Detail = () =>{
-
-    // const [actorInfo,setActorInfo] = useState("");
-    // const [visibleActor,setVisibleActor] = useState([]);
-    // const [count,setCount] = useState(6)
-
-    // useEffect(() => {
-    //     const actor = async()=>{
-    //         const rsp = await PlayInfoApi.selectActor(playId)
-    //         setActorInfo(rsp.data);
-    //     };
-    //     actor();
-    // },[]);
-
-    // useEffect(() => {
-    //     setVisibleActor(actorInfo.slice(0,count));
-    //   }, [actorInfo,count]);
-    
-    // const handleLoadMore = () => {
-    //     setCount(actorInfo.length);
-    //     if (count === actorInfo.length) {
-    //         setCount(6)
-    //     }
-    // }
     const playId = localStorage.getItem("playId");
     const [playInfo,setPlayInfo] = useState(null);
 
@@ -104,32 +48,8 @@ const Detail = () =>{
 
     return(
         <DetailBox>
-        {/* <div className="casting">
-         <h3>캐스팅</h3>
-        <div className="castingBox">
-            {visibleActor && visibleActor.map(actor =>(
-                <div className="actorBox"  key = {actor.actorId}>
-                    <div className="actor">
-                        <img src={actor.actorImage} alt="" />
-                        <p>{actor.roleName}</p>
-                        <p>{actor.actorName}</p>
-                    </div>
-                </div>
-            ))}
-        </div>
-        {actorInfo.length < 6 ? null : <button  className="more" onClick={handleLoadMore}>더보기</button>}
-        </div> */}
-
         {playInfo && playInfo.map(play =>(
             <div key={play.playId}>
-                {/* <div className="notice">
-                    <h3>공지사항</h3>
-                    <div className="imageBox">  
-                        {play.playDescImg1 && play.playDescImg1.replace(/\[|\]/g, '').split(',').map((img, index) => (
-                        <img key={index} src={img.trim()} alt="" />
-                        ))}   
-                    </div>
-                </div> */}
                 <div className="detail">
                     <h3>상세 정보</h3>
                     <div className="imageBox">

@@ -5,6 +5,16 @@ import Footer from "../components/Footer";
 import { useLocation } from "react-router-dom";
 import MenuBar from "../components/Mypage/MypageMenu";
 import Section from "../components/Mypage/Section";
+import styled from "styled-components";
+
+const ProfileContainer = styled.div`
+  margin: 20px auto;
+  margin-bottom: 20%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+`;
 
 const Mypage = () => {
     const location = useLocation();
@@ -20,9 +30,11 @@ const Mypage = () => {
     return (
         <>
         <Header/>
-        <MyPageMain/>
-        <MenuBar category={category} onSelect={onSelect}/>
-        <Section category={category}/>
+        <ProfileContainer>
+            <MyPageMain/>
+            <MenuBar category={category} onSelect={onSelect}/>
+            <Section category={category}/>
+        </ProfileContainer>
         <Footer/>
         </>
     );

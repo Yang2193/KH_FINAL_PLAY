@@ -91,11 +91,14 @@ const Login = () => {
       }
     };
   
-    const onClickGoToAgree = () => {
-      navigate("/join")
+    const Rest_api_key='088a7b267c39d0a11ec3904372ed9d33' //REST API KEY
+    const redirect_uri = 'http://localhost:3000/kakao-login' //Redirect URI
+    // oauth 요청 URL
+    const kakaoURL = `https://kauth.kakao.com/oauth/authorize?client_id=${Rest_api_key}&redirect_uri=${redirect_uri}&response_type=code`
+    const onClickKakaoLogin = ()=>{
+        window.location.href = kakaoURL
     }
 
-    
     return (
       <div className="wrapper">
         <div className="loginWrapper">
@@ -121,7 +124,7 @@ const Login = () => {
                 <Link to="/join" className="JoinButton">회원 가입</Link>
               </div>
               <button className="loginButton" onClick={onClickLogin}>로그인</button>
-              <button className="kakaoLogin" onClick={onClickLogin}>kakao 로그인</button>
+              <button className="kakaoLogin" onClick={onClickKakaoLogin}>kakao 로그인</button>
             </div>
           </div>
         </div>

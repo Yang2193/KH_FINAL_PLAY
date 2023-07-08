@@ -15,7 +15,7 @@ const SectionBlock = styled.div`
     width: calc(100% - 340px); /* 화면 너비에서 MenuBlock의 너비(300px)를 뺀 나머지만큼의 너비 */
     height: auto;
     margin-left: 320px; /* 왼쪽 여백 설정 */
-    margin-top: 20px; /* 상단 여백 설정 */
+    //margin-top: 20px; /* 상단 여백 설정 */
     padding: 20px; /* 내부 여백 설정 */
 `;
 

@@ -22,9 +22,13 @@ const PayInfo = styled.div`
         margin-bottom: 5%;
         width: 40%;
         height: 60%;
+        @media (max-width:768px) {
+            width: 100%;
+            }
         p{
             font-size: 1.3em;
         }
+      
     }
     a{
         text-decoration: none;

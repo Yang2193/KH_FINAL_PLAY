@@ -174,7 +174,7 @@ const SideMenu = ({handleIsOpen, isOpen}) => {
                             <div className="item" onClick={()=> handleLinkClick(!userId ? setModalOpen("login") : "/MyPage")}>마이 페이지</div>
                     </div>
                 </Box>
-                <MessageModal open={modalOpen==="login"} close={()=>navigate('/Login') } confirm={onClickLogin} header="로그인">로그인이 필요한 페이지입니다.</MessageModal>
+                <MessageModal open={modalOpen==="login"} close={onClickClose} confirm={onClickLogin} header="로그인">로그인이 필요한 페이지입니다.</MessageModal>
                 <MessageModal open={modalOpen==="logout"} close={onClickClose} confirm={onClickClose} header="로그아웃">로그아웃 하셨습니다.</MessageModal>
         </MenuButton>
         

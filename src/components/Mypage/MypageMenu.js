@@ -27,30 +27,32 @@ const categories = [
     }
 ];
 const MenuBlock = styled.div`
-  background-color: #FBF4EF;
-  width: 300px;
-  height: 100vh;
-  text-align: center;
-  position: fixed;
-  border-radius: 5px;
-  margin-top: 120px; /* 헤더의 높이만큼 여백을 추가 */
-  margin-right: 10px;
-  top: 0;
-  left: 0;
-    .title{
-        font-size: 25px;
-        font-weight: bold;
-        position: relative;
-        top: 10px;
-        left: 0;
-        right: 0;
-        margin: auto;
-    }
-    hr{
-        border: 1px solid #FF7F50;
-        width: 80%;
-        margin-bottom: 2rem;
-      
+    background-color: #FBF4EF;
+    width: 300px;
+    height: auto;
+    text-align: center;
+    position: fixed;
+    border-radius: 5px;
+    border: 3px solid #F0B7A2;
+    border-style: double;
+    margin-top: 120px; /* 헤더의 높이만큼 여백을 추가 */
+    margin-right: 10px;
+    top: 0;
+    left: 0;
+        .title{
+            font-size: 25px;
+            font-weight: bold;
+            position: relative;
+            top: 10px;
+            left: 0;
+            right: 0;
+            margin: auto;
+        }
+        hr{
+            border: 1px solid #FF7F50;
+            width: 80%;
+            margin-bottom: 2rem;
+        
     }
 `;
 
@@ -72,7 +74,6 @@ const Category = styled.div`
     & + & {
         margin-bottom: 0.7rem;
     }
-    
 `;
 const MenuBar = ({onSelect, category}) => {
     const userId = localStorage.getItem("userId");
