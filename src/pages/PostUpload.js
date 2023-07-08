@@ -5,6 +5,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { useNavigate } from 'react-router-dom';
 import ImageUploader from '../components/Post/ImageUploader';
 import PostAPI from '../api/PostApi';
+import MyEditor from '../components/Post/TextQuill';
 
 const Container = styled.div`
   max-width: 600px;
@@ -97,6 +98,7 @@ const PostUpload = () => {
   return (
     <>
       <ToastContainer />
+      
       <Container>
         <Heading>게시물 등록</Heading>
         <div>
@@ -118,13 +120,16 @@ const PostUpload = () => {
         </div>
         <div>
           <Label>
-            내용
-            <Textarea
-              name="postContent"
+            
+            <MyEditor name="postContent"
               value={postData.postContent}
               onChange={handleInputChange}
-              className="myTextarea"
-            ></Textarea>
+              className="myTextarea">
+
+            </MyEditor>
+            {/* <Textarea
+             
+            ></Textarea> */}
           </Label>
         </div>
         <Button onClick={handleUpload}>등록하기</Button>

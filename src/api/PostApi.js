@@ -13,6 +13,7 @@ const PostAPI = {
 
   // 게시물 상세 정보 조회
   getPostById: async (postId) => {
+    Functions.setAuthorizationHeader();
     const response = await axios.get(`${Posts}/post/select/${postId}`);
     return response.data;
   },
@@ -108,7 +109,23 @@ reportComment: async (commentId, reportReason, nickname, postId,userId) => {
         const response1 = await axios.post(`${Posts}/post/update/${postId}`);
         return response1.data;
       }
-    }
+      
+    },
+    // 게시물 검색
+    searchPosts: async (keyword) => {
+      const config = {  
+        params: {
+          keyword: keyword,
+        },
+      };
+      try {
+        const response = await axios.post(`${Posts}/post/search`, null, config);
+        return response.data;
+      } catch (error) {
+        await Functions.handleApiError(error);
+        return null;
+      }
+    },
     
 };
 
