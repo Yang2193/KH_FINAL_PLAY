@@ -60,7 +60,7 @@ const PostUpdate = () => {
     const fetchPost = async () => {
       try {
         const post = await PostAPI.getPostById(postId);
-        
+
 
         if (post) {
           setPostData({
@@ -78,9 +78,9 @@ const PostUpdate = () => {
 
     fetchPost();
   }, [postId]);
-  
-  
-  
+
+
+
 
   const handleImageChange = (image) => {
     setPostData((prevData) => ({
@@ -94,6 +94,13 @@ const PostUpdate = () => {
     setPostData((prevData) => ({
       ...prevData,
       [name]: value,
+    }));
+  };
+
+  const handleEditorChange = (content) => {
+    setPostData((prevData) => ({
+      ...prevData,
+      postContent: content,
     }));
   };
 
@@ -137,7 +144,7 @@ const PostUpdate = () => {
           <Label>
              <MyEditor  name="postContent"
               value={postData.postContent}
-              onChange={handleInputChange}
+              onChange={handleEditorChange}
               className="myTextarea"></MyEditor>
           </Label>
         </div>
