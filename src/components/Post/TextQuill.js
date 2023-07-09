@@ -12,9 +12,6 @@ const EditorContainer = styled.div`
   border-radius: 5px;
 `;
 
-const Back = styled.h2`
-  height: 600px;
-`;
 const EditorTitle = styled.h2`
   font-size: 24px;
   margin-bottom: 20px;
@@ -28,22 +25,18 @@ const EditorWrapper = styled.div`
   height: 500px;
 `;
 
-const MyEditor = () => {
-  const [text, setText] = useState('');
-
-  const handleChange = (value) => {
-    setText(value);
+const MyEditor = ({ value, onChange }) => {
+  const handleChange = (newValue) => {
+    onChange(newValue);
   };
 
   return (
-    <Back>
     <EditorContainer>
       <EditorTitle>내용 입력</EditorTitle>
       <EditorWrapper>
-        <ReactQuill value={text} onChange={handleChange} />
+        <ReactQuill value={value} onChange={handleChange} />
       </EditorWrapper>
     </EditorContainer>
-    </Back>
   );
 };
 
