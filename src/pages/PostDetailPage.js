@@ -76,6 +76,7 @@ img{
 
 const PostContent = styled.div`
   line-height: 1.6;
+  font-size: 17px;
 `;
 
 const LoadingMessage = styled.div`
@@ -393,7 +394,7 @@ const PostDetailPage = () => {
             <img src={post.postImageUrl} alt="" />
           </PostImage>
 
-          <PostContent>{post.postContent}</PostContent>
+          <PostContent className="Explaination2" dangerouslySetInnerHTML={{ __html: post.postContent }}></PostContent>
 
           <CommentSection id="commentSection" height={commentSectionHeight}>
             <CommentInputWrapper>
