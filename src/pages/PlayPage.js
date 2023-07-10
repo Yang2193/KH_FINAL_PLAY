@@ -8,6 +8,7 @@ import Info from "../components/playPage/Info";
 import styled from "styled-components";
 import PlayInfoApi from "../api/PlayInfoApi";
 import SearchBox from "../components/SearchBox";
+import OneReview from "../components/playPage/OneLineReview";
 const Contents = styled.div`
     width: 60%;
     position: relative;
@@ -71,6 +72,9 @@ const PlayPage = () => {
                 )}
                 {type === "map" &&(
                     <Map theaterId={play.theaterId} />
+                )}
+                {type === "review" &&(
+                    <OneReview/>
                 )}
             </Contents>
             ))}

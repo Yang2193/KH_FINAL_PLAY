@@ -126,7 +126,44 @@ reportComment: async (commentId, reportReason, nickname, postId,userId) => {
         return null;
       }
     },
-    
+    // 한줄평 등록
+    addOLR : async(cont,rating,userId,playId)=>{
+      const data = {
+          olrContent:cont,
+          olrRating:rating,
+          playId : playId,
+          userId : userId
+      }
+      try{
+          Functions.setAuthorizationHeader();
+          return await axios.post(Posts + `/post/insert/oneLineReview`,data)
+      }catch(error){
+          await Functions.handleApiError(error);
+          return await axios.post(Posts + `/post/insert/oneLineReview`,data)
+      }
+  },
+    // 한줄평 조회
+    getOLR : async(id)=>{
+      try{
+          Functions.setAuthorizationHeader();
+          return await axios.get(Posts + `/post/select/oneLineReview?playId=${id}`)
+
+      }catch(error){
+          await Functions.handleApiError(error);
+          return await axios.get(Posts + `/post/select/oneLineReview?playId=${id}`)
+      }
+  },
+    // 한줄평 삭제
+    deleteOLR : async(id)=>{
+      try{
+          Functions.setAuthorizationHeader();
+          return await axios.post(Posts + `post/delete/oneLineReview?olrId=${id}`)
+
+      }catch(error){
+          await Functions.handleApiError(error);
+          return await axios.post(Posts + `post/delete/oneLineReview?olrId=${id}`)
+      }
+  },
 };
 
 

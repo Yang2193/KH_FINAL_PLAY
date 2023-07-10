@@ -60,6 +60,10 @@ const PlayNav = ({ handleType }) => {
     handleType("map");
     setActiveIndex(1);
   };
+  const onClickReview = () => {
+    handleType("review");
+    setActiveIndex(2);
+  };
     return (
       <NavBar>
         <ul>
@@ -68,6 +72,9 @@ const PlayNav = ({ handleType }) => {
           </li>
           <li onClick={onClickMap} className={activeIndex === 1 ? "nav-item active" : "nav-item"}>
             장소 정보
+          </li>
+          <li onClick={onClickReview} className={activeIndex === 2 ? "nav-item active" : "nav-item"}>
+            한줄평
           </li>
         </ul>
       </NavBar>

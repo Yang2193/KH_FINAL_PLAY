@@ -17,12 +17,6 @@ const FixData = styled.div`
         padding-bottom: 2%;
         margin-bottom: 4%;
         border-bottom: 3px solid;
-        /* @media (max-width:768px) {
-             width : 100%;
-             border: 1px solid;
-              
-            } */
-
     }
     .content{
         display: flex;
