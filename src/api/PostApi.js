@@ -157,11 +157,11 @@ reportComment: async (commentId, reportReason, nickname, postId,userId) => {
     deleteOLR : async(id)=>{
       try{
           Functions.setAuthorizationHeader();
-          return await axios.post(Posts + `post/delete/oneLineReview?olrId=${id}`)
+          return await axios.post(Posts + `/post/delete/oneLineReview?olrId=${id}`)
 
       }catch(error){
           await Functions.handleApiError(error);
-          return await axios.post(Posts + `post/delete/oneLineReview?olrId=${id}`)
+          return await axios.post(Posts + `/post/delete/oneLineReview?olrId=${id}`)
       }
   },
 };

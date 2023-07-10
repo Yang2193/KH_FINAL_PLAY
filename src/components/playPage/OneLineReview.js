@@ -54,6 +54,12 @@ h2{
       color:#ccc;
     }
   }
+button{
+  width: 5%;
+  border: none;
+  cursor: pointer;
+  margin-left: 50%;
+}
 }
 .btn{
   width: 100%;
@@ -75,19 +81,19 @@ const OneReview = () => {
   const [rating, setRating] = useState("");
   const [content, setContent] = useState([]);
   const [modalOpen, setModalOpen] = useState(false);
+  const[delMo,setDelMo]=useState(false);
   const userId = localStorage.getItem("userId");
   const playId = localStorage.getItem("playId");
+
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await PostAPI.getOLR(playId);
-        setReviews(response.data);
-      } catch (error) {
-        console.log(error);
-      }
+    const getReview = async () => {
+        const rsp = await PostAPI.getOLR(playId);
+        if (rsp.status===200) {
+          setReviews(rsp.data);
+        } 
     };
-    fetchData();
-  }, [reviews]);
+    getReview();
+  }, [modalOpen,delMo]);
 
   const onChangeRating = e =>{
     setRating(e)
@@ -108,17 +114,27 @@ const addReview = async () =>{
       console.log("전송 실패");
   }
 }
+const deleteReview = async (id) =>{
+  const rsp = await PostAPI.deleteOLR(id);
+  if(rsp.status === 200) {
+    console.log("성공");
+    setDelMo(true);
+  } else {
+      console.log("전송 실패");
+  }
+}
+
 const resetInput = () => {
   setRating("");
   setContent("");
 }
 const onClickClose = () => {
   setModalOpen(false);
+  setDelMo(false);
   }
 console.log(rating);
   return (
     <OneCss>
-      {/* <h2>한줄평</h2> */}
       <div className='addReview'>
         <div className='ratingBox'>
           <Rating
@@ -137,11 +153,13 @@ console.log(rating);
         <div className='selectReview' key={review.id}>
           <p><Rating size={"20"} className='read' initialValue={review.olrRating} readonly/></p>
           <p>{review.olrContent}</p>
-          <p>{review.memberInfo.userId} <span>{(new Date(review.olrDate)).toLocaleString('ko')}</span></p>
+          <p>{review.memberInfo.userId} <span>{(new Date(review.olrDate)).toLocaleString('ko')}</span> {userId ===review.memberInfo.userId ? <Button onClick={()=>deleteReview(review.id)}>삭제</Button> : null}</p>
         </div>
       ))
       : <div className='empty'>관람후기를 등록해주세요</div>}
       <MessageModal open={modalOpen} close={onClickClose} header="등록 완료">리뷰가 등록 되었습니다.</MessageModal>
+      <MessageModal open={delMo} close={onClickClose} header="삭제 완료">리뷰가 삭제 되었습니다.</MessageModal>
+
     </OneCss>
   );
 };
