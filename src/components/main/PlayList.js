@@ -1,5 +1,5 @@
 import styled from "styled-components"
-import React, { useEffect, useState } from "react"
+import React, { useCallback, useEffect, useMemo, useState } from "react"
 import PageNation from "../../utils/PageNation";
 import { useNavigate } from "react-router-dom";
 
@@ -70,10 +70,14 @@ const ListBox = styled.div`
 const PlayList = ({playList}) => {
     
     const nav = useNavigate();
-    const movePage =(playId)=>{
-        localStorage.setItem("playId",playId);
-        nav("Info");
-    }
+    const movePage = useCallback(
+        (playId) => {
+          localStorage.setItem("playId", playId);
+          nav("Info");
+        },
+        [nav]
+      );
+      
 
     const [currentPage, setCurrentPage] = useState(0); // 현재 페이지 번호
 
@@ -91,24 +95,29 @@ const PlayList = ({playList}) => {
     const offset = currentPage * ITEMS_PAGE; // 현재 페이지에서 보여줄 아이템의 시작 인덱스
     const currentPageData = playList.slice(offset, offset + ITEMS_PAGE);
 
-    const playListMap = 
-        currentPageData && 
-        currentPageData.map(pl => (
+    const playListMap = useMemo(() => {
+        if (currentPageData && currentPageData.length > 0) {
+          return currentPageData.map((pl) => (
             <tr key={pl.playId} onClick={() => movePage(pl.playId)}>
-                    <td className="image">
-                        <img src={pl.imageUrl} alt="image1" className="img-thumb"/>
-                    </td>
-                    <td className="title">
-                        {pl.title}
-                    </td>
-                    <td className="location">
-                        {pl.theaterName}
-                    </td>
-                    <td className="period">
-                        {pl.periodStart} ~ {pl.periodEnd}
-                    </td>
-                </tr>
-        ));
+              <td className="image">
+                <img src={pl.imageUrl} alt="image1" className="img-thumb" />
+              </td>
+              <td className="title">{pl.title}</td>
+              <td className="location">{pl.theaterName}</td>
+              <td className="period">
+                {pl.periodStart} ~ {pl.periodEnd}
+              </td>
+            </tr>
+          ));
+        } else {
+          return (
+            <tr>
+              <td colSpan={4}>검색 결과가 존재하지 않습니다.</td>
+            </tr>
+          );
+        }
+      }, [currentPageData]);
+      
 
     return(
         <>
