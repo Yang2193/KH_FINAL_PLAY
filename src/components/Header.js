@@ -49,7 +49,7 @@ const MenuBurger = styled(MdMenu)`
   @media (max-width: 768px) {
         width: 60px;
         height: 60px;
-        right: 8px;
+        right: 0px;
         
     }
 `
@@ -62,7 +62,7 @@ const OutLineClose = styled(MdOutlineClose)`
   @media (max-width: 768px) {
         width: 60px;
         height: 60px;
-        right: 8px;
+        right: 0px;
         
     }
 `
@@ -92,6 +92,7 @@ const HomeImgWrapper = styled.div`
   @media (max-width: 768px) {
         width: 60px;
         height: 60px;
+        left: 0px;
     }
 `;
 
@@ -108,6 +109,7 @@ const MenuBurgerWrapper = styled.div`
   @media (max-width: 768px) {
         width: 60px;
         height: 60px;
+        right:0px;
     }
 `;
 
