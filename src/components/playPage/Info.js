@@ -2,8 +2,8 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { Button } from "../../utils/GlobalStyle";
 import PlayInfoApi from "../../api/PlayInfoApi";
-import { FaHeart } from 'react-icons/fa';
 import { useNavigate } from "react-router-dom";
+import { FaHeart } from 'react-icons/fa';
 const FixData = styled.div`
     width: 100%;
     height: 80vh;
@@ -11,7 +11,7 @@ const FixData = styled.div`
         width:100%;
         height: 100%;
     }
-    h1{
+    h1{        
         font-size: 1.5em;
         margin: 0;
         padding-bottom: 2%;
@@ -36,51 +36,45 @@ const FixData = styled.div`
             margin-right:5%;
             @media (max-width:768px) {
                 margin: 0;
-                width: 70%;
+                width: 80%;
                 height: 30%;
                 margin-top: 5%;
             }
         }
-        .like{
-            position: relative;
-            right:38%;
-            top:40%;
-            background-color: white;
-            border: none;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            width: 8%;
-            cursor: pointer;
-            p{
-                margin-left: 10%;
-            }
-            @media (max-width:768px) {
-             display: none;
-            }
-        }
+
         .textBox{
             width: 60%;
             height: 65%;
-
             @media (max-width:768px) {
                 width: 100%;
                 height: 100%;
                 display: flex;
                 justify-content: center;
-                margin: 3% 0%;
-                /* border: 1px solid; */
+                align-items: center;
+                margin-top: 5%;
+                flex-direction: column;
+
+            }
+        }
+        .like{
+            text-align: end;
+            @media (max-width:768px) {
+                width: 80%;
             }
         }
         .infoBox{
+            position: relative;
+            bottom: 40px;
+            z-index: -1;
+            /* border: 1px solid; */
             width: 100%;
             height: 100%;
             font-size: 1em;
             @media (max-width:768px) {
                 width: 80%;
                 height: 80%;
-                /* border: 1px solid; */
                 font-size: 1em;
+                bottom:40px;
             }
             ul{
                 list-style: none;
@@ -104,21 +98,20 @@ const FixData = styled.div`
         height:10%;
         width: 100%;
         display: flex;
-        justify-content:end ;
-        align-items:end;
+        justify-content:center ;
+        align-items:center;
         @media (max-width:768px) {
             position: fixed;
             bottom: 0;
             width: 100%;
             height: 50px;
-            z-index: 1;
+            z-index: 2;
             }
         button{
-            width: 30%;
+            width: 100%;
             height: 100%;
-            font-size: 1.3em;
+            font-size: 1.2em;
             border: none;
-            border-radius: 15px;
             cursor: pointer;    
             @media (max-width:768px) {
                 border-radius: 0%;
@@ -220,10 +213,8 @@ const Info = () =>{
             <FixData key = {play.playId}>
                     <div className="content">
                         <img src={play.playPoster} alt="" />
-                        <button className="like" onClick={()=>onClickLiked()}>
-                            <FaHeart style={{fontSize: '200%', color: isLiked ? "red" : "#999999" }}/> <p>찜하기</p>
-                        </button>
                         <div className="textBox">
+                        <div className="like"><FaHeart onClick={()=>onClickLiked()} style={{fontSize: '200%', cursor:"pointer", color: isLiked ? "red" : "#999999" }}/></div>
                             <div className="infoBox">
                                 <h1>{play.title}</h1>
                                 <ul>
@@ -274,7 +265,7 @@ const Info = () =>{
                                 </ul>
                             </div>
                             <div className="btnBox">
-                                    <Button onClick={()=>reserve(play.playPlan,play.playPrice,play.title,play.theaterId)}>예매 하기</Button>
+                                <Button onClick={()=>reserve(play.playPlan,play.playPrice,play.title,play.theaterId)}>예매 하기</Button>
                             </div>
                     </div>
                 </div>

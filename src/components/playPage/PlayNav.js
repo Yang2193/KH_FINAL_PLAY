@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { useState } from "react";
 const NavBar = styled.div`
+
     display: flex;
     align-items: center;
     height: 5vh;
@@ -20,13 +21,11 @@ const NavBar = styled.div`
       /* border: 1px solid; */
       height: 100%;
       background-color: white;
-      font-size: 1.5em;
+      font-size: 1em;
       font-weight: bold;
       cursor: pointer;
       margin-right: 1%;
-      @media (max-width:768px) {
-            font-size:1em;
-          }
+
     }
     .nav-item {
     position: relative;
@@ -36,7 +35,7 @@ const NavBar = styled.div`
 .nav-item::before {
   content: "";
   position: absolute;
-  bottom: -10px;
+  bottom: -12px;
   left: 0;
   width: 100%;
   height: 5px;

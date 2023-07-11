@@ -7,6 +7,13 @@ import MessageModal from '../../utils/MessageModal';
 const OneCss=styled.div`
 width: 100%;
 height: 100%;
+@media (max-width:768px) {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  }
 .empty{
   display: flex;
   align-items: center;
@@ -18,6 +25,9 @@ h2{
   width: 100%;
 }
 .addReview{
+  @media (max-width:768px) {
+    width: 80%;
+  }
   .ratingBox{
     width: 100%;
   }
@@ -43,7 +53,12 @@ h2{
  
 }
 .selectReview{
+  @media (max-width:768px) {
+    width: 80%;
+  }
   .btns{
+    position: relative;
+    top:45px;
       width: 100%;
       text-align: end;
       button{
@@ -75,7 +90,6 @@ h2{
     cursor: pointer;
   }
 }
-.updateP{}
 .updateText{
   margin: 0;
     outline: none;
