@@ -32,6 +32,7 @@ h2{
     border: none;
     outline: none;
     resize: none;
+    height: 150px;
 
   }
 .add{
@@ -42,6 +43,13 @@ h2{
  
 }
 .selectReview{
+  .btns{
+      width: 100%;
+      text-align: end;
+      button{
+        margin-left: 2%;
+      }
+    }
   border-bottom: 1px solid;
   border-color: #eee;
   padding: 1%;
@@ -54,12 +62,6 @@ h2{
       color:#ccc;
     }
   }
-button{
-  width: 5%;
-  border: none;
-  cursor: pointer;
-  margin-left: 50%;
-}
 }
 .btn{
   width: 100%;
@@ -73,15 +75,31 @@ button{
     cursor: pointer;
   }
 }
-
+.updateP{}
+.updateText{
+  margin: 0;
+    outline: none;
+    resize: none;
+    height: 10%;
+}
 `
 
 const OneReview = () => {
-  const [reviews, setReviews] = useState([]);
-  const [rating, setRating] = useState("");
-  const [content, setContent] = useState([]);
-  const [modalOpen, setModalOpen] = useState(false);
-  const[delMo,setDelMo]=useState(false);
+  const [showInput, setShowInput] = useState(false);// 리뷰 수정
+  const [reviews, setReviews] = useState([]); // 리뷰 불러오기
+  const [rating, setRating] = useState(""); // 평점 입력
+  const [content, setContent] = useState([]); // 내용 입력
+  
+// 수정용
+  const [upRating, setUpRating] = useState("");
+  const [upContent, setUpContent] = useState([]);
+
+  const [modalOpen, setModalOpen] = useState(false); // 등록 완료 모달
+  const[delMo,setDelMo]=useState(false);// 등록 삭제 모달
+  const[upMo,setUpMo]=useState(false); // 등록 수정 모달
+  const[logMo,setLogMo]=useState(false); // 등록 수정 모달
+
+  const reviewId = parseInt(localStorage.getItem("reviewId"), 10);
   const userId = localStorage.getItem("userId");
   const playId = localStorage.getItem("playId");
 
@@ -93,10 +111,18 @@ const OneReview = () => {
         } 
     };
     getReview();
-  }, [modalOpen,delMo]);
+  }, [modalOpen,delMo,upMo]);
 
   const onChangeRating = e =>{
     setRating(e)
+}
+const onUpRating = e =>{
+  setUpRating(e)
+}
+const onUpContent = e =>{
+  if (e.target.value.length <= 100) {
+    setUpContent(e.target.value);
+  }    
 }
 const onChangeContent = e =>{
   if (e.target.value.length <= 100) {
@@ -105,13 +131,19 @@ const onChangeContent = e =>{
 }
 
 const addReview = async () =>{
-  const rsp = await PostAPI.addOLR(content,rating,userId,playId);
-  if(rsp.status === 200) {
-    console.log("성공");
-    setModalOpen(true);
+  if (userId===null) {
+    setLogMo(true);
     resetInput();
-  } else {
-      console.log("전송 실패");
+    return;
+  } else{
+    const rsp = await PostAPI.addOLR(content,rating,userId,playId);
+    if(rsp.status === 200) {
+      console.log("성공");
+      setModalOpen(true);
+      resetInput();
+    } else {
+        console.log("전송 실패");
+    }
   }
 }
 const deleteReview = async (id) =>{
@@ -123,16 +155,36 @@ const deleteReview = async (id) =>{
       console.log("전송 실패");
   }
 }
-
-const resetInput = () => {
-  setRating("");
-  setContent("");
+const updateInput = (id) =>{
+  localStorage.setItem("reviewId",id)
+  setShowInput(true);
 }
-const onClickClose = () => {
-  setModalOpen(false);
-  setDelMo(false);
+
+const updateReview = async (id) =>{
+  const rsp = await PostAPI.updateOLR(id,upContent,upRating);
+  if(rsp.status === 200) {
+    console.log("성공");
+    setUpMo(true);
+    resetInput();
+    setShowInput(false);
+  } else {
+      console.log("전송 실패");
   }
-console.log(rating);
+}
+
+  const resetInput = () => {
+    setRating("");
+    setContent("");
+    setUpContent("");
+    setUpRating("");
+  }
+  const onClickClose = () => {
+    setModalOpen(false);
+    setDelMo(false);
+    setUpMo(false)
+    setLogMo(false)
+    }
+
   return (
     <OneCss>
       <div className='addReview'>
@@ -149,16 +201,33 @@ console.log(rating);
           <Button onClick={addReview}>등록</Button>
         </div>
       </div>
+
       {reviews.length > 0 ? reviews.map(review => (
         <div className='selectReview' key={review.id}>
-          <p><Rating size={"20"} className='read' initialValue={review.olrRating} readonly/></p>
-          <p>{review.olrContent}</p>
-          <p>{review.memberInfo.userId} <span>{(new Date(review.olrDate)).toLocaleString('ko')}</span> {userId ===review.memberInfo.userId ? <Button onClick={()=>deleteReview(review.id)}>삭제</Button> : null}</p>
+          {userId ===review.memberInfo.userId ? 
+            <div className='btns'>
+              {showInput === true && review.id===reviewId ? <button onClick={()=>updateReview(review.id)}>수정 완료</button> : <button onClick={()=> updateInput(review.id)}>수정</button>}
+                <button onClick={()=>deleteReview(review.id)}>삭제</button>
+            </div> : null}
+          {showInput && reviewId===review.id ? 
+            <p className='updateP'> 
+              <Rating
+                size={"25px"}
+                className='add'
+                onClick={onUpRating}
+                initialValue={upRating}
+                allowFraction/>
+            </p> :
+            <p><Rating size={"20"} className='read' initialValue={review.olrRating} allowFraction readonly/></p>}
+          {showInput && reviewId===review.id ? <textarea className='updateText' onChange={onUpContent} value={upContent}></textarea> : <p>{review.olrContent}</p>}
+          <p>{review.memberInfo.userId} <span>{(new Date(review.olrDate)).toLocaleString('ko')}</span></p>
         </div>
       ))
       : <div className='empty'>관람후기를 등록해주세요</div>}
       <MessageModal open={modalOpen} close={onClickClose} header="등록 완료">리뷰가 등록 되었습니다.</MessageModal>
       <MessageModal open={delMo} close={onClickClose} header="삭제 완료">리뷰가 삭제 되었습니다.</MessageModal>
+      <MessageModal open={upMo} close={onClickClose} header="수정 완료">리뷰가 수정 되었습니다.</MessageModal>
+      <MessageModal open={logMo} close={onClickClose} header="로그인 알림">로그인이 필요 합니다.</MessageModal>
 
     </OneCss>
   );

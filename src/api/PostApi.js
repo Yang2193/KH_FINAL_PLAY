@@ -164,6 +164,22 @@ reportComment: async (commentId, reportReason, nickname, postId,userId) => {
           return await axios.post(Posts + `/post/delete/oneLineReview?olrId=${id}`)
       }
   },
+  // 한줄평 수정
+      updateOLR : async(id,cont,rat)=>{
+        const data = {
+          olrId : id,
+          olrContent : cont,
+          olrRating : rat
+        }
+        try{
+            Functions.setAuthorizationHeader();
+            return await axios.post(Posts + `/post/update/oneLineReview`,data)
+  
+        }catch(error){
+            await Functions.handleApiError(error);
+            return await axios.post(Posts + `/post/update/oneLineReview`,data)
+        }
+    },
 };
 
 
