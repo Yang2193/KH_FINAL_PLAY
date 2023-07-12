@@ -28,6 +28,10 @@ h2{
   @media (max-width:768px) {
     width: 80%;
   }
+  @media (max-width:412px) {
+    width: 90%;
+    height: 150px;
+  }
   .ratingBox{
     width: 100%;
   }
@@ -44,6 +48,9 @@ h2{
     resize: none;
     height: 150px;
 
+@media (max-width:412px) {
+  height: 85px;
+}
   }
 .add{
   height:25px;
@@ -56,6 +63,7 @@ h2{
   @media (max-width:768px) {
     width: 80%;
   }
+  
   .btns{
     position: relative;
     top:45px;
@@ -81,6 +89,11 @@ h2{
 .btn{
   width: 100%;
   text-align: end;
+  @media (max-width:412px) {
+    height: 15%;
+    display: flex;
+    justify-content: end;
+  }
   button{
     font-size: 1em;
     border-radius: 5px;
@@ -88,6 +101,14 @@ h2{
     height: 100%;
     border: none;
     cursor: pointer;
+    @media (max-width:412px) {
+      width: 12%;
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 0.8em;
+  }
   }
 }
 .updateText{

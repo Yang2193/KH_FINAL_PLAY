@@ -17,16 +17,13 @@ const NavBar = styled.div`
     li{
       display: flex;
       justify-content: center;
-      width: 10%;
-      /* border: 1px solid; */
+      width: 100%;
       height: 100%;
       background-color: white;
       font-size: 1em;
       font-weight: bold;
       cursor: pointer;
-      margin-right: 1%;
-
-    }
+  }
     .nav-item {
     position: relative;
     cursor: pointer;
@@ -41,6 +38,9 @@ const NavBar = styled.div`
   height: 5px;
   background-color: black;
   display: none;
+  @media (max-width:768px) {
+    bottom: -10px;
+  }
 }
 
 .nav-item.active::before {

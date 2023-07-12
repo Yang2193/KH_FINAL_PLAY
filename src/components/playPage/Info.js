@@ -76,6 +76,11 @@ const FixData = styled.div`
                 font-size: 1em;
                 bottom:40px;
             }
+            @media (max-width:412px) {
+                width: 90%;
+                height: 90%;
+     
+            }
             ul{
                 list-style: none;
                 padding: 0;
