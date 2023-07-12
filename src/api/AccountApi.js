@@ -122,6 +122,16 @@ const AccountApi = {
         };
         return await axios.post(Domain + "/mypage/withdraw", withdrawcmd);
     },
+
+    ticketDetail: async(reserveId) =>{
+        try{
+            Functions.setAuthorizationHeader();
+            return await axios.get(Domain + `/mypage/ticket/${reserveId}`);
+        } catch(error){
+            await Functions.handleApiError(error);
+            return await axios.get(Domain + `/mypage/ticket/${reserveId}`);
+        }
+    }
 }
 
 export default AccountApi;
