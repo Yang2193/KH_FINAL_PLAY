@@ -56,18 +56,19 @@ const PostUpdate = () => {
   });
 
   const navigate = useNavigate();
+  
   useEffect(() => {
     const fetchPost = async () => {
       try {
         const post = await PostAPI.getPostById(postId);
 
-
         if (post) {
-          setPostData({
+          setPostData((prevData) => ({
+            ...prevData,
             postTitle: post.postTitle || '',
             postImage: post.postImage || '',
             postContent: post.postContent || '',
-          });
+          }));
         } else {
           console.error('게시물을 찾을 수 없습니다.');
         }
@@ -78,9 +79,6 @@ const PostUpdate = () => {
 
     fetchPost();
   }, [postId]);
-
-
-
 
   const handleImageChange = (image) => {
     setPostData((prevData) => ({
@@ -142,10 +140,11 @@ const PostUpdate = () => {
         </div>
         <div>
           <Label>
-             <MyEditor  name="postContent"
+             <MyEditor
               value={postData.postContent}
               onChange={handleEditorChange}
-              className="myTextarea"></MyEditor>
+              className="myTextarea"
+            />
           </Label>
         </div>
         <Button onClick={handleUpdate}>수정하기</Button>
@@ -153,5 +152,6 @@ const PostUpdate = () => {
     </>
   );
 };
+
 
 export default PostUpdate;

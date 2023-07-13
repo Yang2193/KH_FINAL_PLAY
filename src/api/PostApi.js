@@ -76,6 +76,7 @@ const PostAPI = {
 
   // 댓글 수정
   updateComment: async (commentId, updatedComment) => {
+    Functions.setAuthorizationHeader();
     return await axios.post(`${Posts}/comments/${commentId}`, updatedComment);
   },
 //ㅅㅈ
