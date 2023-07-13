@@ -32,7 +32,7 @@ function App() {
         <Route path="/myPage" element={<Mypage />} />
         <Route path="/post/:postId" element={<PostDetail />} />
         <Route path="/post" element={<PostPage />} />
-        <Route path="/postUpload" element={<PostUpload />} />
+        <Route path="/postUpload" element={<PostUpload />} /> 
         <Route path="/postupdate/:postId" element={<PostUpdate />} />
         <Route path="/reserve" element={<ReservePage />} />
         <Route path="/payresult" element={<PayResult />} />
