@@ -38,7 +38,7 @@ const NavBar = styled.div`
   height: 5px;
   background-color: black;
   display: none;
-  @media (max-width:768px) {
+  @media (max-width:412px) {
     bottom: -10px;
   }
 }
