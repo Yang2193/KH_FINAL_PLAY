@@ -14,7 +14,7 @@ import PostReport from '../components/Post/PostReport ';
 
 
 const Background = styled.div`
-min-width: 861px;
+
   background-color: #E2E2E2;
   display: flex;
   flex-direction: column;
@@ -199,7 +199,7 @@ const PostD = styled.div`
     background-color: white;
     color: #f34336 ;
     position: relative;
-    left: 76%;
+    left: 70%;
     border: none;
     border-radius: 5px;
     cursor: pointer;
