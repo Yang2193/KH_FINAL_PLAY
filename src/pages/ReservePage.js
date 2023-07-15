@@ -9,33 +9,42 @@ import { Button } from "../utils/GlobalStyle";
 import { useNavigate } from "react-router-dom";
 import moment from "moment/moment";
 import ReserveApi from "../api/ReserveApi";
+
 const ReserveStyle = styled.div`
-width: 100%;
-.conteiner{
-    margin-top: 2%;
-    width: 50%;
-    height: 100vh;
-    display: flex;
-    align-items: center;
-    flex-direction: column;
-    position: relative;
-    left: 25%;
+    width: 100%;
+
     @media (max-width:768px) {
-        margin: 0;
-        width: 80%;
-        left: 0;
-        height: 76vh;
-    }
-}
-.seatInfo{
-    @media (max-width:768px) {
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        }
+    @media (max-width:412px) {
+        max-width: 100%;
+        overflow-y: hidden;
+        }
+    .conteiner{
+        margin-top: 2%;
+        width: 50%;
         height: 100vh;
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        position: relative;
+        left: 25%;
+        @media (max-width:768px) {
+            margin: 0;
+            width: 80%;
+            left: 0;
+            height: 76vh;
+        }
     }
-}
-@media (max-width:768px) {
-    display: flex;
-    align-items: center;
-    flex-direction: column;
+    .seatInfo{
+        @media (max-width:768px) {
+            height: 100vh;
+        }
+        @media (max-width:412px) {
+            height: 76vh;
+        }
     }
     .reserved{
         background-color: #eee;
@@ -43,7 +52,6 @@ width: 100%;
         cursor: not-allowed;
     }
     .stage{
-        /* border: 1px solid; */
         width: 100%;
         height: 20%;
         display: flex;
@@ -57,6 +65,9 @@ width: 100%;
             width: 30%;
             height: 50%;
         }
+        @media (max-width:412px) {
+                width: 600px;
+            }
     }
     .box{
         width: 100%;
@@ -66,13 +77,22 @@ width: 100%;
             height: 55%;
             margin-bottom: 10%;
             }
+            @media (max-width:412px) {
+                height: 400px;
+                width: 100%;
+            }
     }
     .seat{
         display: flex;
         width: 100%;
         height: 50%;
-        /* border: 1px solid; */
         flex-direction: column;
+        @media (max-width:412px) {
+            max-width: 600px;
+            /* width: 500px; */
+            height: 320px;
+            overflow-x:scroll ;
+        }
 
     }
     .seat-row{
@@ -102,6 +122,11 @@ width: 100%;
                 width: 10%;
                 height: 40%;
             }
+            @media (max-width:412px) {
+                font-size: 1em;
+                /* width: 2;
+                height:40px; */
+            }
         }
         .empty{
             border: none;
@@ -116,12 +141,23 @@ width: 100%;
         width: 100%;
         height: 20%;
         display: flex;
-        p{
+        flex-direction: column;
+        h3{
+            @media (max-width:412px) {
+                font-size: 1em;
+                width: 100%;
+                height: 20%;      
+            }
+        }
+        .timeBox{
+            width: 100%;
+            height: 50%;
+            display: flex;
+            p{
             width: 15%;
-            height: 30%;
+            height: 70%;
             border: 1px solid;
             border-radius: 10px;
-            margin-top:10%;
             margin-left: 2%;
             background-color: white;
             font-size: 1em;
@@ -134,10 +170,17 @@ width: 100%;
                 font-size: 1em;
                 height: 40%;
             }
+            @media (max-width:412px) {
+                margin-top: 0;
+                width: 20%;
+                font-size: 1em;
+                height: 70%;    
+            }
         }
         .selected{
             background-color: #990a2c;
             color: #fff;
+        }
         }
     }
     .cal{
@@ -152,6 +195,9 @@ width: 100%;
             font-size: 1em;
             border-radius: 15px;
             cursor: pointer;
+            @media (max-width:412px) {
+                width: 50%;
+            }
         }
     .priceInfo{
         width: 50%;
@@ -161,6 +207,9 @@ width: 100%;
         @media (max-width:768px) {
             width: 80%;
         }
+        @media (max-width:412px) {
+            width: 100%;
+    }
     }
     .react-calendar {
             width: 100%;
@@ -434,6 +483,7 @@ const ReservePage = () =>{
                     : 
                     <div className="time">
                         <h3>회차 선택</h3>
+                        <div className="timeBox">
                         {timeOptions.map((time, index) => (
                             <p 
                             className={selTime === time ? "selected" : ""}
@@ -443,6 +493,7 @@ const ReservePage = () =>{
                                 {time.trim()}
                             </p>
                         ))}        
+                        </div>
                     </div>  
                     }
                     <Button className="btn" onClick={()=>nextPage()}>좌석 선택</Button>

@@ -4,6 +4,8 @@ import styled from 'styled-components';
 import { Rating } from 'react-simple-star-rating';
 import { Button } from "../../utils/GlobalStyle";
 import MessageModal from '../../utils/MessageModal';
+import PageNation from '../../utils/PageNation';
+
 const OneCss=styled.div`
 width: 100%;
 height: 100%;
@@ -219,7 +221,21 @@ const updateReview = async (id) =>{
     setUpMo(false)
     setLogMo(false)
     }
+// 페이지 네이션
+    const [currentPage, setCurrentPage] = useState(0); // 현재 페이지 번호
 
+    useEffect(() => {  
+        setCurrentPage(0);
+    }, [reviews])
+
+    const ITEMS_PAGE = 5; // 보여질 아이템 개수
+
+    const handlePageClick = (selectedPage) => {
+        setCurrentPage(selectedPage.selected);
+      };
+    const pageCount = Math.ceil(reviews.length / ITEMS_PAGE); // 페이지 수 계산
+    const offset = currentPage * ITEMS_PAGE; // 현재 페이지에서 보여줄 아이템의 시작 인덱스
+    const currentPageData = reviews.slice(offset, offset + ITEMS_PAGE);
   return (
     <OneCss>
       <div className='addReview'>
@@ -236,8 +252,9 @@ const updateReview = async (id) =>{
           <Button onClick={addReview}>등록</Button>
         </div>
       </div>
+    
 
-      {reviews.length > 0 ? reviews.map(review => (
+      {currentPageData && currentPageData.length > 0 ? currentPageData.map(review => (
         <div className='selectReview' key={review.id}>
           {userId ===review.memberInfo.userId ? 
             <div className='btns'>
@@ -259,10 +276,12 @@ const updateReview = async (id) =>{
         </div>
       ))
       : <div className='empty'>관람후기를 등록해주세요</div>}
+
       <MessageModal open={modalOpen} close={onClickClose} header="등록 완료">리뷰가 등록 되었습니다.</MessageModal>
       <MessageModal open={delMo} close={onClickClose} header="삭제 완료">리뷰가 삭제 되었습니다.</MessageModal>
       <MessageModal open={upMo} close={onClickClose} header="수정 완료">리뷰가 수정 되었습니다.</MessageModal>
       <MessageModal open={logMo} close={onClickClose} header="로그인 알림">로그인이 필요 합니다.</MessageModal>
+      {pageCount > 1 && <PageNation pageCount={pageCount} onPageChange={handlePageClick}/>}
 
     </OneCss>
   );
