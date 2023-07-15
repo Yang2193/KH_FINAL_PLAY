@@ -1,3 +1,5 @@
+// PostUpdate 컴포넌트 수정
+
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { toast, ToastContainer } from 'react-toastify';
