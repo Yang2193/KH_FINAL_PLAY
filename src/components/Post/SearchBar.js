@@ -10,7 +10,7 @@ const SearchContainer = styled.div`
   justify-content: space-between;
   align-items: center;
   width: 55%;
-  margin-bottom: 60px;
+  margin-top: 55px;
   height: 40px;
   text-align: center;
   display: flex;
@@ -39,7 +39,7 @@ const Input = styled.input`
 
 const SearchButton = styled(MdSearch)`
   width: 28px;
-  height: 30px;
+  height: 40px;
   position: absolute;
   right: 10px;
   cursor: pointer;
