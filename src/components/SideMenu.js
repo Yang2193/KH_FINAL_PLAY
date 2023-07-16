@@ -104,6 +104,7 @@ const SideMenu = ({handleIsOpen, isOpen}) => {
     const ref = useRef(null);
     const navigate = useNavigate();
     const userId = window.localStorage.getItem("userId");
+    const kakaoId = localStorage.getItem("kakaoId");
 
     //팝업창
     const [modalOpen, setModalOpen] = useState(false);
@@ -166,7 +167,7 @@ const SideMenu = ({handleIsOpen, isOpen}) => {
                 <Box isOpen={isOpen} >
                    <div className="header">메뉴</div>
                     <div className="box" onClick={onClickBox}>
-                            {userId ?
+                            {userId || kakaoId ?
                                 <div className="item" onClick={logout}>로그아웃</div>
                             :   <div className="item" onClick={()=> handleLinkClick("/Login")}>로그인/회원가입</div>
                             }

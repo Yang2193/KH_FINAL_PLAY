@@ -11,10 +11,11 @@ const KakaoLogin = () => {
         const getAccessToken = async () => {
         try {
             const response = await AccountApi.kakaoAccessToken(code);
-            console.log('응답 데이터 : ', response.data);
-            localStorage.setItem("KakaoInfo", JSON.stringify(response.data));
+            localStorage.setItem("kakaoId", response.data.id);
+            localStorage.setItem("kakaoName", response.data.properties.nickname);
+            localStorage.setItem("kakaoInfo", JSON.stringify(response.data));
             localStorage.setItem("isLogin", "TRUE");
-            console.log(localStorage.getItem("KakaoInfo"));
+            console.log(localStorage.getItem("kakaoInfo"));
             navigate('/');
         } catch (error) {
             console.error('액세스 토큰 요청 실패:', error);
