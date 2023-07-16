@@ -3,9 +3,8 @@ import { Link, useNavigate } from "react-router-dom";
 import AccountApi from "../../api/AccountApi";
 import '../../styles/Account.css';
 import { AccountInfoContext } from "../../context/AccountInfo";
-import { getCookie, setCookie } from "../../utils/Cookie";
 
-const Login = () => {
+  const Login = () => {
     const navigate = useNavigate();
     const context = useContext(AccountInfoContext);
     const {setUserId, setUserPw, setUserName, setUserNickname, setUserPhone, setUserEmail, isLogin, setIsLogin} = context;
@@ -90,14 +89,13 @@ const Login = () => {
         console.log(e);
       }
     };
-  
-    const Rest_api_key='088a7b267c39d0a11ec3904372ed9d33' //REST API KEY
-    const redirect_uri = 'http://localhost:3000/kakao-login' //Redirect URI
-    // oauth 요청 URL
-    const kakaoURL = `https://kauth.kakao.com/oauth/authorize?client_id=${Rest_api_key}&redirect_uri=${redirect_uri}&response_type=code`
-    const onClickKakaoLogin = ()=>{
-        window.location.href = kakaoURL
-    }
+
+    const onClickKakaoLogin = () => {
+      const clientId = "088a7b267c39d0a11ec3904372ed9d33";
+      const redirectUri = "http://localhost:3000/auth/kakao/callback";
+      const authorizeUrl = `https://kauth.kakao.com/oauth/authorize?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=code`;
+      window.location.href = authorizeUrl;
+    };
 
     return (
       <div className="wrapper">
@@ -132,4 +130,4 @@ const Login = () => {
     );
   };
   
-  export default Login;
+export default Login;

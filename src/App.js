@@ -18,6 +18,7 @@ import PayResult from './components/playPage/KaKaoPay/PayResult';
 import PayReady from './components/playPage/KaKaoPay/PayReady';
 import PostUpdate from './components/Post/PostUpdate';
 import Ticket from './components/Mypage/MyTicketInfoDetail';
+import KakaoLogin from './components/Account/KakaoLogin';
 
 function App() {
   return (
@@ -28,6 +29,7 @@ function App() {
         <Route path="/info" element={<PlayPage />} />
         <Route path="/join/*" element={<JoinPage />} />
         <Route path="/login" element={<LoginPage />} />
+        <Route path="/auth/kakao/callback" element={<KakaoLogin />} />
         <Route path="/find" element={<FindAccountPage />} />
         <Route path="/myPage" element={<Mypage />} />
         <Route path="/post/:postId" element={<PostDetail />} />

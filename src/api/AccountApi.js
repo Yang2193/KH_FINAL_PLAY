@@ -131,7 +131,15 @@ const AccountApi = {
             await Functions.handleApiError(error);
             return await axios.get(Domain + `/mypage/ticket/${reserveId}`);
         }
-    }
+    },
+
+    kakaoAccessToken: async(code) => {
+        const kakaoAccessTokencmd = {
+            code: code
+        }
+        return await axios.post(Domain + `/auth/kakao/callback`, kakaoAccessTokencmd)
+    },
+
 }
 
 export default AccountApi;
