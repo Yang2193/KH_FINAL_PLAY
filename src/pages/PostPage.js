@@ -32,9 +32,10 @@ const Post = () => {
     fetchData();
   }, []);
 
-  const sortViews = () => {
-    setSortedPosts([...posts].sort((a, b) => b.postViews - a.postViews));
-  };
+  // 조회수 버튼
+  // const sortViews = () => {
+  //   setSortedPosts([...posts].sort((a, b) => b.postViews - a.postViews));
+  // };
 
   const increaseViews = async (postId) => {
     try {
@@ -89,20 +90,12 @@ const Post = () => {
       <Header />
       <div className="ReviewBoardWrapper">
         <h2>리뷰 게시판</h2>
-        <SearchBar handleSearch={handleSearch} />
-        <div className="ButtonWrapper">
-          <Link to="/postUpload">
-            <button className="insert1">등록하기</button>
-          </Link>
-          <button className="insert2" onClick={sortViews}>
-            조회순
-          </button>
-        </div>
+      
         <table className="ReviewTable">
           <thead>
             <tr>
               <th>리뷰 제목</th>
-              <th>설명</th>
+              {/* <th>설명</th> */}
               <th>작성 날짜</th>
               <th className="text_id">닉네임</th>
               <th>조회수</th>
@@ -125,7 +118,7 @@ const Post = () => {
                     {post.postTitle}
                   </Link>
                 </td>
-                <td className="Explaination2" dangerouslySetInnerHTML={{ __html: post.postContent }}></td>
+                {/* <td className="Explaination2" dangerouslySetInnerHTML={{ __html: post.postContent }}></td> */}
 
                 <td className="WriteDate">{formatWriteDate(post.postDate)}</td>
                 <td className="Id">{post.memberInfo ? post.memberInfo.userNickname : ''}</td>
@@ -134,11 +127,21 @@ const Post = () => {
             ))}
           </tbody>
         </table>
+        <div className='downBox'>
+        <Link to="/postUpload" className='linkPo'>
+            <button className="insert1">글쓰기</button>
+          </Link>
+          </div>
+          {/* <button className="insert2" onClick={sortViews}>
+            조회순
+          </button> */}
+        {pageCount > 1 && <PageNation pageCount={pageCount} onPageChange={handlePageClick} />}
         <div className="SearchEmptyMessage">
         {isSearchEmpty && <p>검색 결과가 없습니다.</p>}
         </div>  
-        {pageCount > 1 && <PageNation pageCount={pageCount} onPageChange={handlePageClick} />}
+        <SearchBar className="Search" handleSearch={handleSearch} />  
       </div>
+     
       <Footer />
     </>
   );

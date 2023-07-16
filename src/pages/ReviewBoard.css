@@ -19,6 +19,9 @@
   margin-top: 20px;
   color: red;
 }
+.linkPo{
+  margin-left: 640px;
+}
 .Id{
   font-size: 13px;
 }
@@ -37,7 +40,9 @@ h2 {
 
   margin-bottom: 20px;
 }
-
+.Views{
+  margin-left: 30%;
+}
 
 
 .insert2 {
@@ -56,6 +61,9 @@ h2 {
   border: none;
   border-radius: 4px;
   cursor: pointer;
+  font-size: 18px;
+  margin-top: 20px;
+  width: 100px;
   
 }
 
@@ -66,13 +74,13 @@ h2 {
 }
 
 .ReviewTable {
-  width: 110%;
+  width: 100%;
   border-collapse: collapse;
 }
 
 .ReviewTable th,
 .ReviewTable td {
-  padding: 12px;
+  padding: 10px;
   text-align: left;
   border-bottom: 1px solid #ddd;
   
@@ -80,7 +88,7 @@ h2 {
 
 .ReviewTable th:first-child,
 .ReviewTable td:first-child {
-  width: 16%;
+  width: 40%;
 }
 
 .ReviewLink {
@@ -95,6 +103,7 @@ h2 {
 .WriteDate,
 .Views {
   font-size: 12px;
+
   color: #888;
 }
 

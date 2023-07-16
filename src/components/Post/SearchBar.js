@@ -5,18 +5,18 @@ import PostAPI from '../../api/PostApi';
 
 const SearchContainer = styled.div`
   position: relative;
-  top: 5%;
   border: 0.2rem solid #990a2c;
   margin: 0 auto;
   justify-content: space-between;
   align-items: center;
-  width: 90%;
-  margin-bottom: 40px;
+  width: 55%;
+  margin-bottom: 60px;
   height: 40px;
   text-align: center;
   display: flex;
   z-index: 1;
   background-color: white;
+  bottom: 30px;
   @media (max-width: 768px) {
     width: 60%;
     top: 0%;
@@ -38,10 +38,11 @@ const Input = styled.input`
 `;
 
 const SearchButton = styled(MdSearch)`
-  width: 30px;
+  width: 28px;
   height: 30px;
   position: absolute;
   right: 10px;
+  cursor: pointer;
 `;
 
 const SearchBar = ({ handleSearch }) => {
