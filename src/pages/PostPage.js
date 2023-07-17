@@ -121,14 +121,12 @@ const Post = () => {
           </tbody>
         </table>
 
-        <div className="SearchEmptyMessage">{isSearchEmpty && <p>검색 결과가 없습니다.</p>}</div>
-        <div className="downBox">
+        
         <SearchBar className="Search" handleSearch={handleSearch} />
           <Link to="/postUpload" className="linkPo">
             <button className="insert1">글쓰기</button>
           </Link>
             {pageCount > 1 && <PageNation pageCount={pageCount} onPageChange={handlePageClick} />}
-        </div>
       
        
        
