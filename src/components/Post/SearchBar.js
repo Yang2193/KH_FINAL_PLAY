@@ -5,6 +5,17 @@ import React, { useState } from 'react';
 
 const SearchContainer = styled.div`
   position: relative;
+<<<<<<< HEAD
+=======
+  border: 0.2rem solid #990a2c;
+  margin: 0 auto;
+  justify-content: space-between;
+  align-items: center;
+  width: 55%;
+  margin-bottom: 60px;
+  height: 40px;
+  text-align: center;
+>>>>>>> dfc19b5b8a58ba7ab7eddf36ea38985831ee1fc5
   display: flex;
   align-items: center;
   width: 200px;
@@ -22,6 +33,7 @@ const Input = styled.input`
   outline: none;
 `;
 
+<<<<<<< HEAD
 const SearchButton = styled.button`
   display: flex;
   align-items: center;
@@ -31,6 +43,13 @@ const SearchButton = styled.button`
   color: #990A2C;
   border: none;
   border-radius: 5px;
+=======
+const SearchButton = styled(MdSearch)`
+  width: 28px;
+  height: 30px;
+  position: absolute;
+  right: 10px;
+>>>>>>> dfc19b5b8a58ba7ab7eddf36ea38985831ee1fc5
   cursor: pointer;
   background-color: white;
 `;

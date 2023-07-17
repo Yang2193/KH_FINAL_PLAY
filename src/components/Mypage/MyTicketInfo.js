@@ -112,7 +112,7 @@ const MyTicketInfo = () => {
                 <td className="seatInfo">{bl.seatInfo}</td>
                 <td className="ticket">
                     <Link to={`/ticket/${bl.id}`}>티켓 확인</Link>
-                    </td>
+                </td>
               </tr>
             ))}
           </tbody>
