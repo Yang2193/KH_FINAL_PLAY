@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import AccountApi from "../../api/AccountApi;"
 import MessageModal from "../../utils/MessageModal";
+import AccountApi from "../../api/AccountApi";
 
 const MemberInfo = () => {
     const navigate = useNavigate();
@@ -14,6 +14,7 @@ const MemberInfo = () => {
     const [inputNickname, setInputNickname] = useState("");
     const [inputEmail, setInputEmail] = useState("");
     const [inputPhone, setInputPhone] = useState("");
+    const [inputAuth, setInputAuth] = useState("");
     
 
     // 오류 메세지
@@ -34,28 +35,22 @@ const MemberInfo = () => {
     const [isNickname, setIsNickname] = useState(false);
     const [isName, setIsName] = useState(false);
     const [isPhone, setIsPhone] = useState(false);
+    const [isAuth, setIsAuth] = useState(false);
 
     // 모든 항목 체크
     const [isAllChecked, setIsAllChecked] = useState(false);
 
     //팝업창
-    const [modalOpen, setModalOpen] = useState(false);
+    const [isAllCheckModalOpen, setIsAllCheckModalOpen] = useState(false);
+    const [authSuccessModal, setAuthSuccessModal] = useState(false);
+    const [authFailModal, setAuthFailModal] = useState(false);
 
     //모달창 닫기
     const onClickClose = () => {
-        setModalOpen(false);
+        setIsAllCheckModalOpen(false);
+        setAuthSuccessModal(false);
+        setAuthFailModal(false);
     }
-
-    useEffect(() => {
-        if (isId && isPw && isPwCk && isEmail && isName && isPhone) {
-            setIsAllChecked(true);
-            console.log(isAllChecked);
-            console.log(inputId, inputPw, inputName, inputPhone, inputEmail);
-        } else {
-            setIsAllChecked(false);
-            setAllCheckError("필수 회원 정보를 모두 입력 하지 않았습니다.")
-        }
-    }, [isId, isPw, isPwCk, isEmail, isName, isPhone]);
 
     const onChangeUserId = (e) => {
         const idRegex = /^(?=.*[a-zA-Z])(?=.*[0-9]).{4,15}$/
@@ -136,7 +131,6 @@ const MemberInfo = () => {
         const emailRegex = /([\w-.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/; // 이메일 정규표현식
         const emailNow = e.target.value ;
         setInputEmail(emailNow);
-
         if (!emailRegex.test(emailNow)) {
             setEmailError('이메일 형식이 맞지 않습니다. 다시 입력해주세요.');
             setIsEmail(false)
@@ -145,6 +139,32 @@ const MemberInfo = () => {
             setIsEmail(true);
         }        
     };
+
+    const onChangeAuth = (e) => {
+        const authNow = e.target.value;
+        setInputAuth(authNow);
+    }
+
+    const onClickEmailAuth = async() => {
+        if(isEmail) {
+            try {
+                const response = await AccountApi.sendAuthEmail(inputEmail);
+                console.log(response);
+                localStorage.setItem("authCode", response.data);
+            } catch (e){
+                console.log(e);
+            }
+        }
+    }
+
+    const onClickIsAuth = async() => {
+        if(localStorage.getItem("authCode") === inputAuth) {
+            setAuthSuccessModal(true);
+            setIsAuth(true);
+        } else {
+            setAuthFailModal(true);
+        }
+    }
 
     const onClickSignUp = async() => {
         if(isAllChecked){
@@ -159,9 +179,20 @@ const MemberInfo = () => {
             }
         }else {
             // isAllChecked가 false일 때 모달창 열기
-            setModalOpen(true);
+            setIsAllCheckModalOpen(true);
         }
     };
+
+    useEffect(() => {
+        if (isId && isPw && isPwCk && isEmail && isName && isPhone && isAuth) {
+            setIsAllChecked(true);
+            console.log(isAllChecked);
+            console.log(inputId, inputPw, inputName, inputPhone, inputEmail, isAuth);
+        } else {
+            setIsAllChecked(false);
+            setAllCheckError("필수 회원 정보를 모두 입력 하지 않았습니다.")
+        }
+    }, [isId, isPw, isPwCk, isEmail, isName, isPhone, isAuth]);
 
     return (
         <div>
@@ -216,7 +247,11 @@ const MemberInfo = () => {
                             <div>
                                 <i></i>
                                 <input type="email" placeholder="Email" value={inputEmail} onChange={onChangeUserEmail} className={isEmail ? 'focused-email' : ''}/>
-                                <div><button>인증</button></div>
+                                <button onClick={onClickEmailAuth}>인증번호 받기</button>
+                            </div>
+                            <div>
+                                <input type="password" value={inputAuth} onChange={onChangeAuth}/>
+                                <button onClick={onClickIsAuth}>인증</button>
                             </div>
                             <div>
                                 {inputEmail.length > 0 && <span className={`message ${isEmail ? '' : 'error'}`}>{emailError}</span>}
@@ -229,7 +264,9 @@ const MemberInfo = () => {
                     </div>
                 </div>
             </div>
-            {modalOpen && (<MessageModal open={modalOpen} close={onClickClose} type="modalType" header="회원가입 오류">회원가입에 필요한 필수 정보를 작성하세요.</MessageModal>)}
+            {isAllCheckModalOpen && (<MessageModal open={isAllCheckModalOpen} close={onClickClose} type="modalType" header="회원가입 오류">회원가입에 필요한 필수 정보를 작성하세요.</MessageModal>)}
+            {authSuccessModal && (<MessageModal open={authSuccessModal} close={onClickClose} type="modalType" header="인증 완료">이메일 인증이 완료되었습니다.</MessageModal>)}
+            {authFailModal && (<MessageModal open={authFailModal} close={onClickClose} type="modalType" header="인증 실패">이메일 인증이 실패하였습니다.</MessageModal>)}
             
         </div>
     );
