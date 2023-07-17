@@ -57,7 +57,8 @@ const ExampleItem = styled.div`
 `;
 
 const RtMenuImage = styled.img`
-  margin-left: 5px;
+  margin-left: -10px;
+  
   cursor: pointer;
 `;
 
@@ -109,7 +110,7 @@ const RtMenu = ({ commentId, nickname, userId,postId }) => {
         src={RtMenuIcon}
         alt="Rt 메뉴"
         onClick={toggleRtMenu}
-        style={{ marginTop: '5px', marginLeft: '', cursor: 'pointer', height: '15px' }}
+        style={{ marginTop: '5px', cursor: 'pointer', height: '15px' }}
       />
 
       <CommentMenu show={showRtMenu}>

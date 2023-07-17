@@ -90,7 +90,7 @@ const Post = () => {
         <table className="ReviewTable">
           <thead>
             <tr>
-              <th>리뷰 제목</th>
+              <th className='title alignCenter'>제목</th>
               <th>작성 날짜</th>
               <th className="text_id">닉네임</th>
               <th>조회수</th>
@@ -122,14 +122,15 @@ const Post = () => {
         </table>
         <div className="SearchEmptyMessage">{isSearchEmpty && <p>검색 결과가 없습니다.</p>}</div>
         <div className="downBox">
-       
+        <SearchBar className="Search" handleSearch={handleSearch} />
           <Link to="/postUpload" className="linkPo">
             <button className="insert1">글쓰기</button>
           </Link>
+          {pageCount > 1 && <PageNation pageCount={pageCount} onPageChange={handlePageClick} />}
         </div>
-        {pageCount > 1 && <PageNation pageCount={pageCount} onPageChange={handlePageClick} />}
+      
        
-        <SearchBar className="Search" handleSearch={handleSearch} />
+       
       </div>
       <Footer />
     </>

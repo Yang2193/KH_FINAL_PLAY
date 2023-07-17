@@ -7,8 +7,8 @@ import { toast, ToastContainer } from 'react-toastify';
 
 const CommentMenu = styled.div`
   position: absolute;
-  top: 210px;
-  right: 20px;
+  top: 270px;
+  right:130px;
   width: 220px;
   background-color: #fff;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
@@ -56,15 +56,19 @@ const ExampleItem = styled.div`
   }
 `;
 
-//ㅅㅈ
-const T1 =styled.div`
-color: red;
-font-size: 12px;
-cursor: pointer;
-margin-bottom: 7px;
-margin-left: 82%;
+const T1 = styled.div`
+  color: red;
+  width: 110px;
+  font-size: 12px;
+  position: relative;
+  cursor: pointer;
+  margin-bottom: 7px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-left: auto;
+`;
 
-`
 const PostReport  = ({ commentId, nickname, userId,postId }) => {
   const [showRtMenu, setShowRtMenu] = useState(false);
   const [reportReason, setReportReason] = useState('');

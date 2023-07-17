@@ -54,7 +54,6 @@ const PopularPosts = () => {
 
   return (
     <div className="PopularPosts">
-      <div className="PopularPostsTitle">인기글</div>
       <Slider {...settings}>
         {popularPosts
           .filter((post) => post.postImageUrl) // 이미지가 있는 게시물만 필터링
