@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import AccountApi from "../../api/AccountApi";
 import '../../styles/Account.css';
 import { AccountInfoContext } from "../../context/AccountInfo";
+import MessageModal from "../../utils/MessageModal";
 
   const Login = () => {
     const navigate = useNavigate();
@@ -22,6 +23,14 @@ import { AccountInfoContext } from "../../context/AccountInfo";
     // 유효성 검사
     const [isLoginId, setIsLoginId] = useState(false);
     const [isLoginPw, setIsLoginPw] = useState(false);
+
+    //팝업창
+    const [modalOpen, setModalOpen] = useState(false);
+
+    //모달창 닫기
+    const onClickClose = () => {
+        setModalOpen(false);
+    }
 
     // 정규식
     const idRegEx = /^[A-Za-z0-9]{3,15}$/g;
@@ -86,7 +95,7 @@ import { AccountInfoContext } from "../../context/AccountInfo";
           navigate("/");
         }
       } catch(e) {
-        console.log(e);
+        setModalOpen(true);
       }
     };
 
@@ -126,6 +135,7 @@ import { AccountInfoContext } from "../../context/AccountInfo";
             </div>
           </div>
         </div>
+        {modalOpen && (<MessageModal open={modalOpen} close={onClickClose} type="modalType" header="로그인 오류">아이디 및 패스워드가 틀렸습니다.</MessageModal>)}
       </div>
     );
   };

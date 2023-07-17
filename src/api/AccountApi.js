@@ -49,7 +49,7 @@ const AccountApi = {
         return await axios.post(Domain + "/auth/userdelete", memberDelCmd);
     },
 
-    // 아이디 찾기
+    // 아이디 / 패스워드 찾기
     findMemberId : async(userName, userEmail) => {
         const findId = {
             userName: userName,
@@ -65,6 +65,14 @@ const AccountApi = {
             userEmail: email
         };
         return await axios.post(Domain + "/auth/find/pw", findPw);
+    },
+
+    // 회원가입 시 이메일 인증
+    sendAuthEmail: async(userEmail) => {
+        const sendAuthEmailcmd = {
+            userEmail: userEmail
+        };
+        return await axios.post(Domain + "/auth/sendAuthEmail", sendAuthEmailcmd);
     },
 
     // 마이페이지 회원 별 리뷰 가져오기

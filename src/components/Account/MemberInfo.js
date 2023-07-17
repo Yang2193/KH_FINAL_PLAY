@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import "../../styles/Account.css"
-import AccountApi from "../../api/AccountApi";
+import AccountApi from "../../api/AccountApi;"
+import MessageModal from "../../utils/MessageModal";
 
 const MemberInfo = () => {
     const navigate = useNavigate();
@@ -37,6 +37,14 @@ const MemberInfo = () => {
 
     // 모든 항목 체크
     const [isAllChecked, setIsAllChecked] = useState(false);
+
+    //팝업창
+    const [modalOpen, setModalOpen] = useState(false);
+
+    //모달창 닫기
+    const onClickClose = () => {
+        setModalOpen(false);
+    }
 
     useEffect(() => {
         if (isId && isPw && isPwCk && isEmail && isName && isPhone) {
@@ -138,15 +146,20 @@ const MemberInfo = () => {
         }        
     };
 
-    const conClickSignUp = async() => {
-        try {
-            const response = await AccountApi.memberReg(inputId, inputPw, inputNickname, inputName, inputEmail, inputPhone);
-            if(response.status === 200) {
-                console.log(response.data.message);
-                navigate("/login");
+    const onClickSignUp = async() => {
+        if(isAllChecked){
+            try {
+                const response = await AccountApi.memberReg(inputId, inputPw, inputNickname, inputName, inputEmail, inputPhone);
+                if(response.status === 200) {
+                    console.log(response.data.message);
+                    navigate("/login");
+                }
+            } catch(e) {
+                console.log(e);
             }
-        } catch(e) {
-            console.log(e);
+        }else {
+            // isAllChecked가 false일 때 모달창 열기
+            setModalOpen(true);
         }
     };
 
@@ -210,12 +223,14 @@ const MemberInfo = () => {
                             </div>
                             <div>
                                 <button>이전</button>
-                                <button onClick={conClickSignUp}>다음</button>
+                                <button onClick={onClickSignUp}>다음</button>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+            {modalOpen && (<MessageModal open={modalOpen} close={onClickClose} type="modalType" header="회원가입 오류">회원가입에 필요한 필수 정보를 작성하세요.</MessageModal>)}
+            
         </div>
     );
 }
