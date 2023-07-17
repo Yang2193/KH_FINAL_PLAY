@@ -4,19 +4,12 @@ import { Button } from "../../utils/GlobalStyle";
 import PlayInfoApi from "../../api/PlayInfoApi";
 import { useNavigate } from "react-router-dom";
 import { FaHeart } from 'react-icons/fa';
-import MessageModal from "../../utils/MessageModal";
 const FixData = styled.div`
-    width: 1140px;
-    height: 750px;
+    width: 100%;
+    height: 80vh;
     @media (max-width:768px) {
         width:100%;
-    }
-    @media (max-width:1364px) {
-        width:818px;
-        height: 752px;
-    }
-    @media (max-width:412px) {
-        height: 800px;
+        height: 100%;
     }
     h1{        
         font-size: 1.5em;
@@ -26,88 +19,67 @@ const FixData = styled.div`
         border-bottom: 3px solid;
     }
     .content{
-        margin-top: 0;
         display: flex;
         align-items: center;
         justify-content: center;
-        width: 1140px;
-        height: 750px;
-        @media (max-width:1364px) {
-        width:818px;
-        height: 752px;
-    }
+        width: 100%;
+        height: 100%;
         @media (max-width:768px) {
-            width:768px;
-            height: 600px;
+            width:100%;
+            height: 100%;
             flex-direction: column;
-    }
-    @media (max-width:412px) {
-            width:412px;
-            height: 600px;
     }
         img {
             border-radius: 15px;
-            width: 400px;
-            height: 480px;
-            margin-right:50px;
+            width: 35%;
+            height: 65%;
+            margin-right:5%;
             @media (max-width:768px) {
-                position: absolute;
                 margin: 0;
-                z-index: -2;
-                top: 100px;
-                width: 100%;
-                border-radius: 0;
+                width: 80%;
+                height: 30%;
+                margin-top: 5%;
             }
         }
 
         .textBox{
-            width: 700px;
-            height: 480px;
+            width: 60%;
+            height: 65%;
             @media (max-width:768px) {
-                margin-top: 50%;
                 width: 100%;
                 height: 100%;
                 display: flex;
                 justify-content: center;
                 align-items: center;
+                margin-top: 5%;
                 flex-direction: column;
-                background-color: white;
-                z-index: 0;
-            }
-            @media (max-width:412px) {
-                margin-top: 550px;
+
             }
         }
         .like{
             text-align: end;
             @media (max-width:768px) {
-                margin-top:10px;
                 width: 80%;
-                height: 25px;
-            }
-            @media (max-width:412px) {
-                height: 15px;
             }
         }
         .infoBox{
             position: relative;
             bottom: 40px;
             z-index: -1;
+            /* border: 1px solid; */
             width: 100%;
             height: 100%;
             font-size: 1em;
             @media (max-width:768px) {
-                margin-top: 10px;
                 width: 80%;
-                height: 100%;
+                height: 80%;
                 font-size: 1em;
                 bottom:40px;
             }
             @media (max-width:412px) {
-                z-index: -2;
-                margin-top: 20px;
                 width: 90%;
-                height: 90%;     
+                height: 90%;
+     
             }
             ul{
                 list-style: none;
@@ -134,9 +106,12 @@ const FixData = styled.div`
         justify-content:center ;
         align-items:center;
         @media (max-width:768px) {
+            position: fixed;
+            bottom: 0;
             width: 100%;
             height: 50px;
-        }
+            z-index: 2;
+            }
         button{
             width: 100%;
             height: 100%;
@@ -146,7 +121,8 @@ const FixData = styled.div`
             @media (max-width:768px) {
                 border-radius: 0%;
                 width: 100%;
-            }      
+                
+            }     
         }
        button:hover{
         background-color:#790A2C ;
@@ -156,14 +132,11 @@ const FixData = styled.div`
 `
 
 const Info = () =>{
-    const [modal,setModal] = useState(false);
+
     const [playInfo,setPlayInfo] = useState(null);
     const playId = localStorage.getItem("playId"); // 연극 아이디
     const userId = localStorage.getItem("userId"); // 유저 아이디
     const navigate = useNavigate();
-    const onClickClose = () => {
-        setModal(false);
-        }
     // 연극정보 불러오기
     useEffect(()=>{
         const play = async()=>{
@@ -214,9 +187,9 @@ const Info = () =>{
             }
         };
     const onClickLiked = () => {
-        if (userId===null) {
-            setModal(true);
-            return;
+        if (userId==="") {
+            alert("로그인이 필요합니다.");
+            navigate("/login")
         }else{
             if (!isLiked) {
                 addLike();
@@ -225,16 +198,12 @@ const Info = () =>{
             }
         }
     }; 
-    const onClickLogin = () => {
-        setModal(false);
-        navigate("/login");
-   }
 
     // 예매하기
     const reserve = (playPlan,price,title,theaterId)=> {
-        if (userId===null) {
-            setModal(true);
-            return;
+        if (userId==="") {
+            alert("로그인이 필요합니다.");
+            navigate("/login")
         } else {
             localStorage.setItem("time",playPlan)
             localStorage.setItem("price",price)
@@ -250,7 +219,7 @@ const Info = () =>{
                     <div className="content">
                         <img src={play.playPoster} alt="" />
                         <div className="textBox">
-                            <div className="like"><FaHeart onClick={()=>onClickLiked()} style={{fontSize: '200%', cursor:"pointer", color: isLiked ? "red" : "#999999" }}/></div>
+                        <div className="like"><FaHeart onClick={()=>onClickLiked()} style={{fontSize: '200%', cursor:"pointer", color: isLiked ? "red" : "#999999" }}/></div>
                             <div className="infoBox">
                                 <h1>{play.title}</h1>
                                 <ul>
@@ -305,7 +274,6 @@ const Info = () =>{
                             </div>
                     </div>
                 </div>
-                <MessageModal open={modal===true} close={onClickClose} confirm={onClickLogin} header="로그인">로그인이 필요합니다.</MessageModal>
                 </FixData>
             ))}
         

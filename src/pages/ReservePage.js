@@ -89,6 +89,7 @@ const ReserveStyle = styled.div`
         flex-direction: column;
         @media (max-width:412px) {
             max-width: 600px;
+            /* width: 500px; */
             height: 320px;
             overflow-x:scroll ;
         }

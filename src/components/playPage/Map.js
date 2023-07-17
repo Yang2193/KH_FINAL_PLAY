@@ -4,13 +4,7 @@ import KakaoMap from "./KaKaoMap";
 import styled from "styled-components";
 
 const MapStyle = styled.div`
-    width: 1140px;
-    @media (max-width:1364px) {
-        width:818px;
-    }
-    @media (max-width:412px) {
-        width:412px;
-    }
+width: 100%;
     .mapInfo{
         width: 100%;
         @media (max-width: 768px) {
@@ -19,11 +13,9 @@ const MapStyle = styled.div`
         justify-content: center;
         flex-direction: column;
     }
-    @media (max-width: 412px) {
-        width: 412px;
-    }
     }
     .map{
+    
         @media (max-width: 768px) {
         width: 95%; 
         font-size: 1.1em;

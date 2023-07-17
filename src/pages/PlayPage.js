@@ -14,18 +14,13 @@ const Contents = styled.div`
     position: relative;
     left: 20%;
     @media (max-width: 768px) {
+        position: static;
         width: 100%;
-        position: unset;
-        overflow: hidden;
-        left: 0;
     }
     
 `
 const All = styled.div`
     width: 100%;
-    @media (max-width:412px) {
-        width: 412px;
-}   
     
 `
 

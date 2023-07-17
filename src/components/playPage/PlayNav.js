@@ -2,22 +2,12 @@ import React from "react";
 import styled from "styled-components";
 import { useState } from "react";
 const NavBar = styled.div`
-    width: 1140px;
+
     display: flex;
     align-items: center;
-    height: 50px;
+    height: 5vh;
     border-bottom: 1px solid;
     margin-bottom: 2%;
-    @media (max-width:1364px) {
-      width:818px;
-      height: 50px;
-    }
-    @media (max-width:768px) {
-      width: 100%;
-    }
-    @media (max-width:412px) {
-        margin-top: 20px;
-      }
     ul{
       width: 100%;
       list-style: none;
@@ -33,7 +23,7 @@ const NavBar = styled.div`
       font-size: 1em;
       font-weight: bold;
       cursor: pointer;
-    }
+  }
     .nav-item {
     position: relative;
     cursor: pointer;
@@ -48,7 +38,11 @@ const NavBar = styled.div`
   height: 5px;
   background-color: black;
   display: none;
+  @media (max-width:412px) {
+    bottom: -10px;
+  }
 }
+
 .nav-item.active::before {
   display: block;
 }
