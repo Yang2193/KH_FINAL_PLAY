@@ -17,6 +17,10 @@ const ListBox = styled.div`
             height: 80px;
         }
     }
+    @media (max-width: 420px) {
+       font-size : 60%;
+       top: 5%;
+  }  
 
     .bar{
         width: 100%;
@@ -52,6 +56,9 @@ const ListBox = styled.div`
         @media (max-width: 768px) {
         font-size: 0.8rem;
         }
+        @media (max-width: 420px) {
+       font-size : 0.6rem;
+  }  
     }
 
     .img-thumb{
@@ -80,10 +87,18 @@ const PlayList = ({playList}) => {
       
 
     const [currentPage, setCurrentPage] = useState(0); // 현재 페이지 번호
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {  
         setCurrentPage(0);
     }, [playList])
+
+    useEffect(() => {
+      if(playList.length > 0){
+        setLoading(false);
+      }
+    }, [playList])
+
 
     const ITEMS_PAGE = 10; // 보여질 아이템 개수
 
@@ -131,11 +146,13 @@ const PlayList = ({playList}) => {
                             </tr>
                         </thead>
                         <tbody>
-                            {playList.length > 0 ? playListMap : 
-                                <tr>
-                                <td colSpan={4}>로딩 중입니다.</td>
-                                </tr>
-                            }     
+                        {playList.length > 0 ? (
+                                                   playListMap
+                                             ) : (
+                          <tr>
+                            <td colSpan={4}>{loading ? "로딩 중입니다." : "검색 결과가 존재하지 않습니다."}</td>
+                          </tr>
+                        )}
                         </tbody>
                     </table>
             </ListBox>
