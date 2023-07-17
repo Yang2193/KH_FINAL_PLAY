@@ -4,26 +4,17 @@ import PostAPI from '../../api/PostApi';
 import React, { useState } from 'react';
 
 const SearchContainer = styled.div`
-  border: 0.2rem solid #990a2c;
-  margin: 0 auto;
-  justify-content: space-between;
-  align-items: center;
-  width: 55%;
-  margin-bottom: 60px;
-  height: 40px;
-  text-align: center;
   display: flex;
   align-items: center;
   width: 200px;
   height: 40px;
   border: 1px solid #ccc;
   border-radius: 5px;
-  bottom: 28px;
 `;
 
 const Input = styled.input`
   width: 100%;
-  padding: 0 10px;
+  padding: 0 10px;  
   font-size: 16px;
   border: none;
   outline: none;
@@ -38,7 +29,9 @@ const SearchButton = styled.button`
   color: #990A2C;
   border: none;
   border-radius: 5px;
-`
+  cursor: pointer;
+  background-color: white;
+`;
 
 const SearchBar = ({ handleSearch }) => {
   const [keyword, setKeyword] = useState('');

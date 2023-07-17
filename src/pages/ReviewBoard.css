@@ -15,11 +15,10 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 50px;
+  height: 3%;
   margin-top: 20px;
   color: red;
 }
-/* sdsdsd */
 .linkPo{
   margin-left: 640px;
 }
@@ -77,7 +76,7 @@ h2::after {
   font-size: 15px;
   width: 100px;
   position: relative;
-  bottom: 70px;
+  bottom: 40px;
   height: 40px;
 }
 
