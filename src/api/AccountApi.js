@@ -21,12 +21,6 @@ const AccountApi = {
         };
         return await axios.post(Domain + "/member/userinfo", infoData);
     },
-
-    // Context에서 회원조회
-    userInfo: async() => {
-        Functions.setAuthorizationHeader();
-        return await axios.get(Domain + "/user");
-    },
     
     // 회원가입
     memberReg : async(userId, userPw, userNickname, userName, userEmail, userPhone) => {

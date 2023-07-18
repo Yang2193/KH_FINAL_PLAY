@@ -2,13 +2,10 @@ import React, { useState, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import AccountApi from "../../api/AccountApi";
 import '../../styles/Account.css';
-import { AccountInfoContext } from "../../context/AccountInfo";
 import MessageModal from "../../utils/MessageModal";
 
   const Login = () => {
     const navigate = useNavigate();
-    const context = useContext(AccountInfoContext);
-    const {setUserId, setUserPw, setUserName, setUserNickname, setUserPhone, setUserEmail, isLogin, setIsLogin} = context;
 
     // 키보드 입력 받기
     const [loginId, setLoginId] = useState(""); // 로그인 아이디
@@ -73,25 +70,19 @@ import MessageModal from "../../utils/MessageModal";
         if(response.status === 200) {
           localStorage.setItem("accessToken", response.data.accessToken);
           localStorage.setItem("refreshToken", response.data.refreshToken);
-          localStorage.setItem("isLogin", "TRUE");
           localStorage.setItem("userId", loginId);
           localStorage.setItem("userPw", loginPw);
-          console.log("토큰 발급 완료")
-          console.log(response);
+          localStorage.setItem("isLogin", "TRUE");
+          localStorage.setItem("loginValue", "DEFAULT");
           try {
-            const response2 = await AccountApi.userInfo();
-            const userData = JSON.stringify(response2, null, 2);
-            const userDataObject = JSON.parse(userData);
-            console.log(userDataObject.data[0].userId);
-            setUserId(userDataObject.data[0].userId);
-            setUserPw(loginPw);
-            setUserNickname(userDataObject.data[0].userNickname);
-            setUserName(userDataObject.data[0].userName);
-            setUserPhone(userDataObject.data[0].userPhone);
-            setUserEmail(userDataObject.data[0].userEmail);
+              const userInfo = await AccountApi.getUserInfo(localStorage.getItem("userId"));
+              const userInfoData = JSON.stringify(userInfo.data);
+              localStorage.setItem("userInfo", userInfoData);
+              console.log(userInfo.data);
           } catch(e) {
-            console.log(e);
+          console.log(e);
           }
+          console.log("토큰 발급 완료")
           navigate("/");
         }
       } catch(e) {

@@ -2,7 +2,6 @@ import React, { useEffect, useRef, useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import MessageModal from "../utils/MessageModal";
 import styled, {css, keyframes} from "styled-components";
-import { AccountInfoContext } from "../context/AccountInfo";
 
 
 
@@ -100,7 +99,6 @@ const slideIn = keyframes`
 
 
 const SideMenu = ({handleIsOpen, isOpen}) => {
-    const {resetUser} = useContext(AccountInfoContext);
     const ref = useRef(null);
     const navigate = useNavigate();
     const userId = window.localStorage.getItem("userId");
@@ -154,7 +152,6 @@ const SideMenu = ({handleIsOpen, isOpen}) => {
 
     const logout = () =>{
         localStorage.clear();
-        resetUser();
         navigate("/");
         handleIsOpen(!isOpen);
         setModalOpen("logout");

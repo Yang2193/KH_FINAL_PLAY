@@ -41,12 +41,21 @@ const KakaoLogin = () => {
         const getAccessToken = async () => {
         try {
             const response = await AccountApi.kakaoAccessToken(code);
-            console.log(response);
             localStorage.setItem("userId", response.data.kakaoProfile.id);
             localStorage.setItem("accessToken", response.data.tokenDto.accessToken);
             localStorage.setItem("refreshToken", response.data.tokenDto.refreshToken);
+            localStorage.setItem("loginValue", "KAKAO");
             localStorage.setItem("isLogin", "TRUE");
-            navigate('/');
+            try {
+              const userInfo = await AccountApi.getUserInfo(localStorage.getItem("userId"));
+              const userInfoData = JSON.stringify(userInfo.data);
+              localStorage.setItem("userInfo", userInfoData);
+              console.log(userInfo.data);
+            } catch(e) {
+            console.log(e);
+            }
+            console.log("토큰 발급 완료")
+            navigate("/");
         } catch (error) {
             console.error('액세스 토큰 요청 실패:', error);
         }

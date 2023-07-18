@@ -81,7 +81,7 @@ const Button = styled.button`
   width: 36%;
   margin-bottom: 25px;
 `;
-const Span = styled.div`
+const Span = styled.td`
   color: black;
   font-size: 20px;
   margin-bottom: 30px;
@@ -90,19 +90,18 @@ const Span = styled.div`
 
 `;
 
-const ErrorMessage = styled.p`
+const ErrorMessage = styled.td`
   color: red;
   margin-top: 5px;
 `;
 
 const MyProfileEditDetail = () => {
   const navigate = useNavigate();
-  const { userId, userPw, userName } = useContext(AccountInfoContext);
-  const [userInfo, setUserInfo] = useState([]);
+  
 
   // 변경할 프로필 변수
-  const [password, setPassword] = useState("");
-  const [conPassword, setConPassword] = useState("");
+  const [password, setPassword] = useState(localStorage.getItem("userPw"));
+  const [conPassword, setConPassword] = useState(localStorage.getItem("userPw"));
   const [nickname, setNickname] = useState("");
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
@@ -122,25 +121,18 @@ const MyProfileEditDetail = () => {
   const [isEmail, setIsEmail] = useState(false);
   const [isAll, setIsAll] = useState(false);
 
+  const userInfoString = localStorage.getItem("userInfo");
+  const userInfo = JSON.parse(userInfoString);
+
+  
   useEffect(() => {
-    const fetchUserInfo = async () => {
-      try {
-        const response = await AccountApi.getUserInfo(userId);
-        if (response) {
-          setUserInfo([response.data]);
-          setNickname(response.data.userNickname);
-          setPhone(response.data.userPhone);
-          setEmail(response.data.userEmail);
-          setPassword(userPw);
-        } else {
-          console.log("데이터가 없음");
-        }
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    fetchUserInfo();
-  }, []);
+    if(userInfo)
+      setNickname(userInfo.userNickname);
+      setPhone(userInfo.userPhone);
+      setEmail(userInfo.userEmail);
+      setPassword(password);
+      setConPassword(conPassword);
+  }, [userInfo]);
 
   const onChagePw = (e) => {
     const pwRegex = /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,20}$/;
@@ -158,14 +150,17 @@ const MyProfileEditDetail = () => {
 
   const onChageConPw = (e) => {
     setConPassword(e.target.value);
-    if (conPassword !== password) {
-      setConPasswordMsg("비밀번호가 일치하지 않습니다.");
-      setIsConPassword(false);
-    } else {
+  };
+
+  useEffect(() => {
+    if (password === conPassword) {
       setConPasswordMsg("");
       setIsConPassword(true);
+    } else {
+      setConPasswordMsg("비밀번호가 일치하지 않습니다.");
+      setIsConPassword(false);
     }
-  };
+  }, [password, conPassword]);
 
   const onChageNickname = (e) => {
     const nicknameRegex = /^(?=.*[a-zA-Z0-9가-힣])[a-zA-Z0-9가-힣]{2,10}$/;
@@ -208,10 +203,10 @@ const MyProfileEditDetail = () => {
   const updateInfo = async () => {
     try {
       const response = await AccountApi.updateUserInfo(
-        userId,
+        userInfo.userId,
         password,
         nickname,
-        userName,
+        userInfo.userName,
         phone,
         email
       );
@@ -227,19 +222,19 @@ const MyProfileEditDetail = () => {
       <Header />
       <Container>
         <FormContainer>
-          {userInfo.length > 0 ? (
+          {userInfo ? (
             <>
               <Table>
                 <Span>개인정보 변경</Span>
                 <tbody>
                   <tr>
                     <th>아이디</th>
-                    <td>{userId}</td>
+                    <td>{userInfo.userId}</td>
                   </tr>
                   <tr>
                     <th>비밀번호</th>
                     <td>
-                      <Input type="password" onChange={onChagePw} />
+                      <Input type="password" value={password} onChange={onChagePw} />
                       {passwordMsg && <ErrorMessage>{passwordMsg}</ErrorMessage>}
                     </td>
                   </tr>
@@ -259,7 +254,7 @@ const MyProfileEditDetail = () => {
                   </tr>
                   <tr>
                     <th>이름</th>
-                    <td>{userName}</td>
+                    <td>{userInfo.userName}</td>
                   </tr>
                   <tr>
                     <th>전화번호</th>
@@ -289,39 +284,4 @@ const MyProfileEditDetail = () => {
   );
 };
 
-const PwCheck = () => {
-  const { userPw, setIsPwd } = useContext(AccountInfoContext);
-  const [inputPw, setInputPw] = useState("");
-  const [checkPwMsg, setCheckPwMsg] = useState("");
-
-  const onChageCheckPw = (e) => {
-    setInputPw(e.target.value);
-  };
-
-  const checkPw = () => {
-    if (inputPw === userPw) {
-      setIsPwd(true);
-      setCheckPwMsg("");
-    } else {
-      setCheckPwMsg("메세지가 일치하지 않습니다.");
-      setIsPwd(false);
-    }
-  };
-
-  return (
-    <FormContainer>
-      <FieldWrapper>
-        <Input
-          type="password"
-          value={inputPw}
-          onChange={onChageCheckPw}
-          placeholder="패스워드"
-        />
-        <Button onClick={checkPw}>확인</Button>
-      </FieldWrapper>
-      <ErrorMessage>{checkPwMsg}</ErrorMessage>
-    </FormContainer>
-  );
-};
-
-export { MyProfileEditDetail, PwCheck };
+export default MyProfileEditDetail;
