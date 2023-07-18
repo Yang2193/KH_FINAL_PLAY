@@ -3,7 +3,9 @@ import { MdSearch } from 'react-icons/md';
 import PostAPI from '../../api/PostApi';
 import React, { useState } from 'react';
 
-const SearchContainer = styled.div`
+const SearchContainer = styled.div` 
+  position: relative;
+  top: 40px;
   display: flex;
   align-items: center;
   width: 200px;

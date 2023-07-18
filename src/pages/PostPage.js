@@ -84,7 +84,8 @@ const Post = () => {
   return (
     <>
       <Header />
-      <div className="ReviewBoardWrapper">
+      
+      <div className="ReviewBoardWrapper" >
         <h2>리뷰 게시판</h2>
         <PopularPosts popularPosts={sortedPosts} />
         <table className="ReviewTable">
@@ -123,19 +124,13 @@ const Post = () => {
 
         
         <SearchBar className="Search" handleSearch={handleSearch} />
+        <div className="ButtonContainer">
           <Link to="/postUpload" className="linkPo">
             <button className="insert1">글쓰기</button>
           </Link>
-            {pageCount > 1 && <PageNation pageCount={pageCount} onPageChange={handlePageClick} />}
-      
-       
-       
+        </div>
+            {pageCount > 1 && <PageNation pageCount={pageCount} onPageChange={handlePageClick} />}   
           </div>
-
- 
-   
-
-     
       <Footer />
     </>
   );

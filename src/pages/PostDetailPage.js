@@ -232,6 +232,7 @@ const PostDetailPage = () => {
   const [isCommentAuthor, setIsCommentAuthor] = useState(false);
   const [showRtMenu, setShowRtMenu] = useState(false);
 
+
   useEffect(() => {
     fetchPost();
   }, []);
@@ -247,7 +248,7 @@ const PostDetailPage = () => {
       console.log(error);
     }
   };
-
+  const imageUrls = post ? post.postImageUrl.split(',') : [];
   const navigate = useNavigate();
 
   const handleDeletePost = async () => {
@@ -386,8 +387,10 @@ const PostDetailPage = () => {
             </PostInfo>
           </PostHeader>
           <PostImage>
-            <img src={post.postImageUrl} alt="" />
-          </PostImage>
+      {imageUrls.map((imageUrl, index) => (
+        <img key={index} src={imageUrl} alt={``} />
+      ))}
+    </PostImage>
           <PostContent className="Explaination2" dangerouslySetInnerHTML={{ __html: post.postContent }}></PostContent>
           <PostD isAuthor={post.memberInfo && post.memberInfo.userId === localStorage.getItem('userId')}>
             <button onClick={handleDeletePost}>게시물 삭제</button>

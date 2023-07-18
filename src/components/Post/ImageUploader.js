@@ -20,6 +20,7 @@ const UploadImg = styled.div`
 
   img {
     width: 50%;
+    margin: 5px;
   }
 `;
 
@@ -40,25 +41,29 @@ const DropzoneContainer = styled.div`
 `;
 
 const ImageUploader = ({ onChange }) => {
-  const [file, setFile] = useState(null);
-  const [url, setUrl] = useState('');
+  const [files, setFiles] = useState([]);
+  const [urls, setUrls] = useState([]);
 
-  const handleUpload = (file) => {
+  const handleUpload = (fileList) => {
     const storageRef = storage.ref();
-    const fileRef = storageRef.child(file.name);
-    fileRef.put(file).then(() => {
-      console.log('File uploaded successfully!');
-      fileRef.getDownloadURL().then((url) => {
-        console.log('저장경로 확인: ' + url);
-        setUrl(url);
-        onChange(url);
-      });
+
+    // Iterate through the selected files and upload them
+    const uploadPromises = fileList.map((file) => {
+      const fileRef = storageRef.child(file.name);
+      return fileRef.put(file).then(() => fileRef.getDownloadURL());
+    });
+
+    // Wait for all the uploads to finish
+    Promise.all(uploadPromises).then((downloadURLs) => {
+      console.log('All files uploaded successfully!');
+      setUrls(downloadURLs);
+      onChange(downloadURLs);
     });
   };
 
   const onDrop = (acceptedFiles) => {
-    setFile(acceptedFiles[0]);
-    handleUpload(acceptedFiles[0]);
+    setFiles([...files, ...acceptedFiles]);
+    handleUpload([...files, ...acceptedFiles]);
   };
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
@@ -73,9 +78,11 @@ const ImageUploader = ({ onChange }) => {
           <p>파일을 드래그하거나 클릭하여 선택하세요.</p>
         )}
       </DropzoneContainer>
-      {/* <UploadButton onClick={() => handleUpload(file)}>Upload</UploadButton> */}
+      {/* <UploadButton onClick={() => handleUpload(files)}>Upload</UploadButton> */}
       <UploadImg>
-        {url && <img src={url} alt="uploaded" />}
+        {urls.map((url, index) => (
+          <img key={index} src={url} alt={`uploaded-${index}`} />
+        ))}
       </UploadImg>
     </div>
   );
