@@ -4,14 +4,38 @@ import { Button } from "../../utils/GlobalStyle";
 import PlayInfoApi from "../../api/PlayInfoApi";
 import { useNavigate } from "react-router-dom";
 import { FaHeart } from 'react-icons/fa';
-const FixData = styled.div`
-    width: 100%;
-    height: 80vh;
-    @media (max-width:768px) {
-        width:100%;
-        height: 100%;
+import MessageModal from "../../utils/MessageModal";
+const All = styled.div`
+@media (max-width:768px) {
+        width: 100%;
+        height: 1050px;
     }
-    h1{        
+    @media (max-width:412px) {
+        height: 800px;
+    }
+    @media (max-width:360px) {
+        height: 720px;
+    }
+`
+const FixData = styled.div`
+    width: 1140px;
+    height: 750px;
+    @media (max-width:768px) {
+        width: 100%;
+        height: 700px;
+    }
+    @media (max-width:1364px) {
+        width:818px;
+        height: 752px;
+    }
+    @media (max-width:412px) {
+        height: 800px;
+    }
+    @media (max-width:360px) {
+        height: 720px;
+        width:360px;
+    }
+    h1{
         font-size: 1.5em;
         margin: 0;
         padding-bottom: 2%;
@@ -19,73 +43,103 @@ const FixData = styled.div`
         border-bottom: 3px solid;
     }
     .content{
+        margin-top: 0;
         display: flex;
         align-items: center;
         justify-content: center;
-        width: 100%;
-        height: 100%;
+        width: 1140px;
+        height: 750px;
+        @media (max-width:1364px) {
+        width:818px;
+        height: 752px;
+    }
         @media (max-width:768px) {
-            width:100%;
-            height: 100%;
+            width:768px;
+            height: 1000px;
             flex-direction: column;
+    }
+    @media (max-width:412px) {
+            width:412px;
+            height: 800px;
+    }
+    @media (max-width:360px) {
+            width:360px;
+            height: 720px;
     }
         img {
             border-radius: 15px;
-            width: 35%;
-            height: 65%;
-            margin-right:5%;
+            width: 400px;
+            height: 480px;
+            margin-right:50px;
             @media (max-width:768px) {
                 margin: 0;
-                width: 80%;
-                height: 30%;
-                margin-top: 5%;
-            }
-        }
-
-        .textBox{
-            width: 60%;
-            height: 65%;
-            @media (max-width:768px) {
+                z-index: -1;
+                border-radius: 0px;
                 width: 100%;
-                height: 100%;
+                height: 600px;
+            }
+            @media (max-width:412px) {
+                height: 375px;
+        }
+            @media (max-width:360px) {
+                bottom: 360px;
+                height: 320px;
+        }
+    }
+        .textBox{
+            width: 700px;
+            height: 480px;
+            @media (max-width:768px) {
+                font-size: 0.9em;
+                border-radius: 15px;
+                width: 100%;
                 display: flex;
                 justify-content: center;
                 align-items: center;
-                margin-top: 5%;
                 flex-direction: column;
-
+                background-color: white;
+                z-index: 0;
+            }
+            @media (max-width:360px) {
+                font-size: 0.8em;
             }
         }
         .like{
             text-align: end;
             @media (max-width:768px) {
+                margin-top:10px;
                 width: 80%;
+                height: 25px;
+            }
+            @media (max-width:412px) {
+                height: 15px;
             }
         }
         .infoBox{
             position: relative;
             bottom: 40px;
             z-index: -1;
-            /* border: 1px solid; */
             width: 100%;
             height: 100%;
             font-size: 1em;
             @media (max-width:768px) {
+                margin-top: 10px;
                 width: 80%;
-                height: 80%;
+                height: 100%;
                 font-size: 1em;
                 bottom:40px;
             }
             @media (max-width:412px) {
+                z-index: -2;
+                margin-top: 20px;
                 width: 90%;
                 height: 90%;
-     
             }
             ul{
                 list-style: none;
                 padding: 0;
                 margin: 0;
-           
+
             }
             li{
                 display: flex;
@@ -106,37 +160,43 @@ const FixData = styled.div`
         justify-content:center ;
         align-items:center;
         @media (max-width:768px) {
-            position: fixed;
-            bottom: 0;
             width: 100%;
             height: 50px;
-            z-index: 2;
-            }
+        }
+        @media (max-width:412px) {
+            position: absolute;
+            bottom: 35px;
+        }
+        @media (max-width:360px) {
+            bottom: -40px;
+        }
         button{
             width: 100%;
             height: 100%;
             font-size: 1.2em;
             border: none;
-            cursor: pointer;    
+            cursor: pointer;
             @media (max-width:768px) {
                 border-radius: 0%;
                 width: 100%;
-                
-            }     
+            }
         }
        button:hover{
         background-color:#790A2C ;
        }
     }
-   
+
 `
 
 const Info = () =>{
-
+    const [modal,setModal] = useState(false);
     const [playInfo,setPlayInfo] = useState(null);
     const playId = localStorage.getItem("playId"); // 연극 아이디
     const userId = localStorage.getItem("userId"); // 유저 아이디
     const navigate = useNavigate();
+    const onClickClose = () => {
+        setModal(false);
+        }
     // 연극정보 불러오기
     useEffect(()=>{
         const play = async()=>{
@@ -146,13 +206,13 @@ const Info = () =>{
         play();
     },[])
 
-// 찜기능 
-    const [isLiked, setIsLiked] = useState(false); // 최종 찜 상태 
+// 찜기능
+    const [isLiked, setIsLiked] = useState(false); // 최종 찜 상태
     const [likedList,setLikedList] = useState([]); // 찜 리스트 배열
     useEffect(()=>{ // 로그인한 회원id를 기준으로 찜 연극 리스트를 db에서 불러와 확인하고 배열에 삽입/
         const liked = async() => {
             const rsp = await PlayInfoApi.selectPlayLike(userId);
-            setLikedList(rsp.data);   
+            setLikedList(rsp.data);
         }
         liked();
     },[userId]);
@@ -165,7 +225,7 @@ const Info = () =>{
         }
     }, [likedList,playId]);
 
-    const addLike = async () => { 
+    const addLike = async () => {
         const rsp = await PlayInfoApi.addPlayLike(playId, userId);
         if (rsp.data !== null) {
             console.log("찜 등록 성공");
@@ -187,9 +247,9 @@ const Info = () =>{
             }
         };
     const onClickLiked = () => {
-        if (userId==="") {
-            alert("로그인이 필요합니다.");
-            navigate("/login")
+        if (userId===null) {
+            setModal(true);
+            return;
         }else{
             if (!isLiked) {
                 addLike();
@@ -197,29 +257,33 @@ const Info = () =>{
                 deleteLike();
             }
         }
-    }; 
+    };
+    const onClickLogin = () => {
+        setModal(false);
+        navigate("/login");
+   }
 
     // 예매하기
     const reserve = (playPlan,price,title,theaterId)=> {
-        if (userId==="") {
-            alert("로그인이 필요합니다.");
-            navigate("/login")
+        if (userId===null) {
+            setModal(true);
+            return;
         } else {
             localStorage.setItem("time",playPlan)
             localStorage.setItem("price",price)
-            localStorage.setItem("titleInfo",title) 
-            localStorage.setItem("theaterId",theaterId) 
+            localStorage.setItem("titleInfo",title)
+            localStorage.setItem("theaterId",theaterId)
             navigate("/reserve")
         }
     }
     return(
-        <>
+        <All>
           {playInfo && playInfo.map(play =>(
             <FixData key = {play.playId}>
                     <div className="content">
                         <img src={play.playPoster} alt="" />
                         <div className="textBox">
-                        <div className="like"><FaHeart onClick={()=>onClickLiked()} style={{fontSize: '200%', cursor:"pointer", color: isLiked ? "red" : "#999999" }}/></div>
+                            <div className="like"><FaHeart onClick={()=>onClickLiked()} style={{fontSize: '200%', cursor:"pointer", color: isLiked ? "red" : "#999999" }}/></div>
                             <div className="infoBox">
                                 <h1>{play.title}</h1>
                                 <ul>
@@ -259,7 +323,7 @@ const Info = () =>{
                                             {play.playPlan}
                                         </div>
                                     </li>
-                                    {play.playCast==="" ? null : 
+                                    {play.playCast==="" ? null :
                                         <li>
                                             <span> 배우진 </span>
                                             <div>
@@ -274,11 +338,12 @@ const Info = () =>{
                             </div>
                     </div>
                 </div>
+                <MessageModal open={modal===true} close={onClickClose} confirm={onClickLogin} header="로그인">로그인이 필요합니다.</MessageModal>
                 </FixData>
             ))}
-        
-        </>
-          
+
+        </All>
+
     )
 }
 export default Info;

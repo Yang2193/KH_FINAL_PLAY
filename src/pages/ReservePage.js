@@ -12,7 +12,6 @@ import ReserveApi from "../api/ReserveApi";
 
 const ReserveStyle = styled.div`
     width: 100%;
-
     @media (max-width:768px) {
         display: flex;
         align-items: center;
@@ -20,22 +19,32 @@ const ReserveStyle = styled.div`
         }
     @media (max-width:412px) {
         max-width: 100%;
-        overflow-y: hidden;
+        height: 915px;
         }
+
     .conteiner{
         margin-top: 2%;
         width: 50%;
-        height: 100vh;
+        height: 1000px;
         display: flex;
         align-items: center;
         flex-direction: column;
         position: relative;
         left: 25%;
+        @media (max-width:2560px) {
+            height: 1700px;
+        }
+        @media (max-width:1920px) {
+            height: 1000px;
+        }
         @media (max-width:768px) {
             margin: 0;
             width: 80%;
             left: 0;
-            height: 76vh;
+            height: 700px;
+        }
+        @media (max-width:412px) {
+            width: 90%;
         }
     }
     .seatInfo{
@@ -45,6 +54,10 @@ const ReserveStyle = styled.div`
         @media (max-width:412px) {
             height: 76vh;
         }
+        @media (max-width:360px) {
+            height: 100%;
+        }
+
     }
     .reserved{
         background-color: #eee;
@@ -66,7 +79,7 @@ const ReserveStyle = styled.div`
             height: 50%;
         }
         @media (max-width:412px) {
-                width: 600px;
+                width:735px;
             }
     }
     .box{
@@ -78,8 +91,9 @@ const ReserveStyle = styled.div`
             margin-bottom: 10%;
             }
             @media (max-width:412px) {
-                height: 400px;
+                overflow: scroll;
                 width: 100%;
+                height: 500px;
             }
     }
     .seat{
@@ -88,12 +102,9 @@ const ReserveStyle = styled.div`
         height: 50%;
         flex-direction: column;
         @media (max-width:412px) {
-            max-width: 600px;
-            /* width: 500px; */
+            width: 700px;
             height: 320px;
-            overflow-x:scroll ;
         }
-
     }
     .seat-row{
         display: flex;
@@ -107,6 +118,10 @@ const ReserveStyle = styled.div`
         @media (max-width:768px) {
             width: 13%;
         }
+        @media (max-width:412px) {
+                width:5%;
+                font-size: 1em;
+            }
         }
         span{
             border: 1px solid;
@@ -124,9 +139,10 @@ const ReserveStyle = styled.div`
             }
             @media (max-width:412px) {
                 font-size: 1em;
-                /* width: 2;
-                height:40px; */
+                width: 30px;
+                height: 30px;
             }
+    
         }
         .empty{
             border: none;
@@ -143,6 +159,12 @@ const ReserveStyle = styled.div`
         display: flex;
         flex-direction: column;
         h3{
+            @media (max-width:2560px) {
+                font-size: 2em;
+        }
+        @media (max-width:1920px) {
+            font-size: 1em;
+        }
             @media (max-width:412px) {
                 font-size: 1em;
                 width: 100%;
@@ -165,16 +187,22 @@ const ReserveStyle = styled.div`
             justify-content: center;
             align-items: center;
             cursor: pointer;    
+            @media (max-width:2560px) {
+            font-size: 2em;
+        }
+        @media (max-width:1920px) {
+            font-size: 1em;
+        }
             @media (max-width:768px) {
                 width: 20%;
                 font-size: 1em;
-                height: 40%;
+                height: 100%;
             }
             @media (max-width:412px) {
                 margin-top: 0;
                 width: 20%;
                 font-size: 1em;
-                height: 70%;    
+                height: 60%;    
             }
         }
         .selected{
@@ -186,15 +214,24 @@ const ReserveStyle = styled.div`
     .cal{
         width: 100%;
         height:45%;
+        @media (max-width:412px) {
+            height: 40%;
+        }
     }
     .btn{
         margin-top: 10%;
             width: 20%;
             height: 5%;
             border: none;
-            font-size: 1em;
             border-radius: 15px;
             cursor: pointer;
+            @media (max-width:2560px) {
+                font-size: 2em;
+            }
+            
+            @media (max-width:1920px) {
+                font-size: 1em;
+            }
             @media (max-width:412px) {
                 width: 50%;
             }
@@ -212,67 +249,95 @@ const ReserveStyle = styled.div`
     }
     }
     .react-calendar {
-            width: 100%;
-            height: 100%;
-            max-height: 100%;
-            max-width: 100%;
-            background-color: #fff;
-            color: #222;
-            border-radius: 8px;
-            line-height: 1.125em;
-
-            }
-            .react-calendar__navigation button {
-            color: #990A2C;
-            
+        width: 100%;
+        height: 100%;
+        max-height: 100%;
+        max-width: 100%;
+        background-color: #fff;
+        color: #222;
+        border-radius: 8px;
+        line-height: 1.125em;
+    }
+    .react-calendar__navigation button {
+        color: #990A2C;
+        background: none;
+        margin-top: 8px;
+        @media (max-width:2560px) {
+            font-size: 2em;
+            min-width: 50px;
+            height: 50px;
+        }
+        @media (max-width:1920px) {
             min-width: 44px;
-            background: none;
             font-size: 1.5em;
-            margin-top: 8px;
             font-weight:bold;
-            @media (max-width:768px) {
+        }
+        @media (max-width:768px) {
             font-size: 1em;
             min-width: 30px;
         }
-            }
-            .react-calendar__navigation button:enabled:hover,
-            .react-calendar__navigation button:enabled:focus {
-            background-color: #eee;
-            }
-            .react-calendar__navigation button[disabled] {
-            background-color: #eee;
-            }
-            abbr[title] {
-            text-decoration: none;
-            }
-            .react-calendar__tile{
-                background-color: #fff;
-                font-size: 1em;
-                height: 55px;
-                @media (max-width:768px) {
-                font-size: 0.8em;
-                height: 30px;
-                max-width: 100%;
+        @media (max-width:412px) {
+            height: 30px;
+    }
+    }
+    .react-calendar__navigation button:enabled:hover,
+    .react-calendar__navigation button:enabled:focus {
+        background-color: #eee;
+    }
+    .react-calendar__navigation button[disabled] {
+        background-color: #eee;
+    }
+    abbr[title] {
+        text-decoration: none;
+    }
+    .react-calendar__month-view__weekdays{
+        @media (max-width:2560px) {
+            margin-top: 30px;
+            font-size: 1.5em;
+            height: 50px;
         }
-            }
-            .react-calendar__tile:enabled:hover,
-            .react-calendar__tile:enabled:focus {
-            background: #990A2C;
-            color: #fff;
-            border-radius: 5px;
-            }
-            
-            .react-calendar__tile--now {
+        @media (max-width:1920px) {
+            margin-top: 0;
+            font-size: 1em;
+            height: 100%;
+        }
+        @media (max-width:412px) {
+            font-size: 0.8em;
+    }
+    }
+    .react-calendar__tile{
+        background-color: #fff;
+        @media (max-width:2560px) {
+            font-size: 2em;
+            height: 100px;
+        }
+        @media (max-width:1920px) {
+            font-size: 1em;
+            height: 50px;
+        }
+        @media (max-width:768px) {
+            font-size: 0.8em;
+            height: 30px;
+            max-width: 100%;
+        }
+    }
+    .react-calendar__tile:enabled:hover,
+    .react-calendar__tile:enabled:focus {
+        background: #990A2C;
+        color: #fff;
+        border-radius: 5px;
+    }
+        .react-calendar__tile--now {
             background: white;
             border-radius: 6px;
             color: black;
-            }
-            .react-calendar__tile--active {
+        }
+        .react-calendar__tile--active {
             background: #990A2C;
             border-radius: 5px;
             font-weight: bold;
             color: white;
-            }
+        }
             .react-calendar__tile--active:enabled:hover,
             .react-calendar__tile--active:enabled:focus {
             background: #990A2C;
@@ -580,7 +645,7 @@ const ReservePage = () =>{
         <Button className="btn" onClick={() => payReady()}>결제 하기</Button>
         </div>
         )}
-        <Footer/>
+       <Footer/>
         </ReserveStyle>
         )
 }

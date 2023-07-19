@@ -7,33 +7,56 @@ import Footer from "../../Footer";
 
 const PayInfo = styled.div`
     width: 100%;
-    height: 76vh;
     display: flex;
     align-items: center;
     flex-direction: column;
+    justify-content: center;
+    @media (max-width:2560px) {
+        height: 1080px;
+        }
+    @media (max-width:1920px) {
+        height: 720px;
+        }
     div{
-        /* border: 1px solid; */
         display: flex;
         justify-content: center;
         flex-direction: column;
-        padding-left: 1%;
+        padding: 0 1%;
         background-color: #eee;
         border-radius: 15px;
         margin-bottom: 5%;
-        width: 40%;
-        height: 60%;
+        width: 50%;
+        @media (max-width:2560px) {
+            height: 50%;
+        }
+        @media (max-width:1920px) {
+            height: 100%;
+        }
         @media (max-width:768px) {
             width: 80%;
             padding-left: 2%;
             margin-bottom: 10%;
-
-            }
+        }
+        @media (max-width:412px) {
+            width: 90%;
+            height: 60%;
+        }
         p{
+            margin: 0;
+            margin-bottom: 10px;
             font-size: 1.3em;
             @media (max-width:768px) {
                 font-size: 1em;
-
             }
+            @media (max-width:412px) {
+                text-align: center;
+            }
+        }
+        .info{
+            padding: 0 2%;
+            width: 100%;
+            font-size: 1.1em;
+            color: #990A2C;  
         }
       
     }
@@ -114,12 +137,18 @@ const PayReady = () => {
         <PayInfo>
             <h1> 결제 정보 </h1>
             <div>
-                <p>상품 정보 : {title}</p>
-                <p>날짜 정보 : {dateInfo}</p>
-                <p>시간 정보 : {timeInfo}</p>
-                <p>좌석 정보 : {seatInfo}</p>
-                <p>수량 : {tiketCount}매 </p>
-                <p>가격 정보 : {priceInfo}원</p>
+                <p>상품 정보</p>
+                <p className="info">{title}</p>
+                <p>날짜 정보</p>
+                <p className="info">{dateInfo}</p>
+                <p>시간 정보</p>
+                <p className="info">{timeInfo}</p>
+                <p>좌석 정보</p>
+                <p className="info">{seatInfo}</p>
+                <p>수량</p>
+                <p className="info">{tiketCount}매 </p>
+                <p>가격 정보</p>
+                <p className="info">{priceInfo}원</p>
             </div>
             <a href={payUrl}>결제하기</a>
         </PayInfo>
