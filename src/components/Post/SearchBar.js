@@ -5,7 +5,7 @@ import React, { useState } from 'react';
 
 const SearchContainer = styled.div` 
   position: relative;
-  top: 40px;
+  top: 0px;
   display: flex;
   align-items: center;
   width: 200px;

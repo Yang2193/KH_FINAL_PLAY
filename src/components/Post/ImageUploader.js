@@ -69,7 +69,7 @@ const ImageUploader = ({ onChange }) => {
   const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
 
   return (
-    <div>
+        <div>
       <DropzoneContainer {...getRootProps()} isDragActive={isDragActive}>
         <input {...getInputProps()} />
         {isDragActive ? (
