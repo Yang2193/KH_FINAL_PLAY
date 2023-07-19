@@ -15,7 +15,7 @@ const Container = styled.div`
 
 const Heading = styled.h2`
   font-size: 24px;
-  margin-bottom: 20px;
+  margin-bottom: 50px;
 `;
 
 const Label = styled.label`
@@ -65,13 +65,13 @@ const PostUpload = () => {
 
   const handleUpload = async () => {
     try {
-      // 이미지 URL 배열을 하나의 스트링으로 합칩니다. 각 이미지 URL을 쉼표로 구분합니다.
+
       const postImageStr = postData.postImages.join(',');
   
       const response = await PostAPI.addPost(
         postData.postTitle,
         postContent,
-        postImageStr, // 이미지 URL 스트링을 전달합니다.
+        postImageStr,
         '1',
         localStorage.getItem('userId')
       );
@@ -111,7 +111,6 @@ const PostUpload = () => {
         </div>
         <div>
           <Label>
-            내용 입력
             <MyEditor value={postContent} onChange={setPostContent} />
           </Label>
         </div>
