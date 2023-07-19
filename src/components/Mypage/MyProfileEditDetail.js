@@ -208,7 +208,7 @@ const MyProfileEditDetail = () => {
         phone,
         email
       );
-      navigate(-2);
+      navigate("/mypage");
       console.log("회원정보 수정", response);
     } catch (e) {
       console.log(e);
@@ -220,7 +220,7 @@ const MyProfileEditDetail = () => {
       const response = await AccountApi.updateUserInfo2(userInfo.userId, nickname);
       if(response){
         console.log("회원정보 수정", response);
-        navigate(-2);
+        navigate("/mypage");
       }
     } catch (e) {
       console.log(e);

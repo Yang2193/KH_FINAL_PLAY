@@ -126,7 +126,7 @@ import MessageModal from "../../utils/MessageModal";
             </div>
           </div>
         </div>
-        {modalOpen && (<MessageModal open={modalOpen} close={onClickClose} type="modalType" header="로그인 오류">아이디 및 패스워드가 틀렸습니다.</MessageModal>)}
+        {modalOpen && (<MessageModal open={modalOpen} confirm={onClickClose} close={onClickClose} type="modalType" header="로그인 오류">아이디 및 패스워드가 틀렸습니다.</MessageModal>)}
       </div>
     );
   };

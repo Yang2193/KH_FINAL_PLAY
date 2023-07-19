@@ -78,7 +78,7 @@ const MyReview = () => {
             <tr className="ReviewItem" key={post.id}>
               <td className="ReviewTitle">
                 <Link
-                  to={`/post/select/${post.id}`}
+                  to={`/post/${post.id}`}
                   className="ReviewLink"
                   onClick={() => increaseViews(post.id)}
                 >

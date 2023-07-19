@@ -6,7 +6,6 @@ import { useEffect } from "react";
 const MyComment = () => {
     const userId = localStorage.getItem('userId');
     const [commentList, setCommentList] = useState([]);
-    const [postTitle, setPostTitle] = useState([]);
 
     useEffect(() => {
       const myCommentList = async() => {
@@ -14,6 +13,7 @@ const MyComment = () => {
             const response = await AccountApi.getMemberComment(userId);
             if(response && response.status === 200) {
                 setCommentList(response.data);
+                console.log(response);
             }
         } catch (e) {
             console.log(e);
@@ -32,7 +32,7 @@ const MyComment = () => {
           <tbody>
             {commentList.map((cl) => (
               <tr className="commentItem" key={cl.id}>
-                <td className="postId">{cl.postId}</td>
+                <td className="postId">{cl.postTitle}</td>
                 <td className="">{cl.commentContent}</td>
                 <td className="period">{cl.commentDate}</td>
               </tr>
