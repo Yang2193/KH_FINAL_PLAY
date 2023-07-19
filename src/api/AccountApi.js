@@ -152,6 +152,13 @@ const AccountApi = {
         return await axios.post(Domain + `/auth/kakao/callback`, kakaoAccessTokencmd)
     },
 
+    kakaologout: async(token) => {
+        const kakaoAccessTokencmd = {
+            token: token
+        };
+        return await axios.post(Domain + `/auth/kakao/logout`, kakaoAccessTokencmd);
+    }
+
 }
 
 export default AccountApi;

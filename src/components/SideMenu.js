@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import MessageModal from "../utils/MessageModal";
 import styled, {css, keyframes} from "styled-components";
+import AccountApi from "../api/AccountApi";
 
 
 
@@ -150,11 +151,19 @@ const SideMenu = ({handleIsOpen, isOpen}) => {
         handleIsOpen(false);
       };
 
-    const logout = () =>{
+    
+    const logout = () => {
+      if(localStorage.getItem("loginValue") === "DEFAULT"){
         localStorage.clear();
         navigate("/");
         handleIsOpen(!isOpen);
         setModalOpen("logout");
+      } else if (localStorage.getItem("loginValue") === "KAKAO"){
+        const clientId = "088a7b267c39d0a11ec3904372ed9d33";
+        const redirectUri = "http://localhost:3000/auth/kakao/logout";
+        const authorizeUrl = `https://kauth.kakao.com/oauth/logout?client_id=${clientId}&logout_redirect_uri=${redirectUri}`;
+        window.location.href = authorizeUrl;
+        }
     }
     
 
