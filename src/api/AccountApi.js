@@ -88,9 +88,10 @@ const AccountApi = {
         return await axios.post(Domain + "/mypage/comment", getMemberCommentcmd);
     },
 
-    checkMemberPw: async(userPw) => {
+    checkMemberPw: async(userId, userPw) => {
         Functions.setAuthorizationHeader();
         const checkMemberPwcmd = {
+            userId: userId,
             userPw: userPw
         };
         return await axios.post(Domain + "/mypage/checkmemberPw", checkMemberPwcmd);
@@ -107,6 +108,15 @@ const AccountApi = {
             userEmail: userEmail
         };
         return await axios.post(Domain + "/mypage/edit", updateUserInfocmd);
+    },
+
+    updateUserInfo2: async(userId, userNickname) => {
+        Functions.setAuthorizationHeader();
+        const updateUserInfo2cmd = {
+            userId: userId,
+            userNickname: userNickname
+        };
+        return await axios.post(Domain + "/mypage/edit2", updateUserInfo2cmd);
     },
 
     buyTicketList: async(userId) => {
