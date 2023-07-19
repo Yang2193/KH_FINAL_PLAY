@@ -7,14 +7,20 @@ import MessageModal from '../../utils/MessageModal';
 import PageNation from '../../utils/PageNation';
 
 const OneCss=styled.div`
-width: 100%;
-height: 100%;
-@media (max-width:768px) {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
+  width: 1140px;
+  height: 100%;
+  @media (max-width:1364px) {
+      width:818px;
+  }
+  @media (max-width:768px) {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+  }
+  @media (max-width:412px) {
+    overflow: hidden;
   }
 .empty{
   display: flex;
@@ -49,23 +55,19 @@ h2{
     outline: none;
     resize: none;
     height: 150px;
-
-@media (max-width:412px) {
-  height: 85px;
-}
+  @media (max-width:412px) {
+    height: 85px;
   }
-.add{
-  height:25px;
-  margin: 0 5px;
-
-}
- 
+  }
+  .add{
+    height:25px;
+    margin: 0 5px;
+  }
 }
 .selectReview{
   @media (max-width:768px) {
     width: 80%;
   }
-  
   .btns{
     position: relative;
     top:45px;
@@ -126,7 +128,7 @@ const OneReview = () => {
   const [reviews, setReviews] = useState([]); // 리뷰 불러오기
   const [rating, setRating] = useState(""); // 평점 입력
   const [content, setContent] = useState([]); // 내용 입력
-  
+
 // 수정용
   const [upRating, setUpRating] = useState("");
   const [upContent, setUpContent] = useState([]);
@@ -145,7 +147,7 @@ const OneReview = () => {
         const rsp = await PostAPI.getOLR(playId);
         if (rsp.status===200) {
           setReviews(rsp.data);
-        } 
+        }
     };
     getReview();
   }, [modalOpen,delMo,upMo]);
@@ -159,12 +161,12 @@ const onUpRating = e =>{
 const onUpContent = e =>{
   if (e.target.value.length <= 100) {
     setUpContent(e.target.value);
-  }    
+  }
 }
 const onChangeContent = e =>{
   if (e.target.value.length <= 100) {
     setContent(e.target.value);
-  }    
+  }
 }
 
 const addReview = async () =>{
@@ -224,7 +226,7 @@ const updateReview = async (id) =>{
 // 페이지 네이션
     const [currentPage, setCurrentPage] = useState(0); // 현재 페이지 번호
 
-    useEffect(() => {  
+    useEffect(() => {
         setCurrentPage(0);
     }, [reviews])
 
@@ -252,17 +254,17 @@ const updateReview = async (id) =>{
           <Button onClick={addReview}>등록</Button>
         </div>
       </div>
-    
+
 
       {currentPageData && currentPageData.length > 0 ? currentPageData.map(review => (
         <div className='selectReview' key={review.id}>
-          {userId ===review.memberInfo.userId ? 
+          {userId ===review.memberInfo.userId ?
             <div className='btns'>
               {showInput === true && review.id===reviewId ? <button onClick={()=>updateReview(review.id)}>수정 완료</button> : <button onClick={()=> updateInput(review.id)}>수정</button>}
                 <button onClick={()=>deleteReview(review.id)}>삭제</button>
             </div> : null}
-          {showInput && reviewId===review.id ? 
-            <p className='updateP'> 
+          {showInput && reviewId===review.id ?
+            <p className='updateP'>
               <Rating
                 size={"25px"}
                 className='add'

@@ -4,7 +4,13 @@ import KakaoMap from "./KaKaoMap";
 import styled from "styled-components";
 
 const MapStyle = styled.div`
-width: 100%;
+    width: 1140px;
+    @media (max-width:1364px) {
+        width:818px;
+    }
+    @media (max-width:412px) {
+        width:412px;
+    }
     .mapInfo{
         width: 100%;
         @media (max-width: 768px) {
@@ -13,11 +19,13 @@ width: 100%;
         justify-content: center;
         flex-direction: column;
     }
+    @media (max-width: 412px) {
+        width: 412px;
+    }
     }
     .map{
-    
         @media (max-width: 768px) {
-        width: 95%; 
+        width: 95%;
         font-size: 1.1em;
         h3{
         font-size: 1.3em;
@@ -26,6 +34,7 @@ width: 100%;
     }
 
 `
+
 const Map = ({theaterId}) =>{
 
     const [theaterInfo, setTheaterInfo] = useState();
@@ -47,12 +56,11 @@ const Map = ({theaterId}) =>{
                     <p>주소 : {m.theaterAddr}</p>
                     {m.theaterCall === "" ? null :<p>대표번호 : {m.theaterCall}</p>}
                 </div>
-            <KakaoMap 
+            <KakaoMap
                 theaterLat={m.theaterLat}
                 theaterLon={m.theaterLon}
                 theaterName={m.theaterName}/>
             </div>
-            
             ))}
         </MapStyle>
     )
