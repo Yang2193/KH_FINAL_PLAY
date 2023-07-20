@@ -96,6 +96,7 @@ const LoadingMessage = styled.div`
   font-size: 16px;
   color: #888;
   margin-top: 40px;
+
 `;
 
 const CommentSection = styled.div`
@@ -189,12 +190,16 @@ const CommentDate = styled.span`
 const CogImg = styled.div`
   display: ${(props) => (props.isAuthor ? 'block' : 'none')};
   position: absolute;
-  right: 10px;
+  right: 0px;
   top: 5px;
   img {
     height: 13px;
     cursor: pointer;
+    @media (max-width: 412px) {
+    margin-top: 10px;
   }
+  }
+
 `;
 const CommentAuthor = styled.span`
   font-weight: bold;
@@ -204,7 +209,7 @@ const CommentAuthor = styled.span`
 
 const CommentMenu = styled.div`
   position: absolute;
-  top: 10px;
+  top: 20px;
   right: -120px;
   width: 120px;
   background-color: #fff;
@@ -214,6 +219,13 @@ const CommentMenu = styled.div`
   padding: 5px;
   border-radius: 5px;
   z-index: 999;
+  @media (max-width: 412px) {
+      font-size: 30%; 
+      right: 30px;
+      margin-top: 20px;
+
+  }
+  
 `;
 
 const CommentMenuItem = styled.div`
@@ -221,6 +233,8 @@ const CommentMenuItem = styled.div`
   cursor: pointer;
   color: #555;
   transition: background-color 0.3s;
+  
+  
 
   &:hover {
     background-color: #f6f6f6;

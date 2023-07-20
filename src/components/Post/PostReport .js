@@ -7,8 +7,8 @@ import { toast, ToastContainer } from 'react-toastify';
 
 const CommentMenu = styled.div`
   position: absolute;
-  top: 500px;
-  right:130px;
+  top: 560px;
+  right: 140px;
   width: 220px;
   background-color: #fff;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
@@ -18,8 +18,9 @@ const CommentMenu = styled.div`
   border-radius: 5px;
   z-index: 999;
   @media (max-width: 412px) {
-    height: 40%;
-    }
+   left: 90px;
+    top: 380px;
+  }
 `;
 
 const Title = styled.h3`
@@ -70,6 +71,10 @@ const T1 = styled.div`
   overflow: hidden;
   text-overflow: ellipsis;
   margin-left: auto;
+  @media (max-width: 412px) {
+    width: 80px;
+    font-size: 10px;
+  }
 `;
 
 const PostReport  = ({ commentId, nickname, userId,postId }) => {
