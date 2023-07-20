@@ -78,9 +78,13 @@ const PostImage = styled.div`
   display: flex; 
   flex-wrap: wrap;
   justify-content: center;
+
+  
+  
   img {
     width: 50%;
     max-width: 30%; 
+    margin-right: 40px;
   } @media (max-width: 412px) {
     height :50% ;
     }
