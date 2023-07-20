@@ -7,7 +7,7 @@ import { toast, ToastContainer } from 'react-toastify';
 
 const CommentMenu = styled.div`
   position: absolute;
-  top: 270px;
+  top: 500px;
   right:130px;
   width: 220px;
   background-color: #fff;
@@ -17,6 +17,9 @@ const CommentMenu = styled.div`
   padding: 10px;
   border-radius: 5px;
   z-index: 999;
+  @media (max-width: 412px) {
+    height: 40%;
+    }
 `;
 
 const Title = styled.h3`

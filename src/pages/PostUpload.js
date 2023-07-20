@@ -40,6 +40,12 @@ const Button = styled.button`
   border-radius: 4px;
 `;
 
+// 로그인 상태 확인 함수
+const isLoggedIn = () => {
+  const userId = localStorage.getItem('userId');
+  return !!userId; // userId가 존재하면 true, 없으면 false 반환
+};
+
 const PostUpload = () => {
   const [postData, setPostData] = useState({
     postTitle: '',
@@ -55,6 +61,7 @@ const PostUpload = () => {
       postImages: [...prevData.postImages, image], // 이미지 URL을 배열에 추가합니다.
     }));
   };
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setPostData((prevData) => ({
@@ -65,9 +72,18 @@ const PostUpload = () => {
 
   const handleUpload = async () => {
     try {
+      if (!isLoggedIn()) {
+        toast.error('로그인이 필요합니다.');
+        return;
+      }
+
+      if (!postData.postTitle) {
+        toast.error('제목을 입력해주세요.');
+        return;
+      }
 
       const postImageStr = postData.postImages.join(',');
-  
+
       const response = await PostAPI.addPost(
         postData.postTitle,
         postContent,
@@ -75,6 +91,7 @@ const PostUpload = () => {
         '1',
         localStorage.getItem('userId')
       );
+
       if (response.id) {
         toast.success('게시물 등록 성공');
         navigate(-1);
