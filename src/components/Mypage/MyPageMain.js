@@ -102,11 +102,12 @@ const MyPageMain = () => {
     const userInfoString = localStorage.getItem("userInfo");
     const userInfo = JSON.parse(userInfoString);
 
+    const imageUrl = userInfo.imgUrl || profile;
     return (
         <MenuBlock>
             <div className="pageheader">마이페이지</div>
             <div className="profile">
-                <img className="picture" src={profile} alt="Profile" />
+                <img className="picture" src={imageUrl} alt="Profile" />
             </div>
             <div className="name">{userNickname}</div>
             <div className="selector">
