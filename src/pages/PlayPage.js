@@ -33,6 +33,7 @@ const All = styled.div`
 
 const PlayPage = () => {
     const[type,setType] = useState("default");
+    const [showPlayNav, setShowPlayNav] = useState(false); // State 추가
 
 	const handleType = (e) =>{
 		setType(e);
@@ -48,6 +49,15 @@ const PlayPage = () => {
         play();
     },[])
 
+    useEffect(() => {
+        // 0.5초 뒤에 PlayNav 컴포넌트 보여주기
+        const timeout = setTimeout(() => {
+          setShowPlayNav(true);
+        }, 500);
+    
+        // 컴포넌트가 언마운트될 때 타이머를 정리 (cleanup)
+        return () => clearTimeout(timeout);
+      }, []);
 
     return(
         <All>
@@ -55,7 +65,7 @@ const PlayPage = () => {
             {playInfo && playInfo.map(play =>(
             <Contents key = {play.playId}>
                 <Info/>
-                <PlayNav  handleType={handleType}/>
+                {showPlayNav && <PlayNav handleType={handleType} />} 
                 {type === "default" &&(
                     <Detail/>
                 )}
@@ -68,7 +78,7 @@ const PlayPage = () => {
             </Contents>
             ))}
             <div className="footer">
-                <Footer/>
+                {showPlayNav && <Footer/>} 
             </div>
         </All>
     )
