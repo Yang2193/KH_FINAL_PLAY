@@ -130,7 +130,6 @@ h2::after {
 .ReviewTable td {
   padding: 10px;
   text-align: left;
-  text-align: center;
   border-bottom: 1px solid #ddd;
   @media (max-width: 412px) {
       font-size: 30%; 
@@ -142,7 +141,7 @@ h2::after {
 
 .ReviewTable th:first-child,
 .ReviewTable td:first-child {
-  width: 55%;
+  width: 50%;
 }
 
 .ReviewLink {

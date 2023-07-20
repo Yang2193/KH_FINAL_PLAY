@@ -47,21 +47,24 @@ const MyReviewTitle = styled.h3`
   font-size: 100%;
   font-weight: bold;
   margin-bottom: 10px;
-  text-decoration: none;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  max-width: 300px; /* 최대 너비를 설정하여 글자가 화면을 넘어가지 않도록 함 */
-
+  max-width: 300px;
+  text-decoration: none; 
+  color: #000;
   @media (max-width: 412px) {
     font-size: 18px;
   }
 `;
 
+
 const MyReviewDescription = styled.p`
   font-size: 14px;
   color: #555;
   margin-bottom: 10px;
+  
+  
 `;
 
 const MyReviewDate = styled.p`
@@ -73,6 +76,7 @@ const MyReviewPageTitle = styled.h2`
   font-size: 24px;
   font-weight: bold;
   margin-bottom: 20px;
+  
 `;
 
 const MyReviewImage = styled.img`
@@ -80,6 +84,7 @@ const MyReviewImage = styled.img`
   height: 250px; 
   margin-right: 20px;
   background-color: #f0f0f0;
+  
 
   @media (max-width: 412px) {
     width: 100%;
@@ -91,12 +96,14 @@ const MyReviewImage = styled.img`
 
 const MyReviewContent = styled.div`
   flex: 1; /* 남은 공간을 모두 차지하도록 설정 */
+  
 `;
 
 const MyReviewEmptyMessage = styled.p`
   font-size: 16px;
   color: #555;
   text-align: center;
+  
 `;
 
 const MyReview = () => {
@@ -183,30 +190,22 @@ const MyReview = () => {
         ) : (
           posts.map((post) => (
             <MyReviewCard key={post.id}>
-              {post.postImageUrl ? (
-                <MyReviewImage src={post.postImageUrl} alt="게시물 이미지" />
-              ) : (
-                <MyReviewImage src="" alt="" />
-              )}  
-              
+              <Link to={`/post/${post.id}`} onClick={() => increaseViews(post.id)}>
+                {post.postImageUrl ? (
+                  <MyReviewImage src={post.postImageUrl} alt="게시물 이미지" />
+                ) : (
+                  <MyReviewImage src="" alt="x" />
+                )}
+              </Link>
               <MyReviewContent>
-              <Link
-                  to={`/post/${post.id}`}
-                  onClick={() => increaseViews(post.id)}
-                >
-            <MyReviewTitle>{post.postTitle}</MyReviewTitle>
-     
                 
-              
-                <MyReviewDescription dangerouslySetInnerHTML={{ __html: post.postContent }}></MyReviewDescription>
-
-                <MyReviewDate>{formatWriteDate(post.postDate)}</MyReviewDate>
+                <Link to={`/post/${post.id}`} onClick={() => increaseViews(post.id)}>
+                  <MyReviewTitle>{post.postTitle}</MyReviewTitle>
                 </Link>
+                <MyReviewDescription dangerouslySetInnerHTML={{ __html: post.postContent }}></MyReviewDescription>
+                <MyReviewDate>{formatWriteDate(post.postDate)}</MyReviewDate>
               </MyReviewContent>
-              <MyReviewCloseButton onClick={() => deletePost(post.id)}>
-                ✕
-              </MyReviewCloseButton>
-              
+              <MyReviewCloseButton onClick={() => deletePost(post.id)}>✕</MyReviewCloseButton>
             </MyReviewCard>
           ))
         )}
@@ -216,4 +215,4 @@ const MyReview = () => {
   );
 }
 
-export default MyReview;  
+export default MyReview;

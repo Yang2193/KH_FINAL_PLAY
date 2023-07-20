@@ -38,15 +38,15 @@ const PostDetailWrapper = styled.div`
 `;
 
 const PostHeader = styled.div`
-  margin-bottom: 20px;
+  margin-bottom: 30px;
 `;
 
 const PostTitle = styled.h2`
   font-size: 23px;
   margin-bottom: 30px;
+  word-break: break-all;
   margin-right: auto;  @media (max-width: 412px) {
     font-size: 50%; 
-
 }
 `;
 
@@ -110,6 +110,7 @@ const CommentInputWrapper = styled.div`
   display: flex;
   align-items: center;
   
+  
 `;
 
 const CommentInput = styled.input`
@@ -158,12 +159,13 @@ const CommentContent = styled.div`
   padding: 10px;
   border-radius: 5px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  white-space: normal; // 이 부분을 추가해 줍니다.
+  max-width: 500px;
 
   @media (max-width: 412px) {
     width: 70%;
     font-size: 50%;
-
-}
+  }
 `;
 const CommentBox =styled.div`
 display: flex;
@@ -243,15 +245,8 @@ const CommentMenuItem = styled.div`
 
 const C1 = styled.div`
   margin-top: 18px;
-  white-space: pre-wrap;
-  white-space: nowrap;
+  
 
-  /* 댓글이 20글자를 넘어가면 다음 줄로 가도록 설정 */
-  white-space: pre-wrap;
-
-  
-  
-  
 `;
 
 const PostD = styled.div`
