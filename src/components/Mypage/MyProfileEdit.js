@@ -155,18 +155,28 @@ const MyProfileEdit = () => {
     }
   };
 
+  const handleOnKeyPress = e => {
+    if(e.key === 'Enter') {
+      if(localStorage.getItem("loginValue") === "KAKAO"){
+        onClickIsAuth();
+      } else {
+        onClickPwCheck();
+      }
+    }
+}
+
   return (
     <>
     <Header/>
     <MenuBlock>
     {localStorage.getItem("loginValue") === "KAKAO" ? (
       <div className="auth">  
-        <span>프로필 변경</span>
+        <span>프로필 수정</span>
         <table>
         {isAuthRequested ? (
               <>
                 <button onClick={userAuthSendMail}>인증번호 받기</button>
-                <input type="password" value={inputAuth} onChange={onChangeAuth} />
+                <input type="password" value={inputAuth} onChange={onChangeAuth} onKeyUp={handleOnKeyPress}/>
                 <button onClick={onClickIsAuth}>인증</button>
               </>
             ) : (
@@ -175,10 +185,13 @@ const MyProfileEdit = () => {
         </table>
       </div>
     ) : (
-      <>
-        <input type="password" value={inputAuth} onChange={onChangeAuth}/>
+      <div className="auth">
+        <span>프로필 수정</span>
+        <table>
+        <input type="password" value={inputAuth} onChange={onChangeAuth} onKeyUp={handleOnKeyPress}/>
         <button onClick={onClickPwCheck}>인증</button>
-      </>
+        </table>
+      </div>
     )}
     </MenuBlock>
     {authSuccessModal && (<MessageModal open={authSuccessModal} close={onClickClose} type="modalType" header="인증 완료">이메일 인증이 완료되었습니다.</MessageModal>)}

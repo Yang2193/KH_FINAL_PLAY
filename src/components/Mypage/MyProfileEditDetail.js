@@ -6,6 +6,7 @@ import Footer from "../Footer";
 import profile from "../../images/mypageicon2.png";
 import xmark from "../../images/x-mark.png";
 import "../../styles/MyProfileEditDetail.css";
+import MessageModal from "../../utils/MessageModal";
 
 const MyProfileEditDetail = () => {
   const navigate = useNavigate();
@@ -34,6 +35,20 @@ const MyProfileEditDetail = () => {
   const [isEmail, setIsEmail] = useState(false);
   const [isAll, setIsAll] = useState(false);
   
+  //팝업창
+  const [withDrawModal, setWithDrawModal] = useState(false);
+  const [updateModal, setUpdateModal] = useState(false);
+
+  //모달창 닫기
+  const onClickClose = () => {
+    setWithDrawModal(false);
+    setUpdateModal(false);
+  }
+
+  const onClickOpen = () => {
+    setWithDrawModal(true);
+  }
+
   useEffect(() => {
     if(userInfo)
       setPhone(userInfo.userPhone);
@@ -120,8 +135,11 @@ const MyProfileEditDetail = () => {
         phone,
         email
       );
-      navigate("/mypage");
-      console.log("회원정보 수정", response);
+      if(response){
+        navigate("/mypage");
+        console.log("회원정보 수정", response);
+        setUpdateModal(true);
+      }
     } catch (e) {
       console.log(e);
     }
@@ -131,78 +149,119 @@ const MyProfileEditDetail = () => {
     try {
       const response = await AccountApi.updateUserInfo2(userInfo.userId, nickname);
       if(response){
-        console.log("회원정보 수정", response);
         navigate("/mypage");
+        console.log("회원정보 수정", response);
+        setUpdateModal(true);
       }
     } catch (e) {
       console.log(e);
     }
   };
 
+  const handleConfirmWithdraw = async() => {
+    try {
+        const response = await AccountApi.withdraw(userInfo.userId);
+        if(response.status === 200){
+            localStorage.clear();
+            navigate("/");
+        }
+      } catch (e) {
+        console.log(e);
+      }
+  };
+
   const imageUrl = userInfo.imgUrl || profile;
   const getUserId = userInfo.userEmail.split("@")[0];
 
-  const onClickEnter = () => {
-    navigate('/mypage');
-  }
+
+
   return (
     <>
   <Header />
   <div id="main" className="mypage-container">
     {localStorage.getItem("loginValue") === "DEFAULT" ? (
       <>
+      <div className=".mypage-default-profile-box">
         {userInfo ? (
           <>
-            <tbody>
-              <tr>
-                <th>아이디</th>
-                <td>{userInfo.userId}</td>
-              </tr>
-              <tr>
-                <th>비밀번호</th>
-                <td>
-                  <input type="password" value={password} onChange={onChagePw} />
-                  {passwordMsg && <p>{passwordMsg}</p>}
-                </td>
-              </tr>
-              <tr>
-                <th>비밀번호 확인</th>
-                <td>
-                  <input type="password" value={conPassword} onChange={onChageConPw} />
-                  {conPasswordMsg && <p>{conPasswordMsg}</p>}
-                </td>
-              </tr>
-              <tr>
-                <th>닉네임</th>
-                <td>
-                  <input type="text" value={nickname} onChange={onChageNickname} />
-                  {nicknameMsg && <p>{nicknameMsg}</p>}
-                </td>
-              </tr>
-              <tr>
-                <th>이름</th>
-                <td>{userInfo.userName}</td>
-              </tr>
-              <tr>
-                <th>전화번호</th>
-                <td>
+          <div className="mypage-pic-box">
+                <div className="mypage-pic-delete">
+                  <label>
+                    <img className="mypage-pic-del-btn" src={xmark} alt="Delete Profile" />
+                  </label>
+                </div>
+                <div className="mypage-pic">
+                  <div className="mypage-pic-div mypage-pic-div2">
+                    <img src={imageUrl} alt="Profile" />
+                  </div>
+                </div>
+                <div className="mypage-pic-change">
+                  <label>
+                    <p className="mypage-pic-change-btn">변경</p>
+                  </label>
+                </div>
+              </div>
+              <div className="mypage-box mypage-nickname-sns-box">
+                <div className="mypage-empty-box"></div>
+                <div className="mypage-nickname-box">
+                  <div className="mypage-nickname-setbox">
+                    <div className="mypage-title mypage-nickname-title">닉네임</div>
+                    <div className="mypage-nickname-input">
+                      <input type="text" name="nickname" maxLength={64} placeholder="입력해주세요" value={nickname} onChange={onChageNickname} />
+                    </div>
+                  </div>
+                  <div className="mypage-nickname-checkbox">
+                    <p className="mypage-nickname-check"></p>
+                  </div>
+                </div>
+              </div>
+              <div className="mypage-box mypage-sns-box">
+                  <div className="mypage-title mypage-sns-title">ID</div>
+                  <div className="mypage-sns-input">{userInfo.userId}</div>
+                </div>
+                <div className="mypage-box mypage-sns-box">
+                  <div className="mypage-title mypage-sns-title">PW</div>
+                  <div className="mypage-sns-input">
+                    <input type="password" value={password} onChange={onChagePw} />
+                    {passwordMsg && <p>{passwordMsg}</p>}
+                  </div>
+                </div>
+                <div className="mypage-box mypage-sns-box">
+                  <div className="mypage-title mypage-sns-title"></div>
+                  <div className="mypage-sns-input">
+                    <input type="password" value={conPassword} onChange={onChageConPw} />
+                    {conPasswordMsg && <p>{conPasswordMsg}</p>}
+                  </div>
+                </div>
+                <div className="mypage-box mypage-sns-box">
+                  <div className="mypage-title mypage-sns-title"></div>
+                  <div className="mypage-title mypage-sns-title">PHONE</div>
+                  <div className="mypage-sns-input">
                   <input type="text" value={phone} onChange={onChagePhone} />
                   {phoneMsg && <p>{phoneMsg}</p>}
-                </td>
-              </tr>
-              <tr>
-                <th>이메일</th>
-                <td>
+                  </div>
+                </div>
+                <div className="mypage-box mypage-sns-box">
+                  <div className="mypage-title mypage-sns-title"></div>
+                  <div className="mypage-title mypage-sns-title">Email</div>
+                  <div className="mypage-sns-input">
                   <input type="text" value={email} onChange={onChageEmail} />
                   {emailMsg && <p>{emailMsg}</p>}
-                </td>
-              </tr>
-            </tbody>
-            <button onClick={updateInfo}>수정</button>
+                  </div>
+                </div>
           </>
         ) : (
           <p>Loading...</p>
         )}
+      </div>
+      <div className="mypage-save-box">
+        <div className="mypage-buttons">
+          <button className="mypage-bye-btn mypage-gradient-btn" onClick={onClickOpen}>탈퇴</button>
+          <button className="mypage-save-btn mypage-gradient-btn" onClick={updateInfo}>수정</button>
+        </div>
+      </div>
+      {withDrawModal && (<MessageModal open={withDrawModal} confirm={handleConfirmWithdraw} close={handleConfirmWithdraw} type="modalType" header="회원 탈퇴">회원탈퇴가 완료 되었습니다.</MessageModal>)}
+      {updateModal && (<MessageModal open={updateModal} confirm={onClickClose} close={onClickClose} type="modalType" header="회원정보수정">회원정보가 수정 되었습니다.</MessageModal>)}
       </>
     ) : (
       <>
@@ -234,9 +293,6 @@ const MyProfileEditDetail = () => {
                     <div className="mypage-nickname-input">
                       <input type="text" name="nickname" maxLength={64} placeholder="입력해주세요" value={nickname} onChange={onChageNickname} />
                     </div>
-                    <div className="mypage-nickname-checkbtn">
-                    <button className="mypage-nickname-button" type="submit" onClick={updateKakao}>수정</button>
-                    </div>
                   </div>
                   <div className="mypage-nickname-checkbox">
                     <p className="mypage-nickname-check"></p>
@@ -246,7 +302,9 @@ const MyProfileEditDetail = () => {
                   <div className="mypage-title mypage-sns-title">ID</div>
                   <div className="mypage-sns-input">{getUserId}</div>
                   <div className="mypage-sns-bye">
-                    <div className="mypage-pop-up">탈퇴</div>
+                    <div className="mypage-pop-up">
+                    <button className="mypage-bye-btn mypage-gradient-btn" onClick={handleConfirmWithdraw}>탈퇴</button>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -256,7 +314,7 @@ const MyProfileEditDetail = () => {
           )}
           </div>
           <div className="mypage-save-box">
-          <button className="mypage-save-btn mypage-gradient-btn" onClick={onClickEnter}>확인</button>
+          <button className="mypage-save-btn mypage-gradient-btn" onClick={updateKakao}>확인</button>
           </div>
       </>
     )}
@@ -264,5 +322,4 @@ const MyProfileEditDetail = () => {
 </>
   );
 };
-
 export default MyProfileEditDetail;

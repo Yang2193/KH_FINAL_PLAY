@@ -21,6 +21,14 @@ const AccountApi = {
         };
         return await axios.post(Domain + "/member/userinfo", infoData);
     },
+
+    // 중복아이디 체크
+    userIdCheck: async(userId) => {
+        const userIdCheckcmd = {
+            userId: userId
+        };
+        return await axios.post(Domain + "/auth/userIdCheck", userIdCheckcmd)
+    },
     
     // 회원가입
     memberReg : async(userId, userPw, userNickname, userName, userEmail, userPhone) => {

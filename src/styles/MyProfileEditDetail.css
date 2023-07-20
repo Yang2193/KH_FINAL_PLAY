@@ -30,12 +30,12 @@
   transition : all 0.3s ease;
   width : 90%;
 }
-input:focus {
+.mypage-container input:focus {
   outline:none;
   box-shadow: 0 2px 1px rgba(0, 0, 0, 0.15);
 }
 
-input::placeholder{
+.mypage-container input::placeholder{
   font-size : smaller;
 }
 label{
@@ -239,6 +239,10 @@ label{
   text-align:center;
   }
 
+.mypage-bye-bye { 
+  grid-area: sns-bye;
+  text-align:center;
+  }
 .mypage-pop-up {
   cursor : pointer;
   color: #7E7B7B; 
@@ -253,6 +257,11 @@ label{
 
 .mypage-save-btn {
   cursor: pointer;
+}
+
+.mypage-buttons {
+  display: flex;
+  justify-content: space-between;
 }
 
 .mypage-gradient-btn {
@@ -366,3 +375,11 @@ label{
   }
 }
 
+.mypage-default-profile-box {
+  grid-template-columns: 30% 70%;
+  grid-template-rows: 100%;
+  gap: 0px 0px;
+  grid-template-areas:
+    "pic-box nickname-sns-box";
+  grid-area: profile-box;
+}
