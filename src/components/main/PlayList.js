@@ -178,7 +178,7 @@ const PlayList = ({playList, handlePlayList, initialPlayList}) => {
                         )}
                         </tbody>
                     </table>
-                    {(playList !== initialPlayList) && 
+                    {((!loading)&&(playList !== initialPlayList)) && 
                     <ButtonBox>
                       <button className="resetButton" onClick={handleResetPlaylist}>돌아가기</button>
                     </ButtonBox>
