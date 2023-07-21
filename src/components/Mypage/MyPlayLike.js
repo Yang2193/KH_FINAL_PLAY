@@ -3,7 +3,8 @@ import { useState, useEffect } from "react";
 import PlayInfoApi from "../../api/PlayInfoApi";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-
+import Header from "../Header";
+import Footer from "../Footer";
 const ListBox = styled.div`
     position: relative;
     top: 10%;
@@ -106,6 +107,7 @@ const MyPlayLike = () => {
 
     return (
         <>
+        <Header></Header>
         <h3>{userId}님의 찜목록</h3>
         <ListBox>
         <table className="ReviewTable">
@@ -123,6 +125,7 @@ const MyPlayLike = () => {
           </tbody>
         </table>
         </ListBox>
+        <Footer></Footer>
         </>
     );
 }
