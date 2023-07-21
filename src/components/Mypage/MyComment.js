@@ -74,6 +74,10 @@ const DeleteButton = styled.button`
   background-size: 100% 100%; 
   width: 5px; 
   height: 5px; 
+  @media (max-width: 412px) {
+    width: 3%;
+
+}
  
 `;
 const formatDate = (dateString) => {
@@ -153,7 +157,7 @@ const MyComment = () => {
                   <div>{cl.commentContent}</div>
                   <DeleteButton onClick={() => handleDeleteComment(cl.id)} > </DeleteButton>
                 </CommentContent>
-                <td>{formatDate(cl.commentDate)}</td> {/* Use the formatDate function here */}
+                <td>{formatDate(cl.commentDate)}</td>
               </tr>
             ))}
           </tbody>

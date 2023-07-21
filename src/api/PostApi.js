@@ -7,13 +7,11 @@ const Posts = "http://localhost:8111"; // 백엔드 API 서버 주소
 const PostAPI = {
   // 게시물 목록 조회
   getAllPosts: async () => {
-    Functions.setAuthorizationHeader();
     return await axios.get(`${Posts}/post/select`);
   },
 
   // 게시물 상세 정보 조회
   getPostById: async (postId) => {
-    Functions.setAuthorizationHeader();
     const response = await axios.get(`${Posts}/post/select/${postId}`);
     return response.data;
   },
@@ -30,8 +28,6 @@ const PostAPI = {
         userId: userId,
       };
 
-      Functions.setAuthorizationHeader();
-
       const response = await axios.post(`${Posts}/post/postUpload`, postData);
       return response.data;
     } catch (error) {
@@ -40,10 +36,18 @@ const PostAPI = {
       return response1.data;
     }
   },
-    // 게시물 삭제
-    deletePost: async (postId) => {
+
+  // 게시물 삭제
+  deletePost: async (postId) => {
+    try {
+      Functions.setAuthorizationHeader();
       return await axios.post(`${Posts}/post/delete/${postId}`);
-    },
+    } catch (error) {
+      await Functions.handleApiError(error);
+      return await axios.post(`${Posts}/post/delete/${postId}`);
+    }
+  },
+
 
   // 조회수 증가
   increasePostViews: async (postId) => {
@@ -69,7 +73,7 @@ const PostAPI = {
 
   // 댓글 삭제
   deleteComment: async (commentId) => {
-
+    Functions.setAuthorizationHeader();
     return await axios.post(`${Posts}/comments/delete/${commentId}`);
    
   },
@@ -123,7 +127,7 @@ reportComment: async (commentId, reportReason, nickname, postId,userId) => {
         const response = await axios.post(`${Posts}/post/search`, null, config);
         return response.data;
       } catch (error) {
-        await Functions.handleApiError(error);
+      
         return null;
       }
     },
