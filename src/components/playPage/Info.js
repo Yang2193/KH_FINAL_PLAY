@@ -15,7 +15,7 @@ const All = styled.div`
         height: 780px;
     }
     @media (max-width:360px) {
-        height: 730px;
+        height: 690px;
     }
 `
 const FixData = styled.div`
@@ -103,7 +103,7 @@ const FixData = styled.div`
                 z-index: 0;
             }
             @media (max-width:412px) {
-                font-size: 12px;
+                font-size: 13px;
                 height: 500px;
            }
             @media (max-width:360px) {
@@ -176,8 +176,7 @@ const FixData = styled.div`
             align-items: end;
         }
         @media (max-width:360px) {
-            height: 40px;
-            bottom: -45px;
+            height: 0px;
         }
         .resBtn{
             width: 100%;
@@ -191,6 +190,9 @@ const FixData = styled.div`
             }
             @media (max-width:412px) {
                 height: 45px;
+            }
+            @media (max-width:412px) {
+                height: 40px;
             }
         }
         .resBtn:hover{
