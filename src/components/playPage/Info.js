@@ -12,10 +12,10 @@ const All = styled.div`
         height: 1050px;
     }
     @media (max-width:412px) {
-        height: 800px;
+        height: 780px;
     }
     @media (max-width:360px) {
-        height: 720px;
+        height: 730px;
     }
 `
 const FixData = styled.div`
@@ -81,11 +81,11 @@ const FixData = styled.div`
                 height: 600px;
             }
             @media (max-width:412px) {
-                height: 375px;
+                height: 400px;
         }
             @media (max-width:360px) {
-                bottom: 360px;
-                height: 320px;
+                height: 300px;
+                top: 15px;
         }
     }
         .textBox{
@@ -102,8 +102,13 @@ const FixData = styled.div`
                 background-color: white;
                 z-index: 0;
             }
+            @media (max-width:412px) {
+                font-size: 12px;
+                height: 500px;
+           }
             @media (max-width:360px) {
                 font-size: 0.8em;
+                height: 500px;
             }
         }
         .like{
@@ -135,7 +140,7 @@ const FixData = styled.div`
                 z-index: -2;
                 margin-top: 20px;
                 width: 90%;
-                height: 90%;
+                height: 320px;
             }
             ul{
                 list-style: none;
@@ -167,9 +172,8 @@ const FixData = styled.div`
             height: 50px;
         }
         @media (max-width:412px) {
-            position: absolute;
-            height: 40px;
-            bottom: 35px;
+            height: 0px;
+            align-items: end;
         }
         @media (max-width:360px) {
             height: 40px;
@@ -184,7 +188,9 @@ const FixData = styled.div`
             cursor: pointer;
             @media (max-width:768px) {
                 border-radius: 0%;
-                width: 100%;
+            }
+            @media (max-width:412px) {
+                height: 45px;
             }
         }
         .resBtn:hover{
