@@ -191,7 +191,6 @@ const MyReview = () => {
       <Header />
       <MyReviewPageTitle>나의 게시물</MyReviewPageTitle>
       <MyReviewContainer>
-      
         {posts.length === 0 ? (
           <MyReviewEmptyMessage>게시물이 없습니다.</MyReviewEmptyMessage>
         ) : (

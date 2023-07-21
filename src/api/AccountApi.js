@@ -105,7 +105,7 @@ const AccountApi = {
         return await axios.post(Domain + "/mypage/checkmemberPw", checkMemberPwcmd);
     },
 
-    updateUserInfo: async(userId, userPw, userNickname, userName, userPhone, userEmail) => {
+    updateUserInfo: async(userId, userPw, userNickname, userName, userPhone, userEmail, imgUrl) => {
         Functions.setAuthorizationHeader();
         const updateUserInfocmd = {
             userId: userId,
@@ -113,16 +113,19 @@ const AccountApi = {
             userNickname: userNickname,
             userName: userName,
             userPhone: userPhone,
-            userEmail: userEmail
+            userEmail: userEmail,
+            imgUrl: imgUrl
         };
         return await axios.post(Domain + "/mypage/edit", updateUserInfocmd);
     },
 
-    updateUserInfo2: async(userId, userNickname) => {
+    updateUserInfo2: async(userId, userNickname, imageUrl) => {
         Functions.setAuthorizationHeader();
+        console.log(imageUrl);
         const updateUserInfo2cmd = {
             userId: userId,
-            userNickname: userNickname
+            userNickname: userNickname,
+            imageUrl: imageUrl
         };
         return await axios.post(Domain + "/mypage/edit2", updateUserInfo2cmd);
     },
