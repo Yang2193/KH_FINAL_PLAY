@@ -18,7 +18,7 @@ const Background = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
-  white-space: nowrap;
+  white-space: wrap;
 `;
 
 const PostDetailWrapper = styled.div`
@@ -92,8 +92,18 @@ const PostImage = styled.div`
 
 const PostContent = styled.div`
   line-height: 1.6;
-  font-size: 17px;
-`;
+  font-size: 14px;
+  display: flex;
+  width : 100%;
+  justify-content: center;
+  
+
+  p strong{
+    width: 100%;
+    display: flex;
+  }
+  
+`;  
 
 const LoadingMessage = styled.div`
   text-align: center;
@@ -135,6 +145,9 @@ const CommentButton = styled.button`
   max-height: 40px;
   width: 100px;
   font-size: 13px;
+  @media (max-width: 412px) {
+    font-size: 11px;
+    }
 `;
 
 const CommentList = styled.ul`
@@ -449,7 +462,7 @@ const PostDetailPage = () => {
         <img key={index} src={imageUrl} alt={``} />
       ))}
     </PostImage>
-          <PostContent className="Explaination2" dangerouslySetInnerHTML={{ __html: post.postContent }}></PostContent>
+          <PostContent dangerouslySetInnerHTML={{ __html: post.postContent }}></PostContent>
           <PostD isAuthor={post.memberInfo && post.memberInfo.userId === localStorage.getItem('userId')}>
             <button onClick={handleDeletePost}>게시물 삭제</button>
             <button onClick={() => navigate(`/postupdate/${post.id}`)}>게시물 수정</button>
