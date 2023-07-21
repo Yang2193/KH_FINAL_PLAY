@@ -35,6 +35,17 @@ const Box = styled.div`
     left: -150px;
     border: 1px solid #990A2C;
 
+    @media (max-width: 768px) {
+        left: -190px;
+        top: 70px;
+                
+    }
+
+    @media (max-width: 412px) {
+        left: -190px;
+        top: 50px;
+                
+    }
     z-index: 3;
 
     ${({ isOpen }) =>
@@ -54,21 +65,20 @@ const Box = styled.div`
         align-items: center;
         font-size: 1.5rem;
         
-
       }
 
 
     
-    .box{
-        width: 260px;
-        display: flex;
-        flex-direction: column;
-        flex-wrap: wrap;
-        justify-content: space-evenly;
-        align-content: center;
+      .box{
+          width: 260px;
+          display: flex;
+          flex-direction: column;
+          flex-wrap: wrap;
+          justify-content: space-evenly;
+          align-content: center;
 
 
-    }
+      }
 
       .item{
         height: 80px;
@@ -82,7 +92,6 @@ const Box = styled.div`
             font-weight: bold;
         }
       }
-
      
     `}
 
