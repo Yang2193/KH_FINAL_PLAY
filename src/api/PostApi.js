@@ -27,7 +27,6 @@ const PostAPI = {
         postCategory: postCategory,
         userId: userId,
       };
-
       const response = await axios.post(`${Posts}/post/postUpload`, postData);
       return response.data;
     } catch (error) {
