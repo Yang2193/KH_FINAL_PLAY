@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import AccountApi from "../../api/AccountApi";
 import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import Header from "../../components/Header";
+import Footer from "../../components/Footer";
 
 const ListBox = styled.div`
     position: relative;
@@ -96,6 +98,7 @@ const MyTicketInfo = () => {
 
     return (
         <>
+        <Header/>
         <h3>{userInfo.userNickname}님의 구매내역</h3>
         <ListBox>
         <table className="buyListTable">
@@ -119,6 +122,7 @@ const MyTicketInfo = () => {
           </tbody>
         </table>
         </ListBox>
+        <Footer/>
         </>
     );
 }
