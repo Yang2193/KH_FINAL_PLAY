@@ -280,7 +280,7 @@ const MemberInfo = () => {
         const onClickPre = () => {
             navigate("/login");
         }
-
+//sdsdsd
     return (
         <div>
         {/* FORM SECTION */}
