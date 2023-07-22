@@ -189,7 +189,7 @@ const MyProfileEdit = () => {
         <span>프로필 수정</span>
         <table> 패스워드를 입력하세요.
         <input type="password" value={inputAuth} onChange={onChangeAuth} onKeyUp={handleOnKeyPress}/>
-        <button onClick={onClickPwCheck}>인증</button>
+        <button onClick={onClickPwCheck}>확인</button>
         </table>
       </div>
     )}
