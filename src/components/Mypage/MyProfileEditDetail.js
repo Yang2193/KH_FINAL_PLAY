@@ -18,8 +18,8 @@ const MyProfileEditDetail = () => {
   const [password, setPassword] = useState(localStorage.getItem("userPw"));
   const [conPassword, setConPassword] = useState(localStorage.getItem("userPw"));
   const [nickname, setNickname] = useState(userInfo.userNickname);
-  const [phone, setPhone] = useState("");
-  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState(userInfo.userPhone);
+  const [email, setEmail] = useState(userInfo.userEmail);
   const [imageUrl, setImageUrl] = useState(userInfo.imgUrl || profile);
 
   // 오류 메세지
@@ -56,14 +56,6 @@ const MyProfileEditDetail = () => {
   const onClickUpdateModalOpen = () => {
     setUpdateModal(true);
   }
-
-  useEffect(() => {
-    if(userInfo)
-      setPhone(userInfo.userPhone);
-      setEmail(userInfo.userEmail);
-      setPassword(password);
-      setConPassword(conPassword);
-  }, [userInfo]);
 
   const onChagePw = (e) => {
     const pwRegex = /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,20}$/;
@@ -229,7 +221,7 @@ const MyProfileEditDetail = () => {
                   </div>
                 </div>
                 <div className="mypage-pic-change">
-                <label>
+                <label className="change-label">
                   <input className="mypage-pic-input"
                     type="file"
                     onChange={handleImageUpload}
@@ -304,61 +296,55 @@ const MyProfileEditDetail = () => {
     ) : (
       <>
         <div className="mypage-profile-box">
-          {userInfo ? (
-            <>
-              <div className="mypage-pic-box">
-              <div className="mypage-pic-delete">
-                  <label>
-                  <button className="mypage-pic-del-btn" onClick={handleDeleteImage}><img  src={xmark} alt="Delete Profile"/></button>
-                  </label>
-                </div>
-                <div className="mypage-pic">
-                  <div className="mypage-pic-div mypage-pic-div2">
-                    <img src={imageUrl} alt="Profile" />
-                  </div>
-                </div>
-                <div className="mypage-pic-change">
-                <label>
-                  <input
-                    type="file"
-                    onChange={handleImageUpload}
-                    style={{ display: "none" }}
-                  />
-                  <p className="mypage-pic-change-btn">변경</p>
-                </label>
+          <div className="mypage-pic-box">
+          <div className="mypage-pic-delete">
+              <button className="mypage-pic-del-btn" onClick={handleDeleteImage}>
+                <img src={xmark} alt="프로필 삭제" />
+              </button>
+          </div>
+            <div className="mypage-pic">
+              <div className="mypage-pic-div mypage-pic-div2">
+                <img src={imageUrl} alt="Profile" />
+              </div>
+            </div>
+            <div className="mypage-pic-change">
+            <label>
+              <input
+                type="file"
+                onChange={handleImageUpload}
+                style={{ display: "none" }}
+              />
+              <p className="mypage-pic-change-btn">변경</p>
+            </label>
+            </div>
+          </div>
+          <div className="mypage-box mypage-nickname-sns-box">
+            <div className="mypage-empty-box"></div>
+            <div className="mypage-nickname-box">
+              <div className="mypage-nickname-setbox">
+                <div className="mypage-title mypage-nickname-title">닉네임</div>
+                <div className="mypage-nickname-input">
+                  <input className="mypage-pic-input" type="text" name="nickname" maxLength={64} placeholder="입력해주세요" value={nickname} onChange={onChageNickname} />
                 </div>
               </div>
-              <div className="mypage-box mypage-nickname-sns-box">
-                <div className="mypage-empty-box"></div>
-                <div className="mypage-nickname-box">
-                  <div className="mypage-nickname-setbox">
-                    <div className="mypage-title mypage-nickname-title">닉네임</div>
-                    <div className="mypage-nickname-input">
-                      <input type="text" name="nickname" maxLength={64} placeholder="입력해주세요" value={nickname} onChange={onChageNickname} />
-                    </div>
-                  </div>
-                  <div className="mypage-nickname-checkbox">
-                    <p className="mypage-nickname-check"></p>
-                  </div>
-                </div>
-                <div className="mypage-box mypage-sns-box">
-                  <div className="mypage-title mypage-sns-title">ID</div>
-                  <div className="mypage-sns-input">{getUserId}</div>
-                  <div className="mypage-sns-bye">
-                    <div className="mypage-pop-up">
-                    <button className="mypage-bye-btn mypage-gradient-btn" onClick={handleConfirmWithdraw}>탈퇴</button>
-                    </div>
-                  </div>
+              <div className="mypage-nickname-checkbox">
+                <p className="mypage-nickname-check"></p>
+              </div>
+            </div>
+            <div className="mypage-box mypage-sns-box">
+              <div className="mypage-title mypage-sns-title">ID</div>
+              <div className="mypage-sns-input">{getUserId}</div>
+              <div className="mypage-sns-bye">
+                <div className="mypage-pop-up">
+                <button className="mypage-bye-btn mypage-bye-gradient-btn" onClick={handleConfirmWithdraw}>탈퇴</button>
                 </div>
               </div>
-            </>
-          ) : (
-            <p>Loading...</p>
-          )}
+            </div>
           </div>
-          <div className="mypage-save-box">
-          <button className="mypage-save-btn mypage-gradient-btn" onClick={updateKakao}>확인</button>
-          </div>
+        </div>
+        <div className="mypage-save-box">
+        <button className="mypage-save-btn mypage-gradient-btn" onClick={updateKakao}>확인</button>
+        </div>
       </>
     )}
   </div>
