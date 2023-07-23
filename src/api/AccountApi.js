@@ -77,6 +77,14 @@ const AccountApi = {
         return await axios.post(Domain + "/auth/sendAuthEmail", sendAuthEmailcmd);
     },
 
+    // 프로필수정 시 이메일 인증
+    mypageEmailAuth: async(userEmail) => {
+        const mypageEmailAuthcmd = {
+            userEmail: userEmail
+        };
+        return await axios.post(Domain + "/auth/mypageEmailAuth", mypageEmailAuthcmd);
+    },
+
     // 마이페이지 회원 별 리뷰 가져오기
     getMemberReview : async(userId) => {
         Functions.setAuthorizationHeader();

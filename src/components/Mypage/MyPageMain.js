@@ -12,7 +12,7 @@ const MenuBlock = styled.div`
     left: 50%;
     @media (max-width:768px) {
         width: 100%;
-        height: 1050px;
+        height: auto;
     }
     @media (max-width:412px) {
         width: 100%;

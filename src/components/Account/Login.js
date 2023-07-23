@@ -98,7 +98,7 @@ import MessageModal from "../../utils/MessageModal";
     };
 
     return (
-      <div className="wrapper">
+      <>
         <div className="loginWrapper">
           <div className="login">
             <h2>로그인</h2>
@@ -118,7 +118,8 @@ import MessageModal from "../../utils/MessageModal";
                 {isLoginPw && <span className="loginPwOk">{loginPwOkMsg}</span>}
               </div>
               <div className="IdPwdSearchButtonBox">
-                <Link to="/find" className="IdPwdSearchButton">아이디 / 패스워드 찾기</Link>
+                <Link to="/find/id" className="IdSearchButton">아이디 찾기</Link>
+                <Link to="/find/pw" className="PwdSearchButton">패스워드 찾기</Link>
                 <Link to="/join" className="JoinButton">회원 가입</Link>
               </div>
               <button className="loginButton" onClick={onClickLogin}>로그인</button>
@@ -127,7 +128,7 @@ import MessageModal from "../../utils/MessageModal";
           </div>
         </div>
         {modalOpen && (<MessageModal open={modalOpen} confirm={onClickClose} close={onClickClose} type="modalType" header="로그인 오류">아이디 및 패스워드가 틀렸습니다.</MessageModal>)}
-      </div>
+      </>
     );
   };
   

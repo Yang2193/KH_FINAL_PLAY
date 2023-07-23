@@ -14,7 +14,6 @@ import imgX from "../../images/gray.png"
 const MyReviewContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
-  
   justify-content: center;
 `;
 

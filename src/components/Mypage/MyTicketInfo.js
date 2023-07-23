@@ -68,6 +68,13 @@ const ListBox = styled.div`
         margin: 0 20px;
     }
 `
+const MyTicketPageTitle = styled.h2`
+  font-size: 24px;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 20px;
+  width: 100%
+`;
 
 const MyTicketInfo = () => {
     const userInfoString = localStorage.getItem("userInfo");
@@ -99,7 +106,7 @@ const MyTicketInfo = () => {
     return (
         <>
         <Header/>
-        <h3>{userInfo.userNickname}님의 구매내역</h3>
+        <MyTicketPageTitle>{userInfo.userNickname}님의 구매내역</MyTicketPageTitle>
         <ListBox>
         <table className="buyListTable">
           <thead>
