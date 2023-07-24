@@ -334,20 +334,24 @@ const PostDetailPage = () => {
   };
 
   const handleSubmitComment = async () => {
+    if (comment.trim() === "") {
+      return;
+    }
+  
     try {
       const newComment = {
         commentContent: comment,
         postId: postId,
         userId: localStorage.getItem("userId"),
       };
-
+  
       const response = await PostAPI.createComment(newComment);
       if (response.status === 200) {
         console.log(response.data);
         fetchPost();
         setComment("");
       }
-
+  
       console.log("작성된 댓글:", response);
     } catch (error) {
       console.log(error);
@@ -384,6 +388,7 @@ const PostDetailPage = () => {
     }
   };
 
+
   const handleUpdateComment = async () => {
     try {
       const updatedCommentContent = prompt(
@@ -391,15 +396,19 @@ const PostDetailPage = () => {
         comments.find((comment) => comment.id === selectedCommentId)
           .commentContent
       );
-
+  
+      if (!updatedCommentContent) {
+        return; // 수정 취소 시 또는 빈 값을 입력했을 때 처리
+      }
+  
+      // 댓글 수정 API 호출
       const response = await PostAPI.updateComment(
         selectedCommentId,
         updatedCommentContent
       );
-
+  
       if (response.status === 200) {
         toast.success("댓글이 수정되었습니다.");
-        console.log(response.data);
         const updatedComments = comments.map((comment) => {
           if (comment.id === selectedCommentId) {
             return {
@@ -417,7 +426,7 @@ const PostDetailPage = () => {
       console.log(error);
     }
   };
-
+  
   useEffect(() => {
     const commentSection = document.getElementById("commentSection");
     if (commentSection) {
