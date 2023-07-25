@@ -261,9 +261,10 @@ const updateReview = async (id) =>{
     const currentPageData = reviews.slice(offset, offset + ITEMS_PAGE);
   return (
     <OneCss>
-        {reviews.length > 0 && ( // Add this condition to check if reviews has items
+        {reviews.length > 0 ? // Add this condition to check if reviews has items
         <div className='average'>한줄평 ({reviews.length}) <span>{(reviews.reduce((total, review) => total + review.olrRating, 0) / reviews.length).toFixed(1)} / 5.0</span> </div>
-      )}
+        :<div className='average'>한줄평 (0) <span> 0 / 5.0</span> </div>
+      }
         <div className='addReview'>
         <div className='ratingBox'>
           <Rating
@@ -298,7 +299,7 @@ const updateReview = async (id) =>{
             </p> :
             <p><Rating size={"20"} className='read' initialValue={review.olrRating} allowFraction readonly/></p>}
           {showInput && reviewId===review.id ? <textarea className='updateText' onChange={onUpContent} value={upContent}></textarea> : <p>{review.olrContent}</p>}
-          <p>{review.memberInfo.userId} <span>{(new Date(review.olrDate)).toLocaleString('ko')}</span></p>
+          <p>{review.memberInfo.userNickname} <span>{(new Date(review.olrDate)).toLocaleString('ko')}</span></p>
         </div>
       ))
       : <div className='empty'>관람후기를 등록해주세요</div>}
